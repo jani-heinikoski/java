@@ -6,7 +6,7 @@ package com.kranaatinheitinkomppania;
 
 public class Dog {
 
-    String name;
+    private String name;
 
     public void speak(String sentence) {
         System.out.println(this.name + ": " + sentence);
