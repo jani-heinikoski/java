@@ -16,13 +16,14 @@ public class Main {
         String dogsSentence;
 
         System.out.print("Give a name to the dog: ");
-        dogsName = sc.next();
+        dogsName = sc.nextLine();
         Dog dog = new Dog(dogsName);
 
         System.out.print("What does a dog say: ");
-        dogsSentence = sc.next();
+        dogsSentence = sc.nextLine();
         dog.speak(dogsSentence);
 
+        sc.close();
         /*
         Dog firstDog = new Dog("Rekku");
         Dog secondDog = new Dog("Musti");
