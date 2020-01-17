@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.1.0
+Version: 3.2.0
  */
 package com.kranaatinheitinkomppania;
 
@@ -11,16 +11,50 @@ package com.kranaatinheitinkomppania;
 public class BottleDispenser {
 
     private int bottles;
+    // The array for the Bottle-objects
+    private Bottle[] bottle_array;
     private int money;
 
-    public BottleDispenser() { // Class Constructor
-        this.bottles = 5;
+    public BottleDispenser() {
+
+        this.bottles = 50;
         this.money = 0;
+
+        // Initialize the array
+        this.bottle_array = new Bottle[this.bottles];
+
+        // Add Bottle-objects to the array
+        for(int i = 0; i < this.bottles; i++) {
+            // Use the default constructor to create new Bottles
+            bottle_array[i] = new Bottle();
+        }
+
     }
 
     public void addMoney() {
         this.money += 1;
         System.out.println("Klink! Added more money!");
+    }
+
+    private Bottle popBottle() {
+        // Gets the last bottle of this.bottle_array and removes it.
+        if (this.bottles == 0) {
+            return null;
+        }
+
+        int count = 0;
+        Bottle lastBottle;
+
+        for (Bottle b : this.bottle_array) {
+            if (b != null) {
+                count++;
+            }
+        }
+
+        lastBottle = this.bottle_array[count - 1];
+        this.bottle_array[count - 1] = null;
+
+        return lastBottle;
     }
 
     public void buyBottle() {
@@ -38,7 +72,7 @@ public class BottleDispenser {
         if (this.bottles > 0 && this.money > 0) {
             this.bottles -= 1;
             this.money -= 1;
-            System.out.println("KACHUNK! A bottle came out of the dispenser!");
+            System.out.println("KACHUNK! " + popBottle().getName() + " came out of the dispenser!");
         }
 
     }

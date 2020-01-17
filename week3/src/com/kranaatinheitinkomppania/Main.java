@@ -2,9 +2,11 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.1.0
+Version: 3.2.0
  */
 package com.kranaatinheitinkomppania;
+
+
 
 public class Main {
 
