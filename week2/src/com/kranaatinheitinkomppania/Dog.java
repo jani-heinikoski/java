@@ -36,7 +36,7 @@ public class Dog {
                 System.out.println("Such integer: " + tempWord);
             } else {
                 tempWord = sc.next();
-                System.out.println(this.name + ": " + tempWord);
+                System.out.println(tempWord);
             }
 
         }
