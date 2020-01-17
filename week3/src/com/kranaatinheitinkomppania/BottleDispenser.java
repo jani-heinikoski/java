@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.4.0
+Version: 3.4.1
  */
 package com.kranaatinheitinkomppania;
 import java.text.DecimalFormat;
@@ -120,7 +120,8 @@ public class BottleDispenser {
         for (Bottle b : this.bottleArrayList) {
             if (b != null) {
                 System.out.println(idx + ". Name: " + b.getName());
-                System.out.println("    Size: " + df.format(b.getBottleSize()) + "    Price: " + df.format(b.getBottlePrice()));
+                System.out.println("\tSize: " + df.format(b.getBottleSize()) + "\tPrice: " + df.format(b.getBottlePrice()));
+                idx++;
             }
         }
     }
