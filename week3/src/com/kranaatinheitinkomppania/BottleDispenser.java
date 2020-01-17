@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.2.0
+Version: 3.2.1
  */
 package com.kranaatinheitinkomppania;
 
@@ -10,6 +10,7 @@ package com.kranaatinheitinkomppania;
 
 public class BottleDispenser {
 
+    // Amount of bottles
     private int bottles;
     // The array for the Bottle-objects
     private Bottle[] bottle_array;
@@ -70,9 +71,9 @@ public class BottleDispenser {
         }
 
         if (this.bottles > 0 && this.money > 0) {
+            System.out.println("KACHUNK! " + popBottle().getName() + " came out of the dispenser!");
             this.bottles -= 1;
             this.money -= 1;
-            System.out.println("KACHUNK! " + popBottle().getName() + " came out of the dispenser!");
         }
 
     }
