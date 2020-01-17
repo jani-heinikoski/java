@@ -1,8 +1,10 @@
 // Jani Heinikoski
-// 14.1.2019
+// 17.1.2019
 // 0541122
 // Luokka Dog toisen viikon tehtäviin.
 package com.kranaatinheitinkomppania;
+
+
 
 public class Dog {
 
