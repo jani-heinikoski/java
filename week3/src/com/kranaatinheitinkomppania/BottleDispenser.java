@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.3.2
+Version: 3.3.3
  */
 package com.kranaatinheitinkomppania;
 
@@ -14,12 +14,12 @@ public class BottleDispenser {
     private int bottles;
     // The array for the Bottle-objects
     private Bottle[] bottle_array;
-    private int money;
+    private double money;
 
     public BottleDispenser() {
 
         this.bottles = 50;
-        this.money = 0;
+        this.money = 0.0d;
 
         // Initialize the array
         this.bottle_array = new Bottle[this.bottles];
@@ -33,7 +33,7 @@ public class BottleDispenser {
     }
 
     public void addMoney() {
-        this.money += 1;
+        this.money += 1.0d;
         System.out.println("Klink! Added more money!");
     }
 
@@ -101,7 +101,7 @@ public class BottleDispenser {
 
         if (this.money > 0) {
             System.out.println("Klink klink. Money came out!");
-            this.money = 0;
+            this.money = 0.0d;
         } else {
             System.out.println("Klink klink!! All money gone!");
         }
