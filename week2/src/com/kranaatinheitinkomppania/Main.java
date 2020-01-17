@@ -13,15 +13,18 @@ public class Main {
         // Ask dog's name and a sentence to say.
         Scanner sc = new Scanner(System.in);
         String dogsName;
-        String whatDoesTheDogSay;
+        String whatDoesTheDogSay = "";
 
         System.out.print("Give a name to the dog: ");
         dogsName = sc.nextLine();
         Dog dog = new Dog(dogsName);
 
-        System.out.print("What does a dog say: ");
-        whatDoesTheDogSay = sc.nextLine();
-        dog.speak(whatDoesTheDogSay);
+        while (whatDoesTheDogSay.isEmpty()) {
+            System.out.print("What does a dog say: ");
+            whatDoesTheDogSay = sc.nextLine().trim();
+            dog.speak(whatDoesTheDogSay);
+        }
+
     }
 
 }
