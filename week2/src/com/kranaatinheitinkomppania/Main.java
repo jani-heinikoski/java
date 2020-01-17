@@ -10,28 +10,18 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
+        // Ask dog's name and a sentence to say.
         Scanner sc = new Scanner(System.in);
         String dogsName;
-        String dogsSentence;
+        String whatDoesTheDogSay;
 
         System.out.print("Give a name to the dog: ");
         dogsName = sc.nextLine();
         Dog dog = new Dog(dogsName);
 
         System.out.print("What does a dog say: ");
-        dogsSentence = sc.nextLine();
-        dog.speak(dogsSentence);
-
-        sc.close();
-        /*
-        Dog firstDog = new Dog("Rekku");
-        Dog secondDog = new Dog("Musti");
-
-        firstDog.speak("Hau!");
-        secondDog.speak("Vuh!");
-         */
+        whatDoesTheDogSay = sc.nextLine();
+        dog.speak(whatDoesTheDogSay);
     }
-
 
 }

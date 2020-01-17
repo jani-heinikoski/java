@@ -8,19 +8,30 @@ package com.kranaatinheitinkomppania;
 
 public class Dog {
 
-    private String name;
+    private String name; // Dog -object's name.
+    private String says; // Printed to stdout in void speak().
 
-    public void speak(String sentence) {
-        System.out.println(this.name + ": " + sentence);
+    public void speak(String whatToSay) {
+        // Prints user's sentence to stdout.
+        // Trim removes L/T whitespace.
+        if (whatToSay.trim().isEmpty()) {
+            this.says = "";
+        } else {
+            this.says = whatToSay;
+        }
+
+        System.out.println(this.name + ": " + this.says);
     }
 
     public Dog(String name) {
-
-        this.name = name;
-
-        if (!this.name.isEmpty()) {
-            System.out.println("Hey, my name is " + this.name + "!");
+        // Class constructor, sets this.name to given (arg) name if not empty.
+        // Trim removes L/T whitespace.
+        if (name.trim().isEmpty()) {
+            this.name = "Doge";
+        } else {
+            this.name = name;
         }
 
+        System.out.println("Hey, my name is " + this.name + "!");
     }
 }
