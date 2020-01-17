@@ -15,7 +15,7 @@ public class Dog {
         // Prints user's sentence to stdout.
         // Trim removes L/T whitespace.
         if (whatToSay.trim().isEmpty()) {
-            this.says = "";
+            this.says = "Much wow!";
         } else {
             this.says = whatToSay;
         }
