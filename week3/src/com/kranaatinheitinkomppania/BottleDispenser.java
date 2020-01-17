@@ -2,9 +2,13 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.3.3
+Version: 3.4.0
  */
 package com.kranaatinheitinkomppania;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Locale;
 
 
 
@@ -13,21 +17,21 @@ public class BottleDispenser {
     // Amount of bottles
     private int bottles;
     // The array for the Bottle-objects
-    private Bottle[] bottle_array;
+    private ArrayList<Bottle> bottleArrayList;
     private double money;
 
     public BottleDispenser() {
 
-        this.bottles = 50;
+        this.bottles = 5;
         this.money = 0.0d;
 
         // Initialize the array
-        this.bottle_array = new Bottle[this.bottles];
+        this.bottleArrayList = new ArrayList(this.bottles);
 
         // Add Bottle-objects to the array
         for(int i = 0; i < this.bottles; i++) {
             // Use the default constructor to create new Bottles
-            bottle_array[i] = new Bottle();
+            this.bottleArrayList.add(new Bottle());
         }
 
     }
@@ -38,7 +42,7 @@ public class BottleDispenser {
     }
 
     private Bottle getLastBottle() {
-        // Gets the price of last bottle in this.bottle_array.
+        // Gets the last bottle in this.bottleArrayList.
         if (this.bottles == 0) {
             return null;
         }
@@ -46,18 +50,18 @@ public class BottleDispenser {
         int count = 0;
         Bottle lastBottle;
 
-        for (Bottle b : this.bottle_array) {
+        for (Bottle b : this.bottleArrayList) {
             if (b != null) {
                 count++;
             }
         }
 
-        lastBottle = this.bottle_array[count - 1];
+        lastBottle = this.bottleArrayList.get(count - 1);
         return lastBottle;
     }
 
     private Bottle popLastBottle() {
-        // Gets the last bottle of this.bottle_array and removes it.
+        // Gets the last bottle of this.bottleArrayList and removes it.
         if (this.bottles == 0) {
             return null;
         }
@@ -65,14 +69,14 @@ public class BottleDispenser {
         int count = 0;
         Bottle lastBottle;
 
-        for (Bottle b : this.bottle_array) {
+        for (Bottle b : this.bottleArrayList) {
             if (b != null) {
                 count++;
             }
         }
 
-        lastBottle = this.bottle_array[count - 1];
-        this.bottle_array[count - 1] = null;
+        lastBottle = this.bottleArrayList.get(count - 1);
+        this.bottleArrayList.remove(count - 1);
 
         return lastBottle;
     }
@@ -80,7 +84,7 @@ public class BottleDispenser {
     public void buyBottle() {
 
         if (this.bottles == 0) {
-            System.out.println("No more bottles left!");
+            System.out.println("No more bottles are left!");
             return;
         }
 
@@ -108,4 +112,16 @@ public class BottleDispenser {
 
     }
 
+    public void listContents() {
+        // Prints out the contents of BottleDispenser instance.
+        int idx = 1;
+        DecimalFormat df = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.US));
+
+        for (Bottle b : this.bottleArrayList) {
+            if (b != null) {
+                System.out.println(idx + ". Name: " + b.getName());
+                System.out.println("    Size: " + df.format(b.getBottleSize()) + "    Price: " + df.format(b.getBottlePrice()));
+            }
+        }
+    }
 }
