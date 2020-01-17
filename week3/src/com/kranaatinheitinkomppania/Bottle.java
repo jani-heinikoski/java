@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.4.0
+Version: 3.5.0
  */
 package com.kranaatinheitinkomppania;
 
@@ -24,10 +24,12 @@ public class Bottle {
         setBottleSize(0.5d);
     }
 
-    public Bottle(String name, String manuf, float totE) {
+    public Bottle(String name, String manufacturer, double totalEnergy, double bottleSize, double bottlePrice) {
         this.name = name;
-        this.manufacturer = manuf;
-        this.totalEnergy = totE;
+        this.manufacturer = manufacturer;
+        this.totalEnergy = totalEnergy;
+        setBottlePrice(bottlePrice);
+        setBottleSize(bottleSize);
     }
 
     public double getBottlePrice() {

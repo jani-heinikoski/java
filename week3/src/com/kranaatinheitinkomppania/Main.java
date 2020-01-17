@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.4.0
+Version: 3.5.0
  */
 package com.kranaatinheitinkomppania;
 import java.util.Scanner;
@@ -35,7 +35,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        BottleDispenser BD = new BottleDispenser();
+        BottleDispenser BD = new BottleDispenser(5, 0.0d);
+        BD.addBottle("Pepsi Max", "Pepsi", 0.3d, 0.5d, 1.8d);
+        BD.addBottle("Pepsi Max", "Pepsi", 0.9d, 1.5d, 2.2d);
+        BD.addBottle("Coca-Cola Zero", "Coca-Cola", 0.1d, 0.5d, 2.0d);
+        BD.addBottle("Coca-Cola Zero", "Coca-Cola", 0.1d, 1.5d, 2.5d);
+        BD.addBottle("Fanta Zero", "Coca-Cola", 0.3d, 0.5d, 1.95d);
+
         int choice;
 
         while (true) {
