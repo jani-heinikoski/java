@@ -17,6 +17,7 @@ public class Bottle {
     private double totalEnergy;
 
     public Bottle() {
+        // Default constructor
         this.name = "Pepsi Max";
         this.manufacturer = "Pepsi";
         this.totalEnergy = 0.3d;
