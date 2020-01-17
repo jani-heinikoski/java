@@ -2,13 +2,10 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.5.1
+Version: 3.5.2
  */
 package com.kranaatinheitinkomppania;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -140,8 +137,7 @@ public class BottleDispenser {
     public void returnMoney() {
         // Refunds money put in to the dispenser (if any).
         if (this.money > 0) {
-            DecimalFormat dc = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.GERMANY));
-            System.out.println("Klink klink. Money came out! You got " + dc.format(this.money) + "€ back");
+            System.out.println(String.format("Klink klink. Money came out! You got %,.2f€ back", this.money));
             this.money = 0.0d;
         } else {
             System.out.println("Klink klink!! All money gone!");
