@@ -2,10 +2,9 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.3.0
+Version: 3.3.2
  */
 package com.kranaatinheitinkomppania;
-import java.util.ArrayList;
 
 
 
@@ -20,37 +19,9 @@ public class Bottle {
     public Bottle() {
         this.name = "Pepsi Max";
         this.manufacturer = "Pepsi";
-        this.totalEnergy = 0.3f;
-        this.bottlePrice = 1.80f;
-        this.bottleSize = 0.5f;
-    }
-
-    public double getBottlePrice() {
-        return this.bottlePrice;
-    }
-
-    public double getBottleSize() {
-        return this.bottleSize;
-    }
-
-    public void setBottlePrice(double bottlePrice) {
-        // Bottle price has to be over 0.
-        if (bottlePrice > 0.0f) {
-            this.bottlePrice = bottlePrice;
-        } else {
-            System.out.println("Bottle price must be positive!");
-        }
-
-    }
-
-    public void setBottleSize(double bottleSize) {
-
-        if (bottleSize > 0.0) {
-            this.bottleSize = bottleSize;
-        } else {
-            System.out.println("Bottle size not accepted, must be positive of type double.");
-        }
-
+        this.totalEnergy = 0.3d;
+        setBottlePrice(1.80d);
+        setBottleSize(0.5d);
     }
 
     public Bottle(String name, String manuf, float totE) {
@@ -59,12 +30,38 @@ public class Bottle {
         this.totalEnergy = totE;
     }
 
-    public double getTotalEnergy() {
-        return this.totalEnergy;
+    public double getBottlePrice() {
+        return this.bottlePrice;
+    }
+
+    public void setBottlePrice(double bottlePrice) {
+        // Bottle price has to be over 0.
+        if (bottlePrice > 0.0d) {
+            this.bottlePrice = bottlePrice;
+        } else {
+            System.out.println("Bottle price must be positive!");
+        }
+    }
+
+    public double getBottleSize() {
+        return this.bottleSize;
+    }
+
+    public void setBottleSize(double bottleSize) {
+        // Bottle size has to be over 0.
+        if (bottleSize > 0.0d) {
+            this.bottleSize = bottleSize;
+        } else {
+            System.out.println("Bottle size must be positive!");
+        }
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public double getTotalEnergy() {
+        return this.totalEnergy;
     }
 
     public String getManufacturer() {
