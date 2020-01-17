@@ -3,6 +3,7 @@
 // 0541122
 // Luokka Dog toisen viikon tehtäviin.
 package com.kranaatinheitinkomppania;
+import java.util.Scanner;
 
 
 
@@ -10,17 +11,36 @@ public class Dog {
 
     private String name; // Dog -object's name.
     private String says; // Printed to stdout in void speak().
+    private Scanner sc;
 
     public void speak(String whatToSay) {
         // Prints user's sentence to stdout.
         // Trim removes L/T whitespace.
-        if (whatToSay.trim().isEmpty()) {
+        whatToSay = whatToSay.trim();
+        this.sc = new Scanner(whatToSay);
+        String tempWord;
+
+        if (whatToSay.isEmpty()) {
             this.says = "Much wow!";
         } else {
             this.says = whatToSay;
         }
 
-        System.out.println(this.name + ": " + this.says);
+        while (this.sc.hasNext()) {
+
+            if (sc.hasNextBoolean()) {
+                tempWord = sc.next();
+                System.out.println("Such boolean: " + tempWord);
+            } else if (sc.hasNextInt()) {
+                tempWord = sc.next();
+                System.out.println("Such integer: " + tempWord);
+            } else {
+                tempWord = sc.next();
+                System.out.println(this.name + ": " + tempWord);
+            }
+
+        }
+
     }
 
     public Dog(String name) {
