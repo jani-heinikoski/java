@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 17.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 3.3.0
+Version: 3.3.2
  */
 package com.kranaatinheitinkomppania;
 
@@ -37,7 +37,26 @@ public class BottleDispenser {
         System.out.println("Klink! Added more money!");
     }
 
-    private Bottle popBottle() {
+    private Bottle getLastBottle() {
+        // Gets the price of last bottle in this.bottle_array.
+        if (this.bottles == 0) {
+            return null;
+        }
+
+        int count = 0;
+        Bottle lastBottle;
+
+        for (Bottle b : this.bottle_array) {
+            if (b != null) {
+                count++;
+            }
+        }
+
+        lastBottle = this.bottle_array[count - 1];
+        return lastBottle;
+    }
+
+    private Bottle popLastBottle() {
         // Gets the last bottle of this.bottle_array and removes it.
         if (this.bottles == 0) {
             return null;
@@ -65,16 +84,16 @@ public class BottleDispenser {
             return;
         }
 
-        if (this.money == 0) {
+        Bottle bottleToBuy = getLastBottle();
+
+        if (this.money < bottleToBuy.getBottlePrice()) {
             System.out.println("Add money first!");
             return;
         }
 
-        if (this.bottles > 0 && this.money > 0) {
-            System.out.println("KACHUNK! " + popBottle().getName() + " came out of the dispenser!");
-            this.bottles -= 1;
-            this.money -= 1;
-        }
+        System.out.println("KACHUNK! " + popLastBottle().getName() + " came out of the dispenser!");
+        this.bottles -= 1;
+        this.money -= bottleToBuy.getBottlePrice();
 
     }
 
