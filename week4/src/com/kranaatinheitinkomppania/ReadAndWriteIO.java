@@ -39,7 +39,7 @@ public class ReadAndWriteIO {
 
     private boolean containsChar(String line) {
         // Checks if line contains a given character.
-        if (this.c == '\u0000') {
+        if (this.c == '\u0000') { // If c has not been given, always true.
             return true;
         }
         for (int i = 0; i < line.length(); i++) {
@@ -64,7 +64,7 @@ public class ReadAndWriteIO {
             BufferedWriter output = new BufferedWriter(new FileWriter(outputFilePath));
             // Read while line isn't null.
             while ((tempLine = input.readLine()) != null) {
-                if (isAcceptLine(tempLine)) {
+                if (isAcceptLine(tempLine)) { // Default constructor => always true.
                     output.write(tempLine);
                     output.newLine();
                 }
@@ -118,6 +118,10 @@ public class ReadAndWriteIO {
         this.c = c;
     }
 
+    /**
+     * Length < 0 disables length limit (default -1)
+     * @param lineLen
+     */
     public void setLineLen(int lineLen) {
         this.lineLen = lineLen;
     }
