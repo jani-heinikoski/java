@@ -1,0 +1,34 @@
+RFC 1121
+ODE TO A QUEUE
+by
+Leonard Kleinrock
+
+In the 20 years of funding
+Many fields has DARPA led.
+But the finest thing that they did bring
+Was the analytic thread.
+
+By that I mean they nurtured
+Quantitative research tools.
+And they always felt for all their gelt
+They got principles and rules.
+
+Indeed a wealth of knowledge
+Was uncovered and was new.
+And the common thread with which we led
+Was the analytic queue!
+
+Now a queue may have one server.
+If there's more, they form a team.
+Its dearest wish is just to fish
+In a quiet Poisson stream.
+
+If you want to model networks
+Or a complex data flow
+A queue's the key to help you see
+All the things you need to know.
+
+So the next time you feel lonely
+And wonder what to do,
+You'll soon feel fine if you join the line
+Of an analytic queue!
