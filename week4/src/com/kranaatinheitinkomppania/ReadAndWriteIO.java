@@ -109,4 +109,16 @@ public class ReadAndWriteIO {
             System.out.println("Filepath: " + filePath);
         }
     }
+
+    /**
+     * Set \u0000 to disable search (default value)
+     * @param c
+     */
+    public void setCharacterToSearch(char c) {
+        this.c = c;
+    }
+
+    public void setLineLen(int lineLen) {
+        this.lineLen = lineLen;
+    }
 }
