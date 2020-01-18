@@ -12,30 +12,47 @@ import java.io.*;
 public class ReadAndWriteIO {
 
     private int lineLen;
+    private char c;
 
-    public ReadAndWriteIO(int lineLength) {
+    public ReadAndWriteIO(int lineLength, char linesWithChar) {
         // Class constructor
         this.lineLen = lineLength;
+        this.c = linesWithChar;
     }
 
     public ReadAndWriteIO() {
         // Class constructor
-        this.lineLen = 30;
+        this.lineLen = -1;
     }
 
     private boolean isAcceptLine (String line) {
-        // Checks if line length is within given boundary.
-        boolean acceptLine = false;
-
-        if (line.length() < this.lineLen && !line.isBlank()) {
-            acceptLine = true;
+        // Checks if line is accepted by given rules.
+        // Requires bool containsChar() to be true.
+        // Used with void readAndWrite.
+        if (containsChar(line)) { // Always true if no char specified in constructor.
+            if (this.lineLen <= 0 || (line.length() < this.lineLen && !line.isBlank())) {
+                return true;
+            }
         }
+        return false;
+    }
 
-        return acceptLine;
+    private boolean containsChar(String line) {
+        // Checks if line contains a given character.
+        if (this.c == '\u0000') {
+            return true;
+        }
+        for (int i = 0; i < line.length(); i++) {
+            if (line.charAt(i) == this.c) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void readAndWrite(String inputFilePath, String outputFilePath) {
         // Reads a .txt -file from filePath and prints to stdout.
+        // Check if filepaths are empty.
         if (inputFilePath.trim().isEmpty() || outputFilePath.trim().isEmpty()) {
             System.out.println("Filepath can not be empty!");
             return;

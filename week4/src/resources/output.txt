@@ -1,15 +1,8 @@
-RFC 1121
-ODE TO A QUEUE
-by
-Leonard Kleinrock
 In the 20 years of funding
-Many fields has DARPA led.
 Was the analytic thread.
 By that I mean they nurtured
 Quantitative research tools.
-They got principles and rules.
 Indeed a wealth of knowledge
-Was uncovered and was new.
 Was the analytic queue!
 In a quiet Poisson stream.
 If you want to model networks

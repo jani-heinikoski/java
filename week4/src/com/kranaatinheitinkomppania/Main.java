@@ -9,7 +9,7 @@ package com.kranaatinheitinkomppania;
 public class Main {
 
     public static void main(String[] args) {
-	    ReadAndWriteIO rwIO = new ReadAndWriteIO();
+	    ReadAndWriteIO rwIO = new ReadAndWriteIO(30, 't');
 	    //rwIO.readAndWrite("input.txt", "output.txt");
         rwIO.readAndWrite("src\\resources\\input.txt", "src\\resources\\output.txt");
     }
