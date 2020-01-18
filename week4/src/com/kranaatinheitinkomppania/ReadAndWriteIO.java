@@ -2,7 +2,7 @@
 Author: Jani Heinikoski | 0541122
 Date: 18.1.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 3
-Version: 4.2.2
+Version: 4.2.3
  */
 package com.kranaatinheitinkomppania;
 import java.io.*;
@@ -11,8 +11,27 @@ import java.io.*;
 
 public class ReadAndWriteIO {
 
+    private int lineLen;
+
+    public ReadAndWriteIO(int lineLength) {
+        // Class constructor
+        this.lineLen = lineLength;
+    }
+
     public ReadAndWriteIO() {
         // Class constructor
+        this.lineLen = 30;
+    }
+
+    private boolean isAcceptLine (String line) {
+        // Checks if line length is within given boundary.
+        boolean acceptLine = false;
+
+        if (line.length() < this.lineLen && !line.isBlank()) {
+            acceptLine = true;
+        }
+
+        return acceptLine;
     }
 
     public void readAndWrite(String inputFilePath, String outputFilePath) {
@@ -28,8 +47,10 @@ public class ReadAndWriteIO {
             BufferedWriter output = new BufferedWriter(new FileWriter(outputFilePath));
             // Read while line isn't null.
             while ((tempLine = input.readLine()) != null) {
-                output.write(tempLine);
-                output.newLine();
+                if (isAcceptLine(tempLine)) {
+                    output.write(tempLine);
+                    output.newLine();
+                }
             }
             input.close(); output.close();
         }
