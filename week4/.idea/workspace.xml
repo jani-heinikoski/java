@@ -7,6 +7,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -20,6 +27,11 @@
   <component name="PropertiesComponent">
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\heini\Documents\GitHub\java\week4\src" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.kranaatinheitinkomppania.Main" />
@@ -31,6 +43,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -58,6 +75,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state width="1397" height="222" key="GridCell.Tab.0.bottom" timestamp="1579357186029">
+      <screen x="1920" y="0" width="1440" height="860" />
+    </state>
+    <state width="1397" height="222" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579357186029" />
+    <state width="1397" height="222" key="GridCell.Tab.0.center" timestamp="1579357186029">
+      <screen x="1920" y="0" width="1440" height="860" />
+    </state>
+    <state width="1397" height="222" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579357186029" />
+    <state width="1397" height="222" key="GridCell.Tab.0.left" timestamp="1579357186028">
+      <screen x="1920" y="0" width="1440" height="860" />
+    </state>
+    <state width="1397" height="222" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579357186028" />
+    <state width="1397" height="222" key="GridCell.Tab.0.right" timestamp="1579357186029">
+      <screen x="1920" y="0" width="1440" height="860" />
+    </state>
+    <state width="1397" height="222" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579357186029" />
     <state x="2336" y="255" key="com.intellij.ide.util.TipDialog" timestamp="1579348667397">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
