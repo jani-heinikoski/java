@@ -28,6 +28,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA" />
   </component>
   <component name="RecentsManager">
@@ -78,22 +82,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1397" height="222" key="GridCell.Tab.0.bottom" timestamp="1579365409650">
+    <state width="1397" height="222" key="GridCell.Tab.0.bottom" timestamp="1579371162133">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state width="1397" height="222" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579365409650" />
-    <state width="1397" height="222" key="GridCell.Tab.0.center" timestamp="1579365409648">
+    <state width="1397" height="222" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579371162133" />
+    <state width="1397" height="222" key="GridCell.Tab.0.center" timestamp="1579371162133">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state width="1397" height="222" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579365409648" />
-    <state width="1397" height="222" key="GridCell.Tab.0.left" timestamp="1579365409647">
+    <state width="1397" height="222" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579371162133" />
+    <state width="1397" height="222" key="GridCell.Tab.0.left" timestamp="1579371162132">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state width="1397" height="222" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579365409647" />
-    <state width="1397" height="222" key="GridCell.Tab.0.right" timestamp="1579365409648">
+    <state width="1397" height="222" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579371162132" />
+    <state width="1397" height="222" key="GridCell.Tab.0.right" timestamp="1579371162133">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
-    <state width="1397" height="222" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579365409648" />
+    <state width="1397" height="222" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579371162133" />
     <state width="1397" height="276" key="GridCell.Tab.1.bottom" timestamp="1579365278473">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -114,5 +118,9 @@
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
     <state x="2336" y="255" key="com.intellij.ide.util.TipDialog/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579348667397" />
+    <state x="2344" y="324" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1579368834020">
+      <screen x="1920" y="0" width="1440" height="860" />
+    </state>
+    <state x="2344" y="324" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579368834020" />
   </component>
 </project>
