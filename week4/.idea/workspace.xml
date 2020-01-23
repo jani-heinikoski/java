@@ -82,6 +82,14 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="777" y="428" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1579541650397">
+      <screen x="0" y="0" width="1858" height="1080" />
+    </state>
+    <state x="777" y="428" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1579541650397" />
+    <state x="509" y="194" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor" timestamp="1579541645770">
+      <screen x="0" y="0" width="1858" height="1080" />
+    </state>
+    <state x="509" y="194" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor/0.0.1858.1080@0.0.1858.1080" timestamp="1579541645770" />
     <state width="1397" height="276" key="GridCell.Tab.0.bottom" timestamp="1579373055327">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -114,10 +122,11 @@
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
     <state width="1397" height="276" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579373055327" />
-    <state x="2336" y="255" key="com.intellij.ide.util.TipDialog" timestamp="1579348667397">
-      <screen x="1920" y="0" width="1440" height="860" />
+    <state x="537" y="320" key="com.intellij.ide.util.TipDialog" timestamp="1579599058749">
+      <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state x="2336" y="255" key="com.intellij.ide.util.TipDialog/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579348667397" />
+    <state x="537" y="320" key="com.intellij.ide.util.TipDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1579599058749" />
     <state x="2344" y="324" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1579368834020">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
