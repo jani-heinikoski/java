@@ -92,6 +92,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579281945203" />
+    <state x="739" y="260" key="FileChooserDialogImpl" timestamp="1582717991730">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="739" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582717991730" />
     <state width="1397" height="222" key="GridCell.Tab.0.bottom" timestamp="1579299996602">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
@@ -112,11 +116,15 @@
     </state>
     <state width="1397" height="222" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1579299996602" />
     <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579282190752" />
-    <state x="524" y="271" key="com.intellij.ide.util.TipDialog" timestamp="1579285277885">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="655" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1582717948752">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="524" y="271" key="com.intellij.ide.util.TipDialog/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1579285277885" />
-    <state x="655" y="342" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579271816484" />
+    <state x="655" y="342" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582717948752" />
+    <state x="342" y="139" key="new project wizard" timestamp="1582717994930">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="342" y="139" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1582717994930" />
     <state x="2387" y="186" width="672" height="561" key="search.everywhere.popup" timestamp="1579289377182">
       <screen x="1920" y="0" width="1440" height="860" />
     </state>
