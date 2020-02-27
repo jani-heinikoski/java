@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SwampSimulator</string>
+    <string name="print_hello_world">Print Hello World</string>
+    <string name="text_view_text_to_disp">Hello World!</string>
+    <string name="btnApply_text">Apply</string>
+    <string name="inputText_text">Write here...</string>
+</resources>
