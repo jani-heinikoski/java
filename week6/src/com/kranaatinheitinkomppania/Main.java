@@ -1,8 +1,8 @@
 /*
 Author: Jani Heinikoski | 0541122
-Date: 26.2.2020
+Date: 27.2.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 5
-Version: 6.1.0
+Version: 6.5.0
  */
 package com.kranaatinheitinkomppania;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
 
     private static int strToI(String buffer) { // converts buffer to int
-        int i = 0;
+        int i = -1;
         Scanner sc = new Scanner(buffer.trim());
 
         while (sc.hasNext()) {
@@ -46,6 +46,7 @@ public class Main {
 
     public static void main(String[] args) {
         int choice;
+        Bank b = new Bank();
         Scanner sc = new Scanner(System.in);
         String accNumber;
         int depositAmount;
@@ -59,48 +60,43 @@ public class Main {
                     accNumber = sc.nextLine().trim();
                     System.out.print("Amount of money to deposit: ");
                     depositAmount = strToI(sc.nextLine());
-                    System.out.println("Account number: " + accNumber);
-                    System.out.println("Amount of money: " + depositAmount);
+                    b.addDebAcc(accNumber, depositAmount);
                     break;
                 case 2:
                     System.out.print("Give an account number: ");
                     accNumber = sc.nextLine().trim();
                     System.out.print("Amount of money to deposit: ");
-                    depositAmount = strToI(sc.nextLine());
+                    depositAmount = strToI(sc.nextLine().trim());
                     System.out.print("Give a credit limit: ");
-                    creditLimit = strToI(sc.nextLine());
-                    System.out.println("Account number: " + accNumber);
-                    System.out.println("Amount of money: " + depositAmount);
-                    System.out.println("Credit: " + creditLimit);
+                    creditLimit = strToI(sc.nextLine().trim());
+                    b.addCredAcc(accNumber, depositAmount, creditLimit);
                     break;
                 case 3:
                     System.out.print("Give an account number: ");
                     accNumber = sc.nextLine().trim();
                     System.out.print("Amount of money to deposit: ");
                     depositAmount = strToI(sc.nextLine());
-                    System.out.println("Account number: " + accNumber);
-                    System.out.println("Amount of money: " + depositAmount);
+                    b.deposit(accNumber, depositAmount);
                     break;
                 case 4:
                     System.out.print("Give an account number: ");
                     accNumber = sc.nextLine().trim();
                     System.out.print("Amount of money to withdraw: ");
                     withdrawAmount = strToI(sc.nextLine());
-                    System.out.println("Account number: " + accNumber);
-                    System.out.println("Amount of money: " + withdrawAmount);
+                    b.withdraw(accNumber, withdrawAmount);
                     break;
                 case 5:
                     System.out.print("Give the account number of the account to delete: ");
                     accNumber = sc.nextLine().trim();
-                    System.out.println("Account number: " + accNumber);
+                    b.remAcc(accNumber);
                     break;
                 case 6:
                     System.out.print("Give the account number of the account to print information from: ");
                     accNumber = sc.nextLine().trim();
-                    System.out.println("Account number: " + accNumber);
+                    b.printInfo(accNumber);
                     break;
                 case 7:
-                    System.out.println("Prints every account");
+                    b.printAccounts();
                     break;
                 case 0:
                     System.exit(0);
