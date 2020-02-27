@@ -4,27 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ABE1E8"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnApply"
+    <EditText
+        android:id="@+id/et_text_to_write"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="275sp"
-        android:height="125sp"
-        android:backgroundTint="#87C671"
-        android:backgroundTintMode="src_in"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="clickButton"
-        android:text="@string/btnApply_text"
-        android:textColor="#2B2B2B"
-        android:textSize="30sp"
-        android:typeface="normal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/text_to_write"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintTop_toBottomOf="@+id/et_filename"
+        app:layout_constraintVertical_bias="0.13999999" />
 
     <TextView
         android:id="@+id/textView"
@@ -38,21 +35,70 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.279"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="texthere" />
 
     <EditText
-        android:id="@+id/inputText"
+        android:id="@+id/et_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/inputText_text"
-        app:layout_constraintBottom_toTopOf="@+id/btnApply"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vertical_layout_for_readwrite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.23000002">
+
+        <Button
+            android:id="@+id/btnWriteFile"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="168dp"
+            android:layout_height="51dp"
+            android:background="@android:color/holo_green_light"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:onClick="writeFile"
+            android:text="@string/btnWriteFile_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/space"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnReadFile"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="169dp"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_green_light"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:onClick="readFile"
+            android:text="@string/btnReadFile_text"
+            app:layout_constraintEnd_toStartOf="@+id/space"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

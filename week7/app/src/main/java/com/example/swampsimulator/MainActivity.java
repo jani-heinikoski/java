@@ -2,43 +2,42 @@
 Author: Jani Heinikoski | 0541122
 Date: 27.2.2020
 Header: CT60A2411_07.01.2020 | Olio-ohjelmointi | WEEK 5
-Version: 7.4.0
+Version: 7.5.0
  */
 package com.example.swampsimulator;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btn;
+    private Button btnRead;
+    private Button btnWrite;
     private TextView txtView;
-    private EditText eText;
-    private int w;
-    private int h;
-
+    private EditText etFileName;
+    private EditText etTextToWrite;
     private TextWatcher tw;
-
-    private void initScreenSize() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        w = displayMetrics.widthPixels;
-        h = displayMetrics.heightPixels;
-    }
+    private Context c;
+    private FileManager fm;
 
     private void initElements() {
-        btn = (Button) findViewById(R.id.btnApply);
-        btn.setWidth(this.w-32);
-        btn.setHeight(this.h/10);
+
+        btnRead = (Button) findViewById(R.id.btnReadFile);
+        btnWrite = (Button) findViewById(R.id.btnWriteFile);
+
+        c = getApplicationContext();
 
         txtView = (TextView) findViewById(R.id.textView);
-        eText = (EditText) findViewById(R.id.inputText);
+        etFileName = (EditText) findViewById(R.id.et_filename);
+        etTextToWrite = (EditText) findViewById(R.id.et_text_to_write);
 
         tw = new TextWatcher() {
             @Override
@@ -55,22 +54,35 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        eText.addTextChangedListener(tw);
+        etFileName.addTextChangedListener(tw);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initScreenSize();
         initElements();
+        fm = new FileManager(c);
     }
 
     private void setTextToDisplay() {
-        txtView.setText(eText.getText());
+        txtView.setText(etFileName.getText());
     }
 
-    public void clickButton(View v) {
-        setTextToDisplay();
+    public void readFile(View v) {
+        ArrayList<String> fileContent = fm.readFile(etFileName.getText().toString());
+        String output = "";
+
+        for (String s : fileContent) {
+            System.out.println("LOGGER: " + s);
+            output += s;
+        }
+
+        txtView.setText(output);
     }
+
+    public void writeFile(View v) {
+        fm.writeFile("test.txt", etTextToWrite.getText().toString());
+    }
+
 }

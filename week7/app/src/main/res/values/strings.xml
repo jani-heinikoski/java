@@ -2,6 +2,9 @@
     <string name="app_name">SwampSimulator</string>
     <string name="print_hello_world">Print Hello World</string>
     <string name="text_view_text_to_disp">Hello World!</string>
-    <string name="btnApply_text">Apply</string>
-    <string name="inputText_text">Write here...</string>
+    <string name="btnReadFile_text">Read From File</string>
+    <string name="btnWriteFile_text">Write To File</string>
+    <string name="inputText_text">Filename</string>
+    <string name="text_to_write">Write text for file</string>
+
 </resources>
