@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void writeFile(View v) {
-        fm.writeFile("test.txt", etTextToWrite.getText().toString());
+        fm.writeFile(etFileName.getText().toString(), etTextToWrite.getText().toString());
     }
 
 }

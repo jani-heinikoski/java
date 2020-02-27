@@ -32,15 +32,19 @@ class FileManager {
             osw = new OutputStreamWriter(c.openFileOutput(fileName, c.MODE_PRIVATE));
             osw.write(content + "\n");
             System.out.println("LOGGER: wrote " + content);
+            osw.close();
         } catch (IOException e) {
             Log.e("IOExc", e.getMessage());
         } finally {
             try {
-                osw.close();
+                if (osw != null) {
+                    osw.close();
+                }
             } catch (Exception ex) {
                 Log.e("Unknown error", ex.getMessage());
             }
         }
+        osw = null;
     }
 
     public ArrayList<String> readFile(String fileName) {
@@ -48,6 +52,7 @@ class FileManager {
         ArrayList<String> fileContents = new ArrayList<String>();
 
         try {
+            System.out.println("LOGGER: fname:"+ c.getFilesDir() + fileName);
             br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
 
             while ((tempLine = br.readLine()) != null) {
@@ -56,18 +61,20 @@ class FileManager {
             }
 
         } catch (IOException e) {
-            Log.e("IOEx", "Error while reading file");
+            Log.e("IOEx", e.getMessage());
         } catch (Exception exx) {
             System.out.println("LOGGER: " + exx.getMessage());
         } finally {
             try {
-                br.close();
+                if (br != null) {
+                    br.close();
+                }
             } catch (Exception ex) {
                 Log.e(ex.getMessage(), "Failed to close BufferedReader");
                 System.exit(-1);
             }
         }
-
+        br = null;
         return fileContents;
     }
 
