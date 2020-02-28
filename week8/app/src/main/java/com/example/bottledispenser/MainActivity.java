@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_buy_bottle;
     private ImageView imgv_logo;
     private TextView txtv_coinsleft;
+    private TextView txtv_logger;
     private double coins;
     private BottleDispenser bd;
     private MediaPlayer song;
@@ -33,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         coins = 20;
-        bd = BottleDispenser.getInstance(5, 0, (Spinner)findViewById(R.id.spinner_choose_bottle), getApplicationContext(), (TextView)findViewById(R.id.txtv_coins_inserted));
         declareButtons();
         declareImageViews();
         declareTextViews();
+        bd = BottleDispenser.getInstance(5, 0, (Spinner)findViewById(R.id.spinner_choose_bottle), getApplicationContext(), (TextView)findViewById(R.id.txtv_coins_inserted), txtv_logger);
         int resID=getResources().getIdentifier("jugnog", "raw", getPackageName());
         song = MediaPlayer.create(getApplicationContext(), resID);
         song.setLooping(true);
@@ -61,13 +62,15 @@ public class MainActivity extends AppCompatActivity {
             bd.addMoney();
             refresh();
         } else {
-            System.out.println("LOGGER: Not enough money!");
+            log("LOGGER: Not enough money!");
         }
 
     }
 
     private void getMoneyBack() {
-        coins += bd.returnMoney();
+        double d = bd.returnMoney();
+        log(String.format(Locale.GERMANY, "%s %.2f", "returned", d));
+        coins += d;
         refresh();
     }
 
@@ -75,10 +78,14 @@ public class MainActivity extends AppCompatActivity {
         txtv_coinsleft.setText(String.format(Locale.GERMANY, "%s %,.2f", getResources().getString(R.string.txtv_bank), coins));
     }
 
-    @SuppressLint("DefaultLocale")
+    private void log(String s) {
+        txtv_logger.setText(String.format(Locale.GERMANY, "%s %s", getResources().getString(R.string.txtv_logger_text), s));
+    }
+
     private void declareTextViews() {
         txtv_coinsleft = findViewById(R.id.txtv_coins_left);
-        txtv_coinsleft.setText(String.format("%s %,.2f", getResources().getString(R.string.txtv_bank), coins));
+        txtv_coinsleft.setText(String.format(Locale.GERMANY, "%s %,.2f", getResources().getString(R.string.txtv_bank), coins));
+        txtv_logger = findViewById(R.id.txtv_logger);
     }
 
     private void declareImageViews() {

@@ -112,6 +112,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/txtv_logger"
+            android:text="@string/txtv_logger_text"
+            android:fontFamily="sans-serif"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@id/buy_bottle_button"
+            android:layout_marginBottom="140dp"
+            android:textColor="#de9540">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/txtv_coins_inserted"
             android:text="@string/txtv_coins_machine"
             android:fontFamily="sans-serif"

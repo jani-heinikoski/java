@@ -6,6 +6,7 @@ Version: 8.5.0
  */
 package com.example.bottledispenser;
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,22 +23,24 @@ public class BottleDispenser {
     private Spinner spinner;
     private Context context;
     private TextView textViewInserted;
+    private TextView textViewLogger;
     private double money;
     private static BottleDispenser bd = null;
 
-    public static BottleDispenser getInstance(int bottles, double money, Spinner sp, Context c, TextView t) {
+    public static BottleDispenser getInstance(int bottles, double money, Spinner sp, Context c, TextView t, TextView l) {
         if (bd == null) {
-            bd = new BottleDispenser(bottles, money, sp, c, t);
+            bd = new BottleDispenser(bottles, money, sp, c, t, l);
         }
         return bd;
     }
 
-    private BottleDispenser(int bottles, double money, Spinner sp, Context c, TextView t) {
+    private BottleDispenser(int bottles, double money, Spinner sp, Context c, TextView t, TextView l) {
         this.bottles = bottles;
         this.money = money;
         this.spinner = sp;
         this.context = c;
         this.textViewInserted = t;
+        this.textViewLogger = l;
         // Initialize the array
         this.bottleArrayList = new ArrayList<Bottle>(this.bottles);
         // Populate ArrayList
@@ -56,16 +59,21 @@ public class BottleDispenser {
         adapter.notifyDataSetChanged();
     }
 
+    private void log(String s) {
+        textViewLogger.setText(String.format(Locale.GERMANY, "%s %s", context.getResources().getString(R.string.txtv_logger_text), s));
+    }
+
     public void buySelectedBottle() {
         Bottle b = adapter.getItem(spinner.getSelectedItemPosition());
 
         if (money >= b.getBottlePrice()) {
             money -= b.getBottlePrice();
+            log("Boink! Bottle appears!");
             refreshInsertedCoinsTextView();
             this.bottleArrayList.remove(b);
             adapter.notifyDataSetChanged();
         } else {
-            System.out.println("LOGGER: Not enough money!");
+            log("Not enough money!");
         }
 
     }
@@ -74,7 +82,7 @@ public class BottleDispenser {
         // Add money to the Dispenser
         this.money += 1.0d;
         refreshInsertedCoinsTextView();
-        System.out.println("LOGGER: Added more money!");
+        log("Insterted a coin!");
     }
 
 
