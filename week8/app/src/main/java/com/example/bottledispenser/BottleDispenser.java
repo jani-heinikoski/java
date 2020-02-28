@@ -64,18 +64,21 @@ public class BottleDispenser {
     }
 
     public void buySelectedBottle() {
-        Bottle b = adapter.getItem(spinner.getSelectedItemPosition());
+        if (adapter.getCount() > 0) {
+            Bottle b = adapter.getItem(spinner.getSelectedItemPosition());
 
-        if (money >= b.getBottlePrice()) {
-            money -= b.getBottlePrice();
-            log("Boink! Bottle appears!");
-            refreshInsertedCoinsTextView();
-            this.bottleArrayList.remove(b);
-            adapter.notifyDataSetChanged();
+            if (money >= b.getBottlePrice()) {
+                money -= b.getBottlePrice();
+                log("Boink! Bottle appears!");
+                refreshInsertedCoinsTextView();
+                this.bottleArrayList.remove(b);
+                adapter.notifyDataSetChanged();
+            } else {
+                log("Not enough money!");
+            }
         } else {
-            log("Not enough money!");
+            log("No bottles left!");
         }
-
     }
 
     public void addMoney() {
