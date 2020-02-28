@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BottleDispenser</string>
+    <string name="btn_coin_add_text">Insert Coin</string>
+    <string name="btn_return_coins_text">Return Coins</string>
+    <string name="txtv_bank">Coins left:</string>
+    <string name="txtv_coins_machine">Inserted: </string>
+</resources>
