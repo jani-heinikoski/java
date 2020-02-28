@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             bd.addMoney();
             refresh();
         } else {
-            log("LOGGER: Not enough money!");
+            log("Not enough money!");
         }
 
     }
