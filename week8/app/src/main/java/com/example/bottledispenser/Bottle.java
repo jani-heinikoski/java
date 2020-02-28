@@ -7,6 +7,8 @@ Version: 8.5.0
 package com.example.bottledispenser;
 
 
+import java.util.Locale;
+
 public class Bottle {
 
     private String name;
@@ -67,6 +69,13 @@ public class Bottle {
 
     public String getManufacturer() {
         return this.manufacturer;
+    }
+
+    @Override
+    public String toString() {
+        String r = "";
+        r = String.format(Locale.GERMANY,"%.2f %s", this.bottlePrice, this.name);
+        return r;
     }
 
 }
