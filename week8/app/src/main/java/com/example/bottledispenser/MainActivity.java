@@ -12,8 +12,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -23,10 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_return_coins;
     private Button btn_buy_bottle;
     private Button btn_receipt;
+    private SeekBar skbar_coin_amount;
+    private Toast toast;
     private ImageView imgv_logo;
     private TextView txtv_coinsleft;
     private TextView txtv_logger;
     private double coins;
+    private double insertAmount;
     private BottleDispenser bd;
     private MediaPlayer song;
 
@@ -35,9 +40,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         coins = 20;
+        declareSeekbars();
         declareButtons();
         declareImageViews();
         declareTextViews();
+        insertAmount = skbar_coin_amount.getProgress();
         bd = BottleDispenser.getInstance(0, (Spinner)findViewById(R.id.spinner_choose_bottle), getApplicationContext(), (TextView)findViewById(R.id.txtv_coins_inserted), txtv_logger);
         int resID = getResources().getIdentifier("jugnog", "raw", getPackageName());
         song = MediaPlayer.create(getApplicationContext(), resID);
@@ -58,14 +65,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addCoinToDispenser() {
-        if (coins > 0) {
-            coins--;
-            bd.addMoney();
-            refresh();
-        } else {
-            log("Not enough money!");
+        for (int i = 0; i < skbar_coin_amount.getProgress(); i++) {
+            if ((coins-1) >= 0) {
+                coins--;
+                bd.addMoney();
+                refresh();
+            } else {
+                log("Not enough money!");
+            }
         }
-
+        skbar_coin_amount.setProgress(1);
     }
 
     private void getMoneyBack() {
@@ -185,6 +194,31 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     return false;
                 }
+            }
+        });
+    }
+
+    private void declareSeekbars() {
+        skbar_coin_amount = findViewById(R.id.skbar_coin_amount);
+
+        skbar_coin_amount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (toast != null) {
+                    toast.cancel();
+                }
+                toast = Toast.makeText(MainActivity.this, String.format(Locale.GERMANY, "%d", seekBar.getProgress()), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                insertAmount = skbar_coin_amount.getProgress();
             }
         });
     }
