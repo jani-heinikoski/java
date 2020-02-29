@@ -74,7 +74,7 @@ public class Bottle {
     @Override
     public String toString() {
         String r = "";
-        r = String.format(Locale.GERMANY,"%.2f %s", this.bottlePrice, this.name);
+        r = String.format(Locale.GERMANY,"%.2f€ || %s || %.2fl", this.bottlePrice, this.name, this.bottleSize);
         return r;
     }
 

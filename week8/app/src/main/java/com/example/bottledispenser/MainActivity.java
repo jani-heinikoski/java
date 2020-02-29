@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_add_coin;
     private Button btn_return_coins;
     private Button btn_buy_bottle;
+    private Button btn_receipt;
     private ImageView imgv_logo;
     private TextView txtv_coinsleft;
     private TextView txtv_logger;
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         declareButtons();
         declareImageViews();
         declareTextViews();
-        bd = BottleDispenser.getInstance(5, 0, (Spinner)findViewById(R.id.spinner_choose_bottle), getApplicationContext(), (TextView)findViewById(R.id.txtv_coins_inserted), txtv_logger);
-        int resID=getResources().getIdentifier("jugnog", "raw", getPackageName());
+        bd = BottleDispenser.getInstance(0, (Spinner)findViewById(R.id.spinner_choose_bottle), getApplicationContext(), (TextView)findViewById(R.id.txtv_coins_inserted), txtv_logger);
+        int resID = getResources().getIdentifier("jugnog", "raw", getPackageName());
         song = MediaPlayer.create(getApplicationContext(), resID);
         song.setLooping(true);
         song.start();
@@ -100,6 +101,28 @@ public class MainActivity extends AppCompatActivity {
         btn_add_coin = findViewById(R.id.add_coin_button);
         btn_return_coins = findViewById(R.id.return_coins_button);
         btn_buy_bottle = findViewById(R.id.buy_bottle_button);
+        btn_receipt = findViewById(R.id.receipt_button);
+
+        btn_receipt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    System.out.println("LOGGER: ACTION_DOWN");
+                    btnEffect(btn_receipt);
+                    btn_receipt.setPressed(true);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    System.out.println("LOGGER: ACTION_UP");
+                    btn_receipt.setTextColor(Color.BLACK);
+                    btn_receipt.performClick();
+                    btn_receipt.setPressed(false);
+                    bd.showReceipt();
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+        });
 
         btn_buy_bottle.setOnTouchListener(new View.OnTouchListener() {
             @Override
