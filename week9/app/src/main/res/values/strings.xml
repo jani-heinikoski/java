@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Test Application</string>
-    <string name="header">Finnkino</string>
+    <string name="app_name">Easykino</string>
+    <string name="header">Easykino</string>
     <string name="txtv_theatres"><![CDATA[Select theatre —>]]></string>
     <string name="btn_apply_search">SEARCH</string>
 

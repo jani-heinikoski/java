@@ -45,9 +45,34 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         context = getApplicationContext();
+
+        initButtons();
+
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+        binding.relayFirstColumn.addView(newCard(1));
+        binding.relaySecondColumn.addView(newCard(2));
+
+
         binding.relayFirstColumn.setPadding(25,5,25,0);
         binding.relaySecondColumn.setPadding(25, 5, 25, 0);
 
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initButtons() {
         binding.btnSearch.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -62,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
                     binding.btnSearch.setPressed(false);
-                    //searchIntent();
-
+                    searchIntent();
+                    /*
                     try {
                         FinnkinoXMLParser.readXMLbyTagNames("https://www.finnkino.fi/xml/TheatreAreas/", "TheatreArea");
                     } catch (IOException e) {
@@ -73,14 +98,13 @@ public class MainActivity extends AppCompatActivity {
                     } catch (ParserConfigurationException e) {
                         e.printStackTrace();
                     }
-
+                    */
                     return false;
                 } else {
                     return false;
                 }
             }
         });
-
     }
 
     private void searchIntent() {
@@ -111,8 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
         cardView.setMaxCardElevation(15);
         cardView.setElevation(10);
+        cardView.setTranslationZ(10);
         cardView.setCardBackgroundColor(getColor(R.color.colorPrimary));
-        cardView.setRadius(10);
+        cardView.setRadius(15);
         cardView.setMinimumHeight(400);
 
         if (firstColIdCounter > 1 && column == 1) {
@@ -120,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
             firstColIdCounter += 2;
             cardView.setId(firstColIdCounter);
         } else if (firstColIdCounter == 1 && column == 1){
-            cardView.setId(firstColIdCounter);
             firstColIdCounter += 2;
+            cardView.setId(firstColIdCounter);
         }
 
         if (secondColIdCounter > 2 && column == 2) {
@@ -129,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
             secondColIdCounter += 2;
             cardView.setId(secondColIdCounter);
         } else if (secondColIdCounter == 2 && column == 2){
-            cardView.setId(secondColIdCounter);
             secondColIdCounter += 2;
+            cardView.setId(secondColIdCounter);
         }
 
         cardView.setLayoutParams(lp);
