@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppBackground" parent="TextAppearance.AppCompat">
+        <item name="android:background">@color/Black</item>
+    </style>
+    <style name="WidgetBackground">
+        <item name="android:background">@color/PrimaryBackground</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+</resources>
