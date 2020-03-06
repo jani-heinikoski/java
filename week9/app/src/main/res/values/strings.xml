@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Test Application</string>
     <string name="header">Finnkino</string>
+    <string name="txtv_theatres"><![CDATA[Select theatre —>]]></string>
+    <string name="btn_apply_search">SEARCH</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

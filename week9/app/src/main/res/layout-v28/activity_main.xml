@@ -10,8 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/linlay_header"
-            android:orientation="vertical"
-            android:background="@color/colorPrimary">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -40,6 +39,8 @@
                     android:elevation="4dp"
                     android:layout_marginHorizontal="15dp"
                     android:translationZ="4dp"
+                    android:shadowColor="@android:color/holo_blue_dark"
+                    android:outlineAmbientShadowColor="@android:color/holo_blue_dark"
                     android:stateListAnimator="@null">
                 </Button>
 
