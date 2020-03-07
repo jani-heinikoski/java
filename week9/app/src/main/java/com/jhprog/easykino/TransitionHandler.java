@@ -35,12 +35,13 @@ public class TransitionHandler {
     }
 
     public void search(ArrayList<Theatre> theatreArrayList, String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
-
+        // Time not selected
         if (startHour == 0 && startMinute == 0 && endHour == 0 && endMinute == 0) {
             timeMatters = false;
         } else if (startHour == endHour && startMinute == endMinute) {
             timeMatters = false;
         } else {
+            // Time selected
             timeMatters = true;
             this.theatreArrayList = theatreArrayList;
             this.startHour = startHour;
@@ -48,35 +49,43 @@ public class TransitionHandler {
             this.endHour = endHour;
             this.endMinute = endMinute;
         }
-
+        // Date not selected
         if (dateString.equals("dd.mm.yyyy")) {
             try {
+                // Try to get current date from system.
                 Date date = Calendar.getInstance().getTime();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
                 this.dateString = sdf.format(date);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("LOGGER: Failed to parse time: " + ex.getMessage());
+                // Required attribute, must exit if fails.
                 System.exit(-1);
             }
         } else {
+            // Date selected
             this.dateString = dateString;
         }
 
+        // Theatre nor location selected
         if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
 
         }
-
+        // Location selected, theatre not
         if (selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
             theatresToSearch = findByLocation(selectedLocation);
         }
-
+        // Theatre selected, location not
         if (!selectedTheatre.equals("All") && selectedLocation.equals("All")) {
             theatresToSearch = findByName(selectedTheatre);
         }
+        // Theare and location selected
+        if (!selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
+            theatresToSearch.add(findByNameAndLocation(selectedTheatre, selectedLocation));
+        }
 
     }
-
+    // Find the theatre whose name and location match selected ones
     private Theatre findByNameAndLocation(String n, String l) {
         for (Theatre t : theatreArrayList) {
             if (t.getName().equals(n) && t.getLocation().equals(l)) {
@@ -85,7 +94,7 @@ public class TransitionHandler {
         }
         return null;
     }
-
+    // Find theatres which match by name
     private ArrayList<Theatre> findByName(String n) {
         ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
         for (Theatre t : theatreArrayList) {
@@ -95,7 +104,7 @@ public class TransitionHandler {
         }
         return theatres;
     }
-
+    // Find theatres which match by location
     private ArrayList<Theatre> findByLocation(String l) {
         ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
         for (Theatre t : theatreArrayList) {
@@ -105,7 +114,7 @@ public class TransitionHandler {
         }
         return theatres;
     }
-
+    // Parse search results by time
     private void parseResultsByTime() {
         if (startHour == 0 && startMinute == 0 && endHour == 0 && endMinute == 0) {
             timeMatters = false;

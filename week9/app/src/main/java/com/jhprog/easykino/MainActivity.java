@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.relayFirstColumn.setPadding(25,5,25,0);
         binding.relaySecondColumn.setPadding(25, 5, 25, 0);
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
