@@ -15,9 +15,8 @@ import android.widget.ArrayAdapter;
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
 import org.xml.sax.SAXException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -28,7 +27,6 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<Theatre> theatreArrayList;
     private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
-    private IntentParameter intentParameter;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -37,8 +35,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-
-        intentParameter = IntentParameter.getInstance();
 
         theatreArrayList = new ArrayList<Theatre>(10);
         locationArrayList = new ArrayList<String>(10);
@@ -128,6 +124,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private void returnToMainActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        setResult(TransitionHandler.getResultCode(), intent);
+        finish();
+    }
+    /*
+    private void returnToMainActivity() {
+
         String selectedTheatre = binding.spinnerTheatres.getSelectedItem().toString();
         String selectedLocation = binding.spinnerLocations.getSelectedItem().toString();
         Theatre temp;
@@ -135,9 +137,7 @@ public class SearchActivity extends AppCompatActivity {
 
         if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
             if (binding.etextDate.getText().toString().equals("dd.mm.yyyy")) {
-                java.util.Date date = Calendar.getInstance().getTime();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
-                intentParameter.setDate(sdf.format(date));
+
             } else {
                 intentParameter.setDate(binding.etextDate.getText().toString());
             }
@@ -158,9 +158,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        setResult(intentParameter.getRequestCode(), intent);
-        finish();
+
     }
+
+     */
 
     private Theatre findByNameAndLocation(String n, String l) {
         for (Theatre t : theatreArrayList) {

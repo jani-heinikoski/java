@@ -32,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected Context context;
     private int firstColIdCounter;
     private int secondColIdCounter;
-    private FinnkinoXMLParser parser;
-    private String intentArrayName;
-    private int requestCode;
-    IntentParameter intentParameter;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -45,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         firstColIdCounter = 1;
         secondColIdCounter = 2;
-        intentArrayName = "test";
-        requestCode = 1337;
 
         StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(threadPolicy);
@@ -58,14 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.relayFirstColumn.setPadding(25,5,25,0);
         binding.relaySecondColumn.setPadding(25, 5, 25, 0);
-
-        try {
-            parser = FinnkinoXMLParser.getInstance();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            System.out.println("LOGGER: ParserConfigurationException thrown: " + e.getMessage());
-            System.exit(-1);
-        }
 
     }
 
@@ -95,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchIntent() {
-        startActivityForResult(new Intent(this, SearchActivity.class), 1337);
+        startActivityForResult(new Intent(this, SearchActivity.class), TransitionHandler.getResultCode());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        intentParameter = IntentParameter.getInstance();
+
 
     }
 
