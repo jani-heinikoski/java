@@ -22,9 +22,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
-    private ArrayAdapter<Theatre> theatreArrayAdapter;
+    private ArrayAdapter<String> theatreNameArrayAdapter;
     private ArrayAdapter<String> locationArrayAdapter;
     private ArrayList<Theatre> theatreArrayList;
+    private ArrayList<String> theatreNameArrayList;
     private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
     private TransitionHandler transitionHandler = TransitionHandler.getInstance();
@@ -39,13 +40,16 @@ public class SearchActivity extends AppCompatActivity {
 
         theatreArrayList = new ArrayList<Theatre>(10);
         locationArrayList = new ArrayList<String>(10);
+        theatreNameArrayList = new ArrayList<String>(10);
 
+        initTimePicker();
         initButtons();
         initTheatres();
         initSpinners();
     }
 
     private void initTimePicker() {
+        binding.timePicker.setBackgroundColor(getColor(R.color.colorPrimary));
         binding.timePicker.setIs24HourView(true);
         binding.timePicker.setHour(0);
         binding.timePicker.setMinute(0);
@@ -65,6 +69,9 @@ public class SearchActivity extends AppCompatActivity {
             for (Theatre t : theatreArrayList) {
                 if (!locationArrayList.contains(t.getLocation())) {
                     locationArrayList.add(t.getLocation());
+                }
+                if (!theatreNameArrayList.contains(t.getName())) {
+                    theatreNameArrayList.add(t.getName());
                 }
             }
 
@@ -104,15 +111,17 @@ public class SearchActivity extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     System.out.println("LOGGER: ACTION_DOWN");
                     ViewUtil.btnEffect(binding.btnApplySearch);
+                    binding.btnApplySearch.setTextColor(getColor(R.color.colorTextSecondary));
                     binding.btnApplySearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     System.out.println("LOGGER: ACTION_UP");
                     ViewUtil.remBtnEffect(binding.btnApplySearch);
-                    binding.btnApplySearch.setTextColor(getColor(R.color.colorTextSecondary));
+                    binding.btnApplySearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnApplySearch.performClick();
                     binding.btnApplySearch.setPressed(false);
-                    returnToMainActivity();
+                    transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), binding.etextDate.toString(), binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
+                    //returnToMainActivity();
                     return false;
                 } else {
                     return false;
@@ -128,35 +137,6 @@ public class SearchActivity extends AppCompatActivity {
         finish();
     }
 
-    private Theatre findByNameAndLocation(String n, String l) {
-        for (Theatre t : theatreArrayList) {
-            if (t.getName().equals(n) && t.getLocation().equals(l)) {
-                return t;
-            }
-        }
-        return null;
-    }
-
-    private ArrayList<Theatre> findByName(String n) {
-        ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
-        for (Theatre t : theatreArrayList) {
-            if (t.getName().equals(n)) {
-                theatres.add(t);
-            }
-        }
-        return theatres;
-    }
-
-    private ArrayList<Theatre> findByLocation(String l) {
-        ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
-        for (Theatre t : theatreArrayList) {
-            if (t.getLocation().equals(l)) {
-                theatres.add(t);
-            }
-        }
-        return theatres;
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -164,9 +144,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initSpinners() {
-        theatreArrayAdapter = new ArrayAdapter<Theatre>(getApplicationContext(), R.layout.spinner_item, theatreArrayList);
-        theatreArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-        binding.spinnerTheatres.setAdapter(theatreArrayAdapter);
+        theatreNameArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, theatreNameArrayList);
+        theatreNameArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        binding.spinnerTheatres.setAdapter(theatreNameArrayAdapter);
 
         locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, locationArrayList);
         locationArrayAdapter.setDropDownViewResource(R.layout.spinner_item);

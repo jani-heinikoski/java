@@ -35,6 +35,8 @@ public class TransitionHandler {
     }
 
     public void search(ArrayList<Theatre> theatreArrayList, String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
+        this.theatreArrayList = theatreArrayList;
+        theatresToSearch = new ArrayList<Theatre>(10);
         // Time not selected
         if (startHour == 0 && startMinute == 0 && endHour == 0 && endMinute == 0) {
             timeMatters = false;
@@ -43,7 +45,6 @@ public class TransitionHandler {
         } else {
             // Time selected
             timeMatters = true;
-            this.theatreArrayList = theatreArrayList;
             this.startHour = startHour;
             this.startMinute = startMinute;
             this.endHour = endHour;
@@ -83,6 +84,13 @@ public class TransitionHandler {
         if (!selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
             theatresToSearch.add(findByNameAndLocation(selectedTheatre, selectedLocation));
         }
+        if (theatresToSearch != null) {
+            for (Theatre t : theatresToSearch) {
+                if (t != null)
+                    System.out.println("LOGGER: THEATRES: " + t.getName() + " | " + t.getLocation() + " | " + t.getID());
+            }
+        }
+
 
     }
     // Find the theatre whose name and location match selected ones
@@ -98,7 +106,7 @@ public class TransitionHandler {
     private ArrayList<Theatre> findByName(String n) {
         ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
         for (Theatre t : theatreArrayList) {
-            if (t.getName().equals(n)) {
+            if (t != null && t.getName().equals(n)) {
                 theatres.add(t);
             }
         }

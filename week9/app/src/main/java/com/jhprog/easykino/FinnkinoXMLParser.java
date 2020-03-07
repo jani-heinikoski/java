@@ -88,11 +88,6 @@ public class FinnkinoXMLParser {
 
         try {
             Collections.sort(theatres);
-            for (int i = 0; i < (theatres.size() - 1); i++) {
-                if (theatres.get(i).getName().equals(theatres.get(i + 1).getName())) {
-                    theatres.remove(i);
-                }
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

@@ -5,4 +5,6 @@
     <string name="btn_apply_search">SEARCH</string>
     <string name="txtv_locations">Location</string>
     <string name="etext_default_date">dd.mm.yyyy</string>
+    <string name="date_header">Date</string>
+    <string name="time_header">Time</string>
 </resources>
