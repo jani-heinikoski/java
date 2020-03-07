@@ -62,16 +62,22 @@ public class FinnkinoXMLParser {
         ArrayList<Theatre> theatres = new ArrayList<>(10);
         ArrayList<Element> data = readXMLbyTagName("https://www.finnkino.fi/xml/TheatreAreas/", "TheatreArea");
         int ID = 0;
+        String theatreStr = "";
         String name = "";
+        String location = "";
 
         if (!data.isEmpty()) {
             for (Element e : data) {
                 try {
                     ID = Integer.parseInt(e.getElementsByTagName("ID").item(0).getTextContent());
-                    name = parseName(e.getElementsByTagName("Name").item(0).getTextContent());
-                    if (ID > 0 && !name.trim().isEmpty()) {
-                        Theatre theatre = new Theatre(ID, name);
-                        theatres.add(theatre);
+                    theatreStr = e.getElementsByTagName("Name").item(0).getTextContent();
+                    if (ID > 0 && !theatreStr.trim().isEmpty()) {
+                        name = parseName(theatreStr);
+                        location = parseLocation(theatreStr);
+                        if (!name.trim().isEmpty() && !location.trim().isEmpty()) {
+                            Theatre theatre = new Theatre(ID, name, location);
+                            theatres.add(theatre);
+                        }
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -96,13 +102,46 @@ public class FinnkinoXMLParser {
     }
 
     private String parseName(String n) {
+
         String parsedName = "";
 
-        if (!n.trim().isEmpty() && n.contains(":")) {
-            parsedName = n.split(":")[1].trim();
+        try {
+            if (!n.trim().isEmpty() && n.contains(":")) {
+                parsedName = n.split(":")[1].trim().toLowerCase();
+                if (parsedName.contains(" ")) {
+                    String[] splitString = parsedName.split(" ");
+                    for (int i = 0; i < splitString.length; i++) {
+                        splitString[i] = splitString[i].substring(0, 1).toUpperCase() + splitString[i].substring(1);
+                    }
+                    parsedName = "";
+                    for (int i = 0; i < splitString.length; i++) {
+                        parsedName += splitString[i] + " ";
+                    }
+
+                } else {
+                    parsedName = parsedName.substring(0, 1).toUpperCase() + parsedName.substring(1);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            parsedName = "";
+        }
+        return parsedName;
+    }
+
+    private String parseLocation(String n) {
+        String parsedLocation = "";
+
+        try {
+            if (!n.trim().isEmpty() && n.contains(":")) {
+                parsedLocation = n.split(":")[0].trim();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            parsedLocation = "";
         }
 
-        return parsedName;
+        return parsedLocation;
     }
 
 }

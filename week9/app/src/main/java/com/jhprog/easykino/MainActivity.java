@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private FinnkinoXMLParser parser;
     private String intentArrayName;
     private int requestCode;
+    IntentParameter intentParameter;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -100,10 +101,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<String> params = data.getStringArrayListExtra(intentArrayName);
-        if (params != null && !params.isEmpty()) {
-            binding.relayFirstColumn.addView(newCard(1, params.get(0)));
-        }
+        intentParameter = IntentParameter.getInstance();
+
     }
 
 

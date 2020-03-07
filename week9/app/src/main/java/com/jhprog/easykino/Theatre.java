@@ -3,13 +3,17 @@ package com.jhprog.easykino;
 public class Theatre implements Comparable<Theatre> {
     private int ID;
     private String name;
+    private String location;
 
-    public Theatre(int id, String n) {
+    public Theatre(int id, String n, String l) {
         if (id > 0) {
             ID = id;
         }
         if (!n.trim().isEmpty()) {
             name = n;
+        }
+        if (!l.trim().isEmpty()) {
+            location = l;
         }
     }
 
@@ -19,6 +23,10 @@ public class Theatre implements Comparable<Theatre> {
 
     public int getID() {
         return ID;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     @Override

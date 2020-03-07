@@ -1,33 +1,34 @@
 package com.jhprog.easykino;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
-
 import org.xml.sax.SAXException;
-
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
-    private ArrayAdapter<Theatre> adapter;
-    private ArrayList<Theatre> data;
-    private ArrayList<String> params;
+    private ArrayAdapter<Theatre> theatreArrayAdapter;
+    private ArrayAdapter<String> locationArrayAdapter;
+    private ArrayList<Theatre> theatreArrayList;
+    private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
-    private String intentArrayName;
-    private int requestCode;
+    private IntentParameter intentParameter;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -37,13 +38,20 @@ public class SearchActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
-        intentArrayName = "test";
-        requestCode = 1337;
-        data = new ArrayList<Theatre>(10);
+        intentParameter = IntentParameter.getInstance();
+
+        theatreArrayList = new ArrayList<Theatre>(10);
+        locationArrayList = new ArrayList<String>(10);
         //TODO adapter.notify();
         initButtons();
         initTheatres();
         initSpinners();
+    }
+
+    private void initTimePicker() {
+        binding.timePicker.setIs24HourView(true);
+        binding.timePicker.setHour(0);
+        binding.timePicker.setMinute(0);
     }
 
     private void initTheatres() {
@@ -54,7 +62,15 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         try {
-            data = parser.getTheatres();
+            theatreArrayList = parser.getTheatres();
+            theatreArrayList.add(0, new Theatre(1, "All", "All"));
+
+            for (Theatre t : theatreArrayList) {
+                if (!locationArrayList.contains(t.getLocation())) {
+                    locationArrayList.add(t.getLocation());
+                }
+            }
+
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -65,6 +81,7 @@ public class SearchActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void initButtons() {
         binding.btnClose.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -111,11 +128,67 @@ public class SearchActivity extends AppCompatActivity {
 
     private void returnToMainActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        params = new ArrayList<String>(5);
-        params.add(binding.spinnerTheatres.getSelectedItem().toString());
-        intent.putStringArrayListExtra(intentArrayName, params);
-        setResult(requestCode, intent);
+        String selectedTheatre = binding.spinnerTheatres.getSelectedItem().toString();
+        String selectedLocation = binding.spinnerLocations.getSelectedItem().toString();
+        Theatre temp;
+        ArrayList<Theatre> temps;
+
+        if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
+            if (binding.etextDate.getText().toString().equals("dd.mm.yyyy")) {
+                java.util.Date date = Calendar.getInstance().getTime();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+                intentParameter.setDate(sdf.format(date));
+            } else {
+                intentParameter.setDate(binding.etextDate.getText().toString());
+            }
+        } else if (!selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
+            temp = findByNameAndLocation(selectedTheatre, selectedLocation);
+            if (temp != null) {
+                intentParameter.addTheatreID(temp.getID());
+            }
+        } else if (!selectedTheatre.equals("All") && selectedLocation.equals("All")) {
+            temps = findByName(selectedTheatre);
+            for (Theatre t : temps) {
+                intentParameter.addTheatreID(t.getID());
+            }
+        } else if (selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
+            temps = findByLocation(selectedLocation);
+            for (Theatre t : temps) {
+                intentParameter.addTheatreID(t.getID());
+            }
+        }
+
+        setResult(intentParameter.getRequestCode(), intent);
         finish();
+    }
+
+    private Theatre findByNameAndLocation(String n, String l) {
+        for (Theatre t : theatreArrayList) {
+            if (t.getName().equals(n) && t.getLocation().equals(l)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<Theatre> findByName(String n) {
+        ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
+        for (Theatre t : theatreArrayList) {
+            if (t.getName().equals(n)) {
+                theatres.add(t);
+            }
+        }
+        return theatres;
+    }
+
+    private ArrayList<Theatre> findByLocation(String l) {
+        ArrayList<Theatre> theatres = new ArrayList<Theatre>(10);
+        for (Theatre t : theatreArrayList) {
+            if (t.getLocation().equals(l)) {
+                theatres.add(t);
+            }
+        }
+        return theatres;
     }
 
     @Override
@@ -125,9 +198,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initSpinners() {
-        adapter = new ArrayAdapter<Theatre>(getApplicationContext(), R.layout.spinner_item, data);
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        binding.spinnerTheatres.setAdapter(adapter);
+        theatreArrayAdapter = new ArrayAdapter<Theatre>(getApplicationContext(), R.layout.spinner_item, theatreArrayList);
+        theatreArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        binding.spinnerTheatres.setAdapter(theatreArrayAdapter);
+
+        locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, locationArrayList);
+        locationArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        binding.spinnerLocations.setAdapter(locationArrayAdapter);
     }
 
 }
