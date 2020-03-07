@@ -24,6 +24,7 @@ public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
     private ArrayAdapter<Theatre> adapter;
     private ArrayList<Theatre> data;
+    private ArrayList<String> params;
     private FinnkinoXMLParser parser;
     private String intentArrayName;
     private int requestCode;
@@ -77,12 +78,7 @@ public class SearchActivity extends AppCompatActivity {
                     binding.btnClose.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnClose.performClick();
                     binding.btnClose.setPressed(false);
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    ArrayList<String> test = new ArrayList<>(2);
-                    intent.putStringArrayListExtra(intentArrayName, test);
-                    setResult(requestCode, intent);
-                    finish();
+                    returnToMainActivity();
                     return false;
                 } else {
                     return false;
@@ -104,18 +100,22 @@ public class SearchActivity extends AppCompatActivity {
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextSecondary));
                     binding.btnApplySearch.performClick();
                     binding.btnApplySearch.setPressed(false);
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    ArrayList<String> test = new ArrayList<String>(2);
-                    intent.putStringArrayListExtra("test", test);
-                    setResult(1337, intent);
-                    finish();
+                    returnToMainActivity();
                     return false;
                 } else {
                     return false;
                 }
             }
         });
+    }
+
+    private void returnToMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        params = new ArrayList<String>(5);
+        params.add(binding.spinnerTheatres.getSelectedItem().toString());
+        intent.putStringArrayListExtra(intentArrayName, params);
+        setResult(requestCode, intent);
+        finish();
     }
 
     @Override

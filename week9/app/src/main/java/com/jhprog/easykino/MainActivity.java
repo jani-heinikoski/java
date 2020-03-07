@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,7 @@ import com.jhprog.easykino.databinding.ActivityMainBinding;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         firstColIdCounter = 1;
         secondColIdCounter = 2;
+        intentArrayName = "test";
+        requestCode = 1337;
 
         StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(threadPolicy);
@@ -96,16 +100,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data.getStringArrayListExtra("test").isEmpty()) {
+        ArrayList<String> params = data.getStringArrayListExtra(intentArrayName);
+        if (params != null && !params.isEmpty()) {
+            binding.relayFirstColumn.addView(newCard(1, params.get(0)));
         }
     }
 
 
-    private CardView newCard(int column) {
+    private CardView newCard(int column, CharSequence text) {
         CardView cv = new CardView(context);
         setCardViewParams(cv, column);
-        TextView tv = newTextViewForCardView(String.format(Locale.getDefault(),"I'm %d years old.", new Random().nextInt(10)));
-        cv.addView(tv);
+        TextView tv = newTextViewForCardView(text);
+        RelativeLayout relay = newRelayForCardView();
+        relay.addView(tv);
+        cv.addView(relay);
         return cv;
     }
 
@@ -142,13 +150,24 @@ public class MainActivity extends AppCompatActivity {
         cardView.setLayoutParams(lp);
     }
 
+    private RelativeLayout newRelayForCardView() {
+        RelativeLayout relay = new RelativeLayout(context);
+        relay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        return relay;
+    }
+
+
     private TextView newTextViewForCardView(CharSequence text) {
         TextView tv = new TextView(context);
-        tv.setLayoutParams(new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        tv.setLayoutParams(layoutParams);
         tv.setText(text);
+        tv.setGravity(Gravity.CENTER_HORIZONTAL);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
         tv.setTextColor(getColor(R.color.colorTextSecondary));
         return tv;
     }
+
+
 
 }
