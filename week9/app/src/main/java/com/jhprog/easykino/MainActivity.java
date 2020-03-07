@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected Context context;
     private int firstColIdCounter;
     private int secondColIdCounter;
+    private TransitionHandler transitionHandler = TransitionHandler.getInstance();
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override

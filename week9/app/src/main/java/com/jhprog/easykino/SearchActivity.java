@@ -27,6 +27,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<Theatre> theatreArrayList;
     private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
+    private TransitionHandler transitionHandler = TransitionHandler.getInstance();
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -38,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
         theatreArrayList = new ArrayList<Theatre>(10);
         locationArrayList = new ArrayList<String>(10);
-        //TODO adapter.notify();
+
         initButtons();
         initTheatres();
         initSpinners();
@@ -67,9 +68,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
 
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -125,43 +124,9 @@ public class SearchActivity extends AppCompatActivity {
     private void returnToMainActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         setResult(TransitionHandler.getResultCode(), intent);
+        transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), binding.etextDate.toString(), binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
         finish();
     }
-    /*
-    private void returnToMainActivity() {
-
-        String selectedTheatre = binding.spinnerTheatres.getSelectedItem().toString();
-        String selectedLocation = binding.spinnerLocations.getSelectedItem().toString();
-        Theatre temp;
-        ArrayList<Theatre> temps;
-
-        if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
-            if (binding.etextDate.getText().toString().equals("dd.mm.yyyy")) {
-
-            } else {
-                intentParameter.setDate(binding.etextDate.getText().toString());
-            }
-        } else if (!selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
-            temp = findByNameAndLocation(selectedTheatre, selectedLocation);
-            if (temp != null) {
-                intentParameter.addTheatreID(temp.getID());
-            }
-        } else if (!selectedTheatre.equals("All") && selectedLocation.equals("All")) {
-            temps = findByName(selectedTheatre);
-            for (Theatre t : temps) {
-                intentParameter.addTheatreID(t.getID());
-            }
-        } else if (selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
-            temps = findByLocation(selectedLocation);
-            for (Theatre t : temps) {
-                intentParameter.addTheatreID(t.getID());
-            }
-        }
-
-
-    }
-
-     */
 
     private Theatre findByNameAndLocation(String n, String l) {
         for (Theatre t : theatreArrayList) {

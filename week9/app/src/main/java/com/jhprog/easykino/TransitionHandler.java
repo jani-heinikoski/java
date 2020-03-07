@@ -69,7 +69,7 @@ public class TransitionHandler {
 
         // Theatre nor location selected
         if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
-
+            theatresToSearch = theatreArrayList;
         }
         // Location selected, theatre not
         if (selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
