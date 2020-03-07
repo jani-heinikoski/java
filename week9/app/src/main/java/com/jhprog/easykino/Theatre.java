@@ -25,4 +25,9 @@ public class Theatre implements Comparable<Theatre> {
     public int compareTo(Theatre theatre) {
         return this.name.compareTo(theatre.getName());
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

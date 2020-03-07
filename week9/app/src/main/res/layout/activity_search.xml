@@ -50,16 +50,13 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginHorizontal="15dp"
+            android:layout_centerHorizontal="true"
             android:layout_below="@+id/linlay_search_header"
             android:layout_marginTop="50dp"
             android:id="@+id/spinner_theatres"
             android:popupBackground="@color/colorPrimary"
             android:elevation="5dp"
-            android:translationZ="5dp"
-            android:scaleX="1"
-            android:scaleY="1">
+            android:translationZ="5dp">
 
         </Spinner>
 
@@ -67,12 +64,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorTextSecondary"
-            android:layout_alignBottom="@+id/spinner_theatres"
-            android:layout_toStartOf="@+id/spinner_theatres"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/linlay_search_header"
+            android:layout_centerHorizontal="true"
             android:text="@string/txtv_theatres"
-            android:textSize="20sp"
+            android:textSize="30sp"
             >
 
         </TextView>

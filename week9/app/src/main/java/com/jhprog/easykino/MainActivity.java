@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private int firstColIdCounter;
     private int secondColIdCounter;
     private FinnkinoXMLParser parser;
+    private String intentArrayName;
+    private int requestCode;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -78,12 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
                     binding.btnSearch.setPressed(false);
-                    //searchIntent();
-                    try {
-                        parser.printTheatres(parser.getTheatres());
-                    } catch (SAXException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    searchIntent();
                     return false;
                 } else {
                     return false;
@@ -100,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data.getStringArrayListExtra("test").isEmpty()) {
-            binding.btnSearch.setText("HASKLJAKDLAJS");
         }
     }
 

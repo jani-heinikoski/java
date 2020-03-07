@@ -13,12 +13,20 @@ import android.widget.ArrayAdapter;
 
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
 
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> data;
+    private ArrayAdapter<Theatre> adapter;
+    private ArrayList<Theatre> data;
+    private FinnkinoXMLParser parser;
+    private String intentArrayName;
+    private int requestCode;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -27,11 +35,30 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-        data = new ArrayList<String>(25);
-        data.add("Hello");
-        data.add("Pussy");
+
+        intentArrayName = "test";
+        requestCode = 1337;
+        data = new ArrayList<Theatre>(10);
+        //TODO adapter.notify();
         initButtons();
+        initTheatres();
         initSpinners();
+    }
+
+    private void initTheatres() {
+        try {
+            parser = FinnkinoXMLParser.getInstance();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            data = parser.getTheatres();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -53,8 +80,8 @@ public class SearchActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     ArrayList<String> test = new ArrayList<>(2);
-                    intent.putStringArrayListExtra("test", test);
-                    setResult(1337, intent);
+                    intent.putStringArrayListExtra(intentArrayName, test);
+                    setResult(requestCode, intent);
                     finish();
                     return false;
                 } else {
@@ -98,7 +125,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initSpinners() {
-        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, data);
+        adapter = new ArrayAdapter<Theatre>(getApplicationContext(), R.layout.spinner_item, data);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         binding.spinnerTheatres.setAdapter(adapter);
     }

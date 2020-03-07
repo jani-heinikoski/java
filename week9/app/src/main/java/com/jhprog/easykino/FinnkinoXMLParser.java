@@ -7,9 +7,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -84,12 +82,16 @@ public class FinnkinoXMLParser {
 
         try {
             Collections.sort(theatres);
+            for (int i = 0; i < (theatres.size() - 1); i++) {
+                if (theatres.get(i).getName().equals(theatres.get(i + 1).getName())) {
+                    theatres.remove(i);
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             return theatres;
         }
-
 
     }
 
