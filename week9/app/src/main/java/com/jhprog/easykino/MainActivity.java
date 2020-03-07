@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected Context context;
     private int firstColIdCounter;
     private int secondColIdCounter;
+    private FinnkinoXMLParser parser;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -48,26 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         initButtons();
 
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-        binding.relayFirstColumn.addView(newCard(1));
-        binding.relaySecondColumn.addView(newCard(2));
-
-
         binding.relayFirstColumn.setPadding(25,5,25,0);
         binding.relaySecondColumn.setPadding(25, 5, 25, 0);
+
+        try {
+            parser = FinnkinoXMLParser.getInstance();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            System.out.println("LOGGER: ParserConfigurationException thrown: " + e.getMessage());
+            System.exit(-1);
+        }
 
     }
 
@@ -87,18 +78,12 @@ public class MainActivity extends AppCompatActivity {
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
                     binding.btnSearch.setPressed(false);
-                    searchIntent();
-                    /*
+                    //searchIntent();
                     try {
-                        FinnkinoXMLParser.readXMLbyTagNames("https://www.finnkino.fi/xml/TheatreAreas/", "TheatreArea");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException e) {
+                        parser.printTheatres(parser.getTheatres());
+                    } catch (SAXException | IOException e) {
                         e.printStackTrace();
                     }
-                    */
                     return false;
                 } else {
                     return false;

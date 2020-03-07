@@ -1,6 +1,6 @@
 package com.jhprog.easykino;
 
-public class Theatre {
+public class Theatre implements Comparable<Theatre> {
     private int ID;
     private String name;
 
@@ -19,5 +19,10 @@ public class Theatre {
 
     public int getID() {
         return ID;
+    }
+
+    @Override
+    public int compareTo(Theatre theatre) {
+        return this.name.compareTo(theatre.getName());
     }
 }
