@@ -12,10 +12,15 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
     private TransitionHandler transitionHandler = TransitionHandler.getInstance();
+    private String date;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -43,9 +49,28 @@ public class SearchActivity extends AppCompatActivity {
         theatreNameArrayList = new ArrayList<String>(10);
 
         initTimePicker();
+        initDatePicker();
         initButtons();
         initTheatres();
         initSpinners();
+    }
+
+    private void initDatePicker() {
+        int year = 0;
+        int month = 0;
+        int day = 0;
+        date = "";
+
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        binding.datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                date = String.format(Locale.getDefault(), "%d.%d.%d", dayOfMonth, monthOfYear, year);
+            }
+        });
     }
 
     private void initTimePicker() {
@@ -120,7 +145,7 @@ public class SearchActivity extends AppCompatActivity {
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnApplySearch.performClick();
                     binding.btnApplySearch.setPressed(false);
-                    transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), binding.etextDate.toString(), binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
+                    transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), "dd.mm.yyyy", binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
                     //returnToMainActivity();
                     return false;
                 } else {
@@ -133,7 +158,7 @@ public class SearchActivity extends AppCompatActivity {
     private void returnToMainActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         setResult(TransitionHandler.getResultCode(), intent);
-        transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), binding.etextDate.toString(), binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
+        transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), "dd.mm.yyyy", binding.timePicker.getHour(), binding.timePicker.getMinute(), 0, 0);
         finish();
     }
 
