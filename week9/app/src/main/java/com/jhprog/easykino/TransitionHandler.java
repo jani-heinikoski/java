@@ -1,11 +1,8 @@
 package com.jhprog.easykino;
+import android.widget.Button;
 
-import android.annotation.SuppressLint;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 
 public class TransitionHandler {
     private final static TransitionHandler transitionHandler = new TransitionHandler();
@@ -50,23 +47,9 @@ public class TransitionHandler {
             this.endHour = endHour;
             this.endMinute = endMinute;
         }
-        // Date not selected
-        if (dateString.equals("dd.mm.yyyy")) {
-            try {
-                // Try to get current date from system.
-                Date date = Calendar.getInstance().getTime();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
-                this.dateString = sdf.format(date);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.out.println("LOGGER: Failed to parse time: " + ex.getMessage());
-                // Required attribute, must exit if fails.
-                System.exit(-1);
-            }
-        } else {
-            // Date selected
-            this.dateString = dateString;
-        }
+
+        this.dateString = dateString;
+
 
         // Theatre nor location selected
         if (selectedTheatre.equals("All") && selectedLocation.equals("All")) {
@@ -124,14 +107,18 @@ public class TransitionHandler {
     }
     // Parse search results by time
     private void parseResultsByTime() {
-        if (startHour == 0 && startMinute == 0 && endHour == 0 && endMinute == 0) {
-            timeMatters = false;
-        } else if (startHour == endHour && startMinute == endMinute) {
-            timeMatters = false;
-        }
+        //TODO: parseResultsByTime
     }
 
     public static final int getResultCode() {
         return resultCode;
+    }
+
+    public static void remBtnEffect(Button b) {
+        b.setHeight(b.getHeight() - 25);
+    }
+
+    public static void btnEffect(Button b) {
+        b.setHeight(b.getHeight() + 25);
     }
 }

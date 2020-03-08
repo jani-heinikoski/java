@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Easykino</string>
     <string name="header">Easykino</string>
-    <string name="txtv_theatres">Theatre</string>
+    <string name="txtv_theatres">Select theatre</string>
     <string name="btn_apply_search">SEARCH</string>
-    <string name="txtv_locations">Location</string>
+    <string name="txtv_locations">Select location</string>
     <string name="etext_default_date">dd.mm.yyyy</string>
-    <string name="date_header">Date</string>
-    <string name="time_header">Time</string>
+    <string name="date_header">Pick a date</string>
+    <string name="start_time_header">Pick starting time</string>
+    <string name="end_time_header">Pick ending time</string>
 </resources>

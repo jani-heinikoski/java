@@ -151,12 +151,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/time_header"
+                    android:id="@+id/start_time_header"
                     android:textColor="@color/colorTextSecondary"
                     android:layout_below="@+id/date_picker"
-                    android:layout_alignStart="@+id/time_picker"
+                    android:layout_alignStart="@+id/start_time_picker"
                     android:layout_marginTop="10dp"
-                    android:text="@string/time_header"
+                    android:text="@string/start_time_header"
                     android:textSize="30sp">
                 </TextView>
 
@@ -164,9 +164,34 @@
                     android:layout_width="wrap_content"
                     android:minWidth="300dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/time_picker"
+                    android:id="@+id/start_time_picker"
                     android:timePickerMode="spinner"
-                    android:layout_below="@+id/time_header"
+                    android:layout_below="@+id/start_time_header"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:elevation="8dp"
+                    android:translationZ="8dp">
+                </TimePicker>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/end_time_header"
+                    android:textColor="@color/colorTextSecondary"
+                    android:layout_below="@+id/start_time_picker"
+                    android:layout_alignStart="@+id/end_time_picker"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/end_time_header"
+                    android:textSize="30sp">
+                </TextView>
+
+                <TimePicker
+                    android:layout_width="wrap_content"
+                    android:minWidth="300dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/end_time_picker"
+                    android:timePickerMode="spinner"
+                    android:layout_below="@+id/end_time_header"
                     android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true"
                     android:elevation="8dp"

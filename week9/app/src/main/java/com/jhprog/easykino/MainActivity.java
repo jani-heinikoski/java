@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     System.out.println("LOGGER: ACTION_DOWN");
-                    ViewUtil.btnEffect(binding.btnSearch);
+                    TransitionHandler.btnEffect(binding.btnSearch);
                     binding.btnSearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     System.out.println("LOGGER: ACTION_UP");
-                    ViewUtil.remBtnEffect(binding.btnSearch);
+                    TransitionHandler.remBtnEffect(binding.btnSearch);
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
                     binding.btnSearch.setPressed(false);
