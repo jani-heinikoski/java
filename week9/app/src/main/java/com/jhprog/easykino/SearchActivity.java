@@ -117,12 +117,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    System.out.println("LOGGER: ACTION_DOWN");
                     TransitionHandler.btnEffect(binding.btnClose);
                     binding.btnClose.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    System.out.println("LOGGER: ACTION_UP");
                     TransitionHandler.remBtnEffect(binding.btnClose);
                     binding.btnClose.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnClose.performClick();
@@ -139,19 +137,17 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    System.out.println("LOGGER: ACTION_DOWN");
                     TransitionHandler.btnEffect(binding.btnApplySearch);
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextSecondary));
                     binding.btnApplySearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    System.out.println("LOGGER: ACTION_UP");
                     TransitionHandler.remBtnEffect(binding.btnApplySearch);
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnApplySearch.performClick();
                     binding.btnApplySearch.setPressed(false);
                     transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), date, binding.startTimePicker.getHour(), binding.startTimePicker.getMinute(), binding.endTimePicker.getHour(), binding.endTimePicker.getMinute());
-                    //returnToMainActivity();
+                    returnToMainActivity();
                     return false;
                 } else {
                     return false;
@@ -161,8 +157,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void returnToMainActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        setResult(TransitionHandler.getResultCode(), intent);
         transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), date, binding.startTimePicker.getHour(), binding.startTimePicker.getMinute(), binding.endTimePicker.getHour(), binding.endTimePicker.getMinute());
         finish();
     }

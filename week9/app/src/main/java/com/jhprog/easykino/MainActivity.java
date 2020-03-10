@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.jhprog.easykino.databinding.ActivityMainBinding;
 
 import org.xml.sax.SAXException;
@@ -57,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler() {
-        shows = new ArrayList<>(1);
-        shows.add(new Show(1337, 6969, "Transformers 3", "2.3.2020", "10:20"));
+        shows = new ArrayList<>(5);
+        shows.add(new Show(1337, 6969, "Transformers 1", "2.3.2020", "10:20"));
+        shows.add(new Show(1338, 696, "Transformers 2", "2.3.2020", "10:20"));
+        shows.add(new Show(1339, 699, "Transformers 3", "2.3.2020", "10:20"));
+        shows.add(new Show(1340, 969, "Transformers 4", "2.3.2020", "10:20"));
+        shows.add(new Show(1341, 69, "Transformers 5", "2.3.2020", "10:20"));
 
         // Increases performance (use when recyclerview has fixed size)
         binding.recyclerView.setHasFixedSize(true);
@@ -79,12 +85,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    System.out.println("LOGGER: ACTION_DOWN");
                     TransitionHandler.btnEffect(binding.btnSearch);
                     binding.btnSearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    System.out.println("LOGGER: ACTION_UP");
                     TransitionHandler.remBtnEffect(binding.btnSearch);
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
