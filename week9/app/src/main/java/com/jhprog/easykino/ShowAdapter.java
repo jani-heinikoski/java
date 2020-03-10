@@ -20,7 +20,7 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.CardViewHolder
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.test_text_view);
+            textView = (TextView) itemView.findViewById(R.id.show_item_title);
         }
     }
 

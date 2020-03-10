@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
+    android:minHeight="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
     android:layout_margin="8dp"
@@ -15,15 +16,57 @@
         android:layout_margin="4dp">
 
         <TextView
-            android:id="@+id/test_text_view"
+            android:id="@+id/show_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorTextPrimary"
             android:textSize="24sp"
-            android:text="@string/header"
-            android:layout_centerInParent="true">
-
+            android:text="@string/show_item_title_text"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="4dp">
         </TextView>
+
+        <TextView
+            android:id="@+id/show_item_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="18sp"
+            android:text="@string/show_item_time_text"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/show_item_title"
+            android:layout_marginTop="14dp"
+            android:paddingHorizontal="4dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/show_item_theatres_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="18sp"
+            android:text="@string/show_item_theatres_title_text"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/show_item_start_time"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="4dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/show_item_theatres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="18sp"
+            android:text="@string/show_item_theatres_text"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/show_item_theatres_title"
+            android:paddingHorizontal="4dp"
+            android:layout_marginTop="4dp">
+        </TextView>
+
 
     </RelativeLayout>
 
