@@ -3,6 +3,9 @@ package com.jhprog.easykino;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -30,9 +33,10 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MainActivity extends AppCompatActivity {
     protected ActivityMainBinding binding;
     protected Context context;
-    private int firstColIdCounter;
-    private int secondColIdCounter;
     private TransitionHandler transitionHandler = TransitionHandler.getInstance();
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter recyclerAdapter;
+    private ArrayList<Show> shows;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -40,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        firstColIdCounter = 1;
-        secondColIdCounter = 2;
 
         StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(threadPolicy);
@@ -50,9 +52,25 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
 
         initButtons();
+        initRecycler();
 
-        binding.relayFirstColumn.setPadding(25,5,25,0);
-        binding.relaySecondColumn.setPadding(25, 5, 25, 0);
+    }
+
+    private void initRecycler() {
+        shows = new ArrayList<>(1);
+        shows.add(new Show(1337, 6969, "Transformers 3", "2.3.2020", "10:20"));
+
+        // Increases performance (use when recyclerview has fixed size)
+        binding.recyclerView.setHasFixedSize(true);
+
+        // specify a layout manager
+        layoutManager = new LinearLayoutManager(this);
+        binding.recyclerView.setLayoutManager(layoutManager);
+
+        // specify an adapter
+        recyclerAdapter = new ShowAdapter(shows);
+        binding.recyclerView.setAdapter(recyclerAdapter);
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -88,71 +106,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
     }
-
-
-    private CardView newCard(int column, CharSequence text) {
-        CardView cv = new CardView(context);
-        setCardViewParams(cv, column);
-        TextView tv = newTextViewForCardView(text);
-        RelativeLayout relay = newRelayForCardView();
-        relay.addView(tv);
-        cv.addView(relay);
-        return cv;
-    }
-
-    private void setCardViewParams(CardView cardView, int column) {
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(4, 15, 4 ,15);
-        lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-
-        cardView.setMaxCardElevation(15);
-        cardView.setElevation(10);
-        cardView.setTranslationZ(10);
-        cardView.setCardBackgroundColor(getColor(R.color.colorPrimary));
-        cardView.setRadius(15);
-        cardView.setMinimumHeight(400);
-
-        if (firstColIdCounter > 1 && column == 1) {
-            lp.addRule(RelativeLayout.BELOW, firstColIdCounter);
-            firstColIdCounter += 2;
-            cardView.setId(firstColIdCounter);
-        } else if (firstColIdCounter == 1 && column == 1){
-            firstColIdCounter += 2;
-            cardView.setId(firstColIdCounter);
-        }
-
-        if (secondColIdCounter > 2 && column == 2) {
-            lp.addRule(RelativeLayout.BELOW, secondColIdCounter);
-            secondColIdCounter += 2;
-            cardView.setId(secondColIdCounter);
-        } else if (secondColIdCounter == 2 && column == 2){
-            secondColIdCounter += 2;
-            cardView.setId(secondColIdCounter);
-        }
-
-        cardView.setLayoutParams(lp);
-    }
-
-    private RelativeLayout newRelayForCardView() {
-        RelativeLayout relay = new RelativeLayout(context);
-        relay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        return relay;
-    }
-
-
-    private TextView newTextViewForCardView(CharSequence text) {
-        TextView tv = new TextView(context);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        tv.setLayoutParams(layoutParams);
-        tv.setText(text);
-        tv.setGravity(Gravity.CENTER_HORIZONTAL);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        tv.setTextColor(getColor(R.color.colorTextSecondary));
-        return tv;
-    }
-
 
 
 }
