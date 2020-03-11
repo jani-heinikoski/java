@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -18,6 +19,7 @@ public class FinnkinoXMLParser {
 
     private DocumentBuilder builder;
     private static FinnkinoXMLParser parser = null;
+
 
     public static FinnkinoXMLParser getInstance() throws ParserConfigurationException {
         if (parser == null) {
@@ -90,8 +92,69 @@ public class FinnkinoXMLParser {
             Collections.sort(theatres);
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            return theatres;
+        }
+
+        return theatres;
+
+    }
+
+    public ArrayList<Show> getShows(ArrayList<Theatre> theatresToSearch, String date) throws SAXException, IOException {
+        ArrayList<Show> shows = new ArrayList<>(50);
+        String showTitle;
+        ArrayList<String> showStartDT;
+        String theatreLocAndName;
+
+        for (Theatre t : theatresToSearch) {
+            ArrayList<Element> data = readXMLbyTagName(String.format(Locale.getDefault(), "http://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s", t.getID(), date), "Show");
+            if (!data.isEmpty()) {
+                for (Element e : data) {
+                    try {
+                        showTitle = e.getElementsByTagName("Title").item(0).getTextContent().trim();
+                        showStartDT = parseDateTime(e.getElementsByTagName("dttmShowStart").item(0).getTextContent().trim());
+                        theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
+                        if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
+
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println("LOGGER: Unknown Exception thrown: " + ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        try {
+            Collections.sort(shows);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return shows;
+        
+    }
+
+    private ArrayList<String> parseDateTime(String dttm) {
+        String parsedDate = null;
+        String parsedTime = null;
+        ArrayList<String> retVal = new ArrayList<>(2);
+
+        try {
+            if (!dttm.isEmpty() && dttm.contains("T")) {
+                String[] splitTime = dttm.split("T");
+                parsedDate = splitTime[0];
+                parsedTime = splitTime[1];
+                retVal.add(parsedDate);
+                retVal.add(parsedTime);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (retVal.size() == 2 && retVal.get(0) != null && retVal.get(1) != null) {
+            return retVal;
+        } else {
+            return null;
         }
 
     }

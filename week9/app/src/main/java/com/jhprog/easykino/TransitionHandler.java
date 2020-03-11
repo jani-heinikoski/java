@@ -1,16 +1,18 @@
 package com.jhprog.easykino;
 import android.widget.Button;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class TransitionHandler {
     private final static TransitionHandler transitionHandler = new TransitionHandler();
     private static final int requestCode = 1337;
     private boolean timeMatters;
-    private boolean dateMatters;
     private String dateString;
-    private ArrayList<Integer> theatreIDs;
+    private ArrayList<Show> shows;
     private ArrayList<Theatre> theatreArrayList;
     private ArrayList<Theatre> theatresToSearch;
 
@@ -27,8 +29,7 @@ public class TransitionHandler {
 
     private TransitionHandler() {
         timeMatters = true;
-        dateMatters = true;
-        theatreIDs = new ArrayList<>(10);
+        shows = new ArrayList<>(50);
     }
 
     public void search(ArrayList<Theatre> theatreArrayList, String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
@@ -68,10 +69,16 @@ public class TransitionHandler {
             theatresToSearch.add(findByNameAndLocation(selectedTheatre, selectedLocation));
         }
         if (theatresToSearch != null) {
-            for (Theatre t : theatresToSearch) {
-                if (t != null)
+            for (int i = 0; i < theatresToSearch.size(); i++) {
+                Theatre t = theatresToSearch.get(i);
+                if (t != null) {
                     System.out.println("LOGGER: THEATRES: " + t.getName() + " | " + t.getLocation() + " | " + t.getID());
+                } else {
+                    theatresToSearch.remove(i);
+                }
             }
+        } else {
+
         }
 
 
@@ -107,7 +114,9 @@ public class TransitionHandler {
     }
     // Parse search results by time
     private void parseResultsByTime() {
-        //TODO: parseResultsByTime
+        if (timeMatters) {
+
+        }
     }
 
     static int getResultCode() {

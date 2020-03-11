@@ -1,37 +1,26 @@
 package com.jhprog.easykino;
 
-public class Show {
-    private int showID;
-    private int theaterID;
+import java.util.Calendar;
+
+public class Show implements Comparable<Show> {
     private String title;
-    private String startDate;
-    private String startTime;
+    private Calendar startDT;
 
-    public Show(int showID, int theaterID, String title, String startDate, String startTime) {
-        this.showID = showID;
-        this.theaterID = theaterID;
+    public Show(String title, Calendar startDT) {
         this.title = title;
-        this.startDate = startDate;
-        this.startTime = startTime;
+        this.startDT = startDT;
     }
 
-    public int getShowID() {
-        return showID;
-    }
-
-    public int getTheaterID() {
-        return theaterID;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getStartTime() {
-        return startTime;
+    public Calendar getStartDT() {
+        return startDT;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public int compareTo(Show o) {
+        return this.title.compareTo(o.getTitle());
     }
 }

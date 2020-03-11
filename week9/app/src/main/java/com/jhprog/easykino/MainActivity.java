@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecycler() {
         shows = new ArrayList<>(5);
-        shows.add(new Show(1337, 6969, "Transformers 1", "2.3.2020", "10:20"));
-        shows.add(new Show(1338, 696, "Transformers 2", "2.3.2020", "10:20"));
-        shows.add(new Show(1339, 699, "Transformers 3", "2.3.2020", "10:20"));
-        shows.add(new Show(1340, 969, "Transformers 4", "2.3.2020", "10:20"));
-        shows.add(new Show(1341, 69, "Transformers 5", "2.3.2020", "10:20"));
+
 
         // Increases performance (use when recyclerview has fixed size)
         binding.recyclerView.setHasFixedSize(true);
