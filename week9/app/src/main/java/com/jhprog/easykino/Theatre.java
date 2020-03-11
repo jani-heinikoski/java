@@ -6,15 +6,9 @@ public class Theatre implements Comparable<Theatre> {
     private String location;
 
     public Theatre(int id, String n, String l) {
-        if (id > 0) {
-            ID = id;
-        }
-        if (!n.trim().isEmpty()) {
-            name = n;
-        }
-        if (!l.trim().isEmpty()) {
-            location = l;
-        }
+        ID = id;
+        name = n;
+        location = l;
     }
 
     public String getName() {

@@ -7,18 +7,22 @@ public class Show implements Comparable<Show> {
     private Calendar startDT;
     private String locationAndName;
 
-    public Show(String title, Calendar startDT, String locationAndName) {
+    Show(String title, Calendar startDT, String locationAndName) {
         this.title = title;
         this.startDT = startDT;
         this.locationAndName = locationAndName;
     }
 
-    public Calendar getStartDT() {
+    Calendar getStartDT() {
         return startDT;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
+    }
+
+    public String getLocationAndName() {
+        return locationAndName;
     }
 
     @Override

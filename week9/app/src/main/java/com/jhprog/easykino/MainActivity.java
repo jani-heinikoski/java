@@ -14,6 +14,7 @@ import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 
 import com.jhprog.easykino.databinding.ActivityMainBinding;
@@ -47,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler() {
-        shows = new ArrayList<>(5);
-
+        shows = new ArrayList<>();
 
         // Increases performance (use when recyclerview has fixed size)
         binding.recyclerView.setHasFixedSize(true);
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter
         recyclerAdapter = new ShowAdapter(shows);
         binding.recyclerView.setAdapter(recyclerAdapter);
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -93,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        this.shows.clear();
+        this.shows.addAll(transitionHandler.getShows());
+        recyclerAdapter.notifyDataSetChanged();
+        binding.recyclerView.smoothScrollToPosition(0);
     }
 
 

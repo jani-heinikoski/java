@@ -24,9 +24,14 @@ public class FinnkinoXMLParser {
     private static FinnkinoXMLParser parser = null;
 
 
-    public static FinnkinoXMLParser getInstance() throws ParserConfigurationException {
+    static FinnkinoXMLParser getInstance() {
         if (parser == null) {
-            parser = new FinnkinoXMLParser();
+            try {
+                parser = new FinnkinoXMLParser();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+                System.exit(-2);
+            }
         }
         return parser;
     }
@@ -36,8 +41,9 @@ public class FinnkinoXMLParser {
     }
 
     private ArrayList<Element> readXMLbyTagName(String url, String tagName) throws IOException, SAXException {
+
         builder.reset();
-        ArrayList<Element> returnData = new ArrayList<Element>(50);
+        ArrayList<Element> returnData = new ArrayList<>();
         Document doc = builder.parse(url);
         doc.getDocumentElement().normalize();
 
@@ -56,13 +62,8 @@ public class FinnkinoXMLParser {
         return returnData;
     }
 
-    public void printTheatres(ArrayList<Theatre> theatreArrayList) {
-        for (Theatre t : theatreArrayList) {
-            System.out.println("LOGGER: " + String.format(Locale.getDefault(), "%d: %s", t.getID(), t.getName()));
-        }
-    }
+    ArrayList<Theatre> getTheatres() throws SAXException, IOException {
 
-    public ArrayList<Theatre> getTheatres() throws SAXException, IOException {
         ArrayList<Theatre> theatres = new ArrayList<>(10);
         ArrayList<Element> data = readXMLbyTagName("https://www.finnkino.fi/xml/TheatreAreas/", "TheatreArea");
         int ID = 0;
@@ -73,12 +74,17 @@ public class FinnkinoXMLParser {
         if (!data.isEmpty()) {
             for (Element e : data) {
                 try {
+                    // Parses ID and theatre's name+location from the xml
                     ID = Integer.parseInt(e.getElementsByTagName("ID").item(0).getTextContent());
                     theatreStr = e.getElementsByTagName("Name").item(0).getTextContent();
+                    // Validating values
                     if (ID > 0 && !theatreStr.trim().isEmpty()) {
+                        // Separating name and location from the theatreStr
                         name = parseName(theatreStr);
                         location = parseLocation(theatreStr);
+                        // Validating values
                         if (!name.trim().isEmpty() && !location.trim().isEmpty()) {
+                            // Add new theatre based on valid values
                             Theatre theatre = new Theatre(ID, name, location);
                             theatres.add(theatre);
                         }
@@ -90,6 +96,7 @@ public class FinnkinoXMLParser {
             }
         }
 
+        // Try to sort the theatres in ascending alphabetic order
         try {
             Collections.sort(theatres);
         } catch (Exception ex) {
@@ -100,8 +107,9 @@ public class FinnkinoXMLParser {
 
     }
 
-    public ArrayList<Show> getShows(ArrayList<Theatre> theatresToSearch, String date) throws SAXException, IOException {
-        ArrayList<Show> shows = new ArrayList<>(50);
+    ArrayList<Show> getShows(ArrayList<Theatre> theatresToSearch, String date) throws SAXException, IOException {
+
+        ArrayList<Show> shows = new ArrayList<>();
         ArrayList<Element> data;
         String url;
         String showTitle;
@@ -113,14 +121,15 @@ public class FinnkinoXMLParser {
                 continue;
             }
             url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s/", t.getID(), date);
-            System.out.println("LOGGER: URL " + url);
             data = readXMLbyTagName(url, "Show");
             if (!data.isEmpty()) {
                 for (Element e : data) {
                     try {
-                        showTitle = e.getElementsByTagName("Title").item(0).getTextContent().trim();
+                        // Parsing Show's title, start datetime, theatre location and name.
                         showStartDT = parseDateTime(e.getElementsByTagName("dttmShowStart").item(0).getTextContent().trim());
+                        showTitle = e.getElementsByTagName("Title").item(0).getTextContent().trim();
                         theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
+                        // Validating values
                         if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
                             shows.add(new Show(showTitle, showStartDT, theatreLocAndName));
                         }
@@ -138,13 +147,14 @@ public class FinnkinoXMLParser {
             ex.printStackTrace();
         }
 
-        for (Show s : shows) {
+        for (Show s : shows) { // TODO: remove this
             System.out.println("LOGGER: "  + s.getTitle() + " " +
                     s.getStartDT().get(Calendar.DAY_OF_MONTH) + "." +
                     s.getStartDT().get(Calendar.MONTH) + "." +
                     s.getStartDT().get(Calendar.YEAR) + " " +
-                    s.getStartDT().get(Calendar.HOUR) + ":" +
-                    s.getStartDT().get(Calendar.MINUTE)
+                    s.getStartDT().get(Calendar.HOUR_OF_DAY) + ":" +
+                    s.getStartDT().get(Calendar.MINUTE) + " || " +
+                    s.getLocationAndName()
             );
         }
 
@@ -153,7 +163,7 @@ public class FinnkinoXMLParser {
     }
 
     @Nullable
-    private Calendar parseDateTime(@NonNull String dttm) {
+    private Calendar parseDateTime(@NonNull String dttm) { // Parses datetime from string yyyy-MM-ddTHH:mm:00
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         String[] splitDT, splitDate, splitTime;

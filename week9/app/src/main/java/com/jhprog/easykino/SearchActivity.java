@@ -1,13 +1,10 @@
 package com.jhprog.easykino;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,22 +83,22 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initTheatres() {
-        try {
-            parser = FinnkinoXMLParser.getInstance();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
+        parser = FinnkinoXMLParser.getInstance();
+        String location, name;
 
         try {
             theatreArrayList = parser.getTheatres();
             theatreArrayList.add(0, new Theatre(1, "All", "All"));
 
             for (Theatre t : theatreArrayList) {
-                if (!locationArrayList.contains(t.getLocation())) {
-                    locationArrayList.add(t.getLocation());
+                location = t.getLocation();
+                name = t.getName();
+
+                if (!locationArrayList.contains(location)) {
+                    locationArrayList.add(location);
                 }
-                if (!theatreNameArrayList.contains(t.getName())) {
-                    theatreNameArrayList.add(t.getName());
+                if (!theatreNameArrayList.contains(name)) {
+                    theatreNameArrayList.add(name);
                 }
             }
 
@@ -113,7 +110,6 @@ public class SearchActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void initButtons() {
         binding.btnClose.setOnTouchListener(new View.OnTouchListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -125,7 +121,7 @@ public class SearchActivity extends AppCompatActivity {
                     binding.btnClose.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnClose.performClick();
                     binding.btnClose.setPressed(false);
-                    returnToMainActivity();
+                    finish();
                     return false;
                 } else {
                     return false;
@@ -168,11 +164,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initSpinners() {
-        theatreNameArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, theatreNameArrayList);
+        theatreNameArrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, theatreNameArrayList);
         theatreNameArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         binding.spinnerTheatres.setAdapter(theatreNameArrayAdapter);
 
-        locationArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, locationArrayList);
+        locationArrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, locationArrayList);
         locationArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         binding.spinnerLocations.setAdapter(locationArrayAdapter);
     }

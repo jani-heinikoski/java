@@ -10,6 +10,6 @@
     <string name="end_time_header">Pick ending time</string>
     <string name="show_item_title_text">Movie Title</string>
     <string name="show_item_theatres_title_text">In Theatres:</string>
-    <string name="show_item_theatres_text">Kinopalatsi, Helsinki\nTennispalatsi, Lappeenranta</string>
+    <string name="show_item_theatres_text">Kinopalatsi, Helsinki</string>
     <string name="show_item_time_text">Starts at: 10:50</string>
 </resources>

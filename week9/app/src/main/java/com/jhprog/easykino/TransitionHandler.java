@@ -1,23 +1,16 @@
 package com.jhprog.easykino;
 import android.widget.Button;
-
 import org.xml.sax.SAXException;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import javax.xml.parsers.ParserConfigurationException;
 
 
 public class TransitionHandler {
     private final static TransitionHandler transitionHandler = new TransitionHandler();
     private static final int requestCode = 1337;
     private boolean timeMatters;
-    private String dateString;
-    private ArrayList<Show> shows;
+    private static ArrayList<Show> shows;
     private ArrayList<Theatre> theatreArrayList;
     private ArrayList<Theatre> theatresToSearch;
 
@@ -37,13 +30,7 @@ public class TransitionHandler {
     private TransitionHandler() {
         timeMatters = true;
         shows = new ArrayList<>();
-        try {
-            parser = FinnkinoXMLParser.getInstance();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-
+        parser = FinnkinoXMLParser.getInstance();
     }
 
     public void search(ArrayList<Theatre> theatreArrayList, String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
@@ -62,8 +49,6 @@ public class TransitionHandler {
             this.endHour = endHour;
             this.endMinute = endMinute;
         }
-
-        this.dateString = dateString;
 
 
         // Theatre nor location selected
@@ -132,7 +117,7 @@ public class TransitionHandler {
         }
     }
 
-    static int getResultCode() {
+    public static int getResultCode() {
         return resultCode;
     }
 
@@ -140,11 +125,11 @@ public class TransitionHandler {
         return shows;
     }
 
-    static void remBtnEffect(Button b) {
+    public static void remBtnEffect(Button b) {
         b.setHeight(b.getHeight() - 25);
     }
 
-    static void btnEffect(Button b) {
+    public static void btnEffect(Button b) {
         b.setHeight(b.getHeight() + 25);
     }
 }

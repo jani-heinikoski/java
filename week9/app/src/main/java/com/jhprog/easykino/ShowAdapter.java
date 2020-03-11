@@ -10,21 +10,26 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.CardViewHolder> {
     private ArrayList<Show> shows;
 
-    static class CardViewHolder extends RecyclerView.ViewHolder {
+    public static class CardViewHolder extends RecyclerView.ViewHolder {
+        public TextView textViewTitle;
+        public TextView textViewStartTime;
+        public TextView textViewTheatres;
 
-        TextView textView;
-
-        CardViewHolder(@NonNull View itemView) {
+        public CardViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.show_item_title);
+            textViewTitle = (TextView) itemView.findViewById(R.id.show_item_title);
+            textViewStartTime = (TextView) itemView.findViewById(R.id.show_item_start_time);
+            textViewTheatres = (TextView) itemView.findViewById(R.id.show_item_theatres);
         }
     }
 
-    ShowAdapter(ArrayList<Show> showArrayList) {
+    public ShowAdapter(ArrayList<Show> showArrayList) {
         shows = showArrayList;
     }
 
@@ -38,7 +43,11 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.CardViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        holder.textView.setText(shows.get(position).getTitle());
+        Calendar c = shows.get(position).getStartDT();
+        String timeString = String.format(Locale.getDefault(), "Starts at: %02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+        holder.textViewTitle.setText(shows.get(position).getTitle());
+        holder.textViewStartTime.setText(timeString);
+        holder.textViewTheatres.setText(shows.get(position).getLocationAndName());
     }
 
     @Override
