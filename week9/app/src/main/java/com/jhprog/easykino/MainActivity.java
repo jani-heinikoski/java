@@ -1,7 +1,6 @@
 package com.jhprog.easykino;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,25 +11,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.jhprog.easykino.databinding.ActivityMainBinding;
-
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Random;
 
-import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
     protected ActivityMainBinding binding;
