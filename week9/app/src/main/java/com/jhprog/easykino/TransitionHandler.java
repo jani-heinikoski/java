@@ -1,10 +1,15 @@
 package com.jhprog.easykino;
 import android.widget.Button;
 
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 
 public class TransitionHandler {
@@ -21,6 +26,8 @@ public class TransitionHandler {
     private int endHour;
     private int endMinute;
 
+    FinnkinoXMLParser parser;
+
     private static final int resultCode = 1337;
 
     public static TransitionHandler getInstance() {
@@ -29,7 +36,14 @@ public class TransitionHandler {
 
     private TransitionHandler() {
         timeMatters = true;
-        shows = new ArrayList<>(50);
+        shows = new ArrayList<>();
+        try {
+            parser = FinnkinoXMLParser.getInstance();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
     }
 
     public void search(ArrayList<Theatre> theatreArrayList, String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
@@ -68,21 +82,20 @@ public class TransitionHandler {
         if (!selectedTheatre.equals("All") && !selectedLocation.equals("All")) {
             theatresToSearch.add(findByNameAndLocation(selectedTheatre, selectedLocation));
         }
+
         if (theatresToSearch != null) {
-            for (int i = 0; i < theatresToSearch.size(); i++) {
-                Theatre t = theatresToSearch.get(i);
-                if (t != null) {
-                    System.out.println("LOGGER: THEATRES: " + t.getName() + " | " + t.getLocation() + " | " + t.getID());
-                } else {
-                    theatresToSearch.remove(i);
-                }
+            try {
+                shows = parser.getShows(theatresToSearch, dateString);
+            } catch (SAXException | IOException e) {
+                e.printStackTrace();
+                System.out.println("LOGGER: ERROR AT TRANSITIONHANDLER " + e.getLocalizedMessage());
             }
         } else {
-
+            System.out.println("LOGGER: theatresToSearch was null!");
+            shows = null;
         }
-
-
     }
+
     // Find the theatre whose name and location match selected ones
     private Theatre findByNameAndLocation(String n, String l) {
         for (Theatre t : theatreArrayList) {
@@ -121,6 +134,10 @@ public class TransitionHandler {
 
     static int getResultCode() {
         return resultCode;
+    }
+
+    public ArrayList<Show> getShows() {
+        return shows;
     }
 
     static void remBtnEffect(Button b) {

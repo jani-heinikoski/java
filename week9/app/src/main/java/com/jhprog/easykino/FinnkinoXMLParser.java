@@ -1,13 +1,16 @@
 package com.jhprog.easykino;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -33,9 +36,8 @@ public class FinnkinoXMLParser {
     }
 
     private ArrayList<Element> readXMLbyTagName(String url, String tagName) throws IOException, SAXException {
-
+        builder.reset();
         ArrayList<Element> returnData = new ArrayList<Element>(50);
-
         Document doc = builder.parse(url);
         doc.getDocumentElement().normalize();
 
@@ -100,12 +102,19 @@ public class FinnkinoXMLParser {
 
     public ArrayList<Show> getShows(ArrayList<Theatre> theatresToSearch, String date) throws SAXException, IOException {
         ArrayList<Show> shows = new ArrayList<>(50);
+        ArrayList<Element> data;
+        String url;
         String showTitle;
-        ArrayList<String> showStartDT;
+        Calendar showStartDT;
         String theatreLocAndName;
 
         for (Theatre t : theatresToSearch) {
-            ArrayList<Element> data = readXMLbyTagName(String.format(Locale.getDefault(), "http://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s", t.getID(), date), "Show");
+            if (t == null || t.getName().equals("All")) {
+                continue;
+            }
+            url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s/", t.getID(), date);
+            System.out.println("LOGGER: URL " + url);
+            data = readXMLbyTagName(url, "Show");
             if (!data.isEmpty()) {
                 for (Element e : data) {
                     try {
@@ -113,7 +122,7 @@ public class FinnkinoXMLParser {
                         showStartDT = parseDateTime(e.getElementsByTagName("dttmShowStart").item(0).getTextContent().trim());
                         theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
                         if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
-
+                            shows.add(new Show(showTitle, showStartDT, theatreLocAndName));
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -129,34 +138,54 @@ public class FinnkinoXMLParser {
             ex.printStackTrace();
         }
 
+        for (Show s : shows) {
+            System.out.println("LOGGER: "  + s.getTitle() + " " +
+                    s.getStartDT().get(Calendar.DAY_OF_MONTH) + "." +
+                    s.getStartDT().get(Calendar.MONTH) + "." +
+                    s.getStartDT().get(Calendar.YEAR) + " " +
+                    s.getStartDT().get(Calendar.HOUR) + ":" +
+                    s.getStartDT().get(Calendar.MINUTE)
+            );
+        }
+
         return shows;
         
     }
 
-    private ArrayList<String> parseDateTime(String dttm) {
-        String parsedDate = null;
-        String parsedTime = null;
-        ArrayList<String> retVal = new ArrayList<>(2);
+    @Nullable
+    private Calendar parseDateTime(@NonNull String dttm) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        String[] splitDT, splitDate, splitTime;
+        int year, month, day, hour, minute;
 
-        try {
-            if (!dttm.isEmpty() && dttm.contains("T")) {
-                String[] splitTime = dttm.split("T");
-                parsedDate = splitTime[0];
-                parsedTime = splitTime[1];
-                retVal.add(parsedDate);
-                retVal.add(parsedTime);
+        if (!dttm.trim().isEmpty() && dttm.contains("T")) {
+            splitDT = dttm.split("T");
+            if (splitDT[0].contains("-") && splitDT[1].contains(":")) {
+                splitDate = splitDT[0].split("-");
+                splitTime = splitDT[1].split(":");
+
+                try {
+                    year = Integer.parseInt(splitDate[0]);
+                    month = Integer.parseInt(splitDate[1]);
+                    day = Integer.parseInt(splitDate[2]);
+
+                    hour = Integer.parseInt(splitTime[0]);
+                    minute = Integer.parseInt(splitTime[1]);
+
+                    calendar.set(year, month, day, hour, minute);
+                } catch (Exception e) {
+                    calendar = null;
+                    e.printStackTrace();
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        if (retVal.size() == 2 && retVal.get(0) != null && retVal.get(1) != null) {
-            return retVal;
+        if (calendar != null) {
+            return calendar;
         } else {
             return null;
         }
-
     }
 
     private String parseName(String n) {

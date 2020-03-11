@@ -5,10 +5,12 @@ import java.util.Calendar;
 public class Show implements Comparable<Show> {
     private String title;
     private Calendar startDT;
+    private String locationAndName;
 
-    public Show(String title, Calendar startDT) {
+    public Show(String title, Calendar startDT, String locationAndName) {
         this.title = title;
         this.startDT = startDT;
+        this.locationAndName = locationAndName;
     }
 
     public Calendar getStartDT() {
