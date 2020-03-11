@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class TransitionHandler {
     private final static TransitionHandler transitionHandler = new TransitionHandler();
-    private final int requestCode = 1337;
+    private static final int requestCode = 1337;
     private boolean timeMatters;
     private boolean dateMatters;
     private String dateString;
@@ -110,15 +110,15 @@ public class TransitionHandler {
         //TODO: parseResultsByTime
     }
 
-    public static final int getResultCode() {
+    static int getResultCode() {
         return resultCode;
     }
 
-    public static void remBtnEffect(Button b) {
+    static void remBtnEffect(Button b) {
         b.setHeight(b.getHeight() - 25);
     }
 
-    public static void btnEffect(Button b) {
+    static void btnEffect(Button b) {
         b.setHeight(b.getHeight() + 25);
     }
 }

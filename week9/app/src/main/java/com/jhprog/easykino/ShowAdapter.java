@@ -14,17 +14,17 @@ import java.util.ArrayList;
 public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.CardViewHolder> {
     private ArrayList<Show> shows;
 
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
+    static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
+        TextView textView;
 
-        public CardViewHolder(@NonNull View itemView) {
+        CardViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.show_item_title);
         }
     }
 
-    public ShowAdapter(ArrayList<Show> showArrayList) {
+    ShowAdapter(ArrayList<Show> showArrayList) {
         shows = showArrayList;
     }
 
