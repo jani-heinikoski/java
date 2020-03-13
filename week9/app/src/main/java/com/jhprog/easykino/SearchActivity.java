@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
 import org.xml.sax.SAXException;
@@ -29,8 +30,8 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> theatreNameArrayList;
     private ArrayList<String> locationArrayList;
     private FinnkinoXMLParser parser;
-    private TransitionHandler transitionHandler = TransitionHandler.getInstance();
     private String date;
+    private BackgroundWorker backgroundWorker;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -40,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
-        theatreArrayList = new ArrayList<Theatre>(10);
+        backgroundWorker = BackgroundWorker.getInstance();
         locationArrayList = new ArrayList<String>(10);
         theatreNameArrayList = new ArrayList<String>(10);
 
@@ -87,24 +88,16 @@ public class SearchActivity extends AppCompatActivity {
         String location, name;
 
         try {
-            theatreArrayList = parser.getTheatres();
-            theatreArrayList.add(0, new Theatre(1, "All", "All"));
-
-            for (Theatre t : theatreArrayList) {
-                location = t.getLocation();
-                name = t.getName();
-
-                if (!locationArrayList.contains(location)) {
-                    locationArrayList.add(location);
-                }
-                if (!theatreNameArrayList.contains(name)) {
-                    theatreNameArrayList.add(name);
-                }
+            while (!backgroundWorker.isFinished()) {
+                Thread.sleep(50);
             }
-
-        } catch (SAXException | IOException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        theatreArrayList = backgroundWorker.getTheatreArrayList();
+        theatreNameArrayList = backgroundWorker.getTheatreNameArrayList();
+        locationArrayList = backgroundWorker.getLocationArrayList();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -113,11 +106,11 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    TransitionHandler.btnEffect(binding.btnClose);
+                    MainActivity.btnEffect(binding.btnClose);
                     binding.btnClose.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    TransitionHandler.remBtnEffect(binding.btnClose);
+                    MainActivity.remBtnEffect(binding.btnClose);
                     binding.btnClose.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnClose.performClick();
                     binding.btnClose.setPressed(false);
@@ -133,17 +126,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    TransitionHandler.btnEffect(binding.btnApplySearch);
+                    MainActivity.btnEffect(binding.btnApplySearch);
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextSecondary));
                     binding.btnApplySearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    TransitionHandler.remBtnEffect(binding.btnApplySearch);
+                    MainActivity.remBtnEffect(binding.btnApplySearch);
                     binding.btnApplySearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnApplySearch.performClick();
                     binding.btnApplySearch.setPressed(false);
-                    transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), date, binding.startTimePicker.getHour(), binding.startTimePicker.getMinute(), binding.endTimePicker.getHour(), binding.endTimePicker.getMinute());
-                    returnToMainActivity();
+                    initiateSearch();
                     return false;
                 } else {
                     return false;
@@ -152,8 +144,25 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void returnToMainActivity() {
-        transitionHandler.search(theatreArrayList, binding.spinnerTheatres.getSelectedItem().toString(), binding.spinnerLocations.getSelectedItem().toString(), date, binding.startTimePicker.getHour(), binding.startTimePicker.getMinute(), binding.endTimePicker.getHour(), binding.endTimePicker.getMinute());
+    private void initiateSearch() {
+
+        while (!backgroundWorker.isFinished()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        backgroundWorker.searchShows(new ShowFormData(
+                binding.spinnerTheatres.getSelectedItem().toString(),
+                binding.spinnerLocations.getSelectedItem().toString(),
+                date,
+                binding.startTimePicker.getHour(),
+                binding.startTimePicker.getMinute(),
+                binding.endTimePicker.getHour(),
+                binding.endTimePicker.getMinute()
+        ));
         finish();
     }
 

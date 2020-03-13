@@ -43,8 +43,25 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.CardViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        Calendar c = shows.get(position).getStartDT();
-        String timeString = String.format(Locale.getDefault(), "Starts at: %02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+        String timeString = "Starts at:";
+        int calCount = shows.get(position).getStartDT().size();
+        Calendar c;
+
+        if (calCount > 1) {
+            for (int i = 0; i < calCount; i++) {
+                c = shows.get(position).getStartDT().get(i);
+                if (i == (calCount - 1)) {
+                    timeString += String.format(Locale.getDefault(), " %02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+                } else {
+                    timeString += String.format(Locale.getDefault(), " %02d:%02d,", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+                }
+
+            }
+        } else {
+            c = shows.get(position).getStartDT().get(0);
+            timeString = String.format(Locale.getDefault(), "Starts at: %02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+        }
+
         holder.textViewTitle.setText(shows.get(position).getTitle());
         holder.textViewStartTime.setText(timeString);
         holder.textViewTheatres.setText(shows.get(position).getLocationAndName());

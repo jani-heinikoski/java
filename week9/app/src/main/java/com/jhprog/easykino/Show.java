@@ -1,28 +1,33 @@
 package com.jhprog.easykino;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Show implements Comparable<Show> {
     private String title;
-    private Calendar startDT;
+    private ArrayList<Calendar> startDT;
     private String locationAndName;
 
-    Show(String title, Calendar startDT, String locationAndName) {
+    Show(String title, ArrayList<Calendar> startDT, String locationAndName) {
         this.title = title;
         this.startDT = startDT;
         this.locationAndName = locationAndName;
     }
 
-    Calendar getStartDT() {
+    public ArrayList<Calendar> getStartDT() {
         return startDT;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
     public String getLocationAndName() {
         return locationAndName;
+    }
+
+    public void addStartDT(Calendar DT) {
+        this.startDT.add(DT);
     }
 
     @Override

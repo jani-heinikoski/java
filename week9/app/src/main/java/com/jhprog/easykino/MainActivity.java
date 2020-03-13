@@ -14,20 +14,24 @@ import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 import com.jhprog.easykino.databinding.ActivityMainBinding;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
     protected ActivityMainBinding binding;
     protected Context context;
-    private TransitionHandler transitionHandler = TransitionHandler.getInstance();
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter recyclerAdapter;
     private ArrayList<Show> shows;
+    private BackgroundWorker backgroundWorker;
+    private ShowChangedObservable sco;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -39,11 +43,16 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(threadPolicy);
 
+        backgroundWorker = BackgroundWorker.getInstance();
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         context = getApplicationContext();
 
         initButtons();
         initRecycler();
+
+        sco = ShowChangedObservable.getInstance();
+        sco.addObserver(this);
 
     }
 
@@ -68,15 +77,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    TransitionHandler.btnEffect(binding.btnSearch);
+                    btnEffect(binding.btnSearch);
                     binding.btnSearch.setPressed(true);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    TransitionHandler.remBtnEffect(binding.btnSearch);
+                    remBtnEffect(binding.btnSearch);
                     binding.btnSearch.setTextColor(getColor(R.color.colorTextPrimary));
                     binding.btnSearch.performClick();
                     binding.btnSearch.setPressed(false);
-                    searchIntent();
+                    if (backgroundWorker.isFinished()) {
+                        searchIntent();
+                    } else {
+                        Toast.makeText(context, "Wait for background worker to finish...", Toast.LENGTH_SHORT).show();
+                    }
+
                     return false;
                 } else {
                     return false;
@@ -86,17 +100,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchIntent() {
-        startActivityForResult(new Intent(this, SearchActivity.class), TransitionHandler.getResultCode());
+        startActivity(new Intent(this, SearchActivity.class));
+    }
+
+    public static void remBtnEffect(Button b) {
+        b.setHeight(b.getHeight() - 25);
+    }
+
+    public static void btnEffect(Button b) {
+        b.setHeight(b.getHeight() + 25);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.shows.clear();
-        this.shows.addAll(transitionHandler.getShows());
+    public void update(Observable o, Object arg) {
+        shows.clear();
+        shows.addAll(backgroundWorker.getShows());
         recyclerAdapter.notifyDataSetChanged();
-        binding.recyclerView.smoothScrollToPosition(0);
     }
-
-
 }

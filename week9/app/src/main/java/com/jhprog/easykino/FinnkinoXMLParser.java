@@ -62,7 +62,7 @@ public class FinnkinoXMLParser {
         return returnData;
     }
 
-    ArrayList<Theatre> getTheatres() throws SAXException, IOException {
+    public ArrayList<Theatre> getTheatres() throws SAXException, IOException {
 
         ArrayList<Theatre> theatres = new ArrayList<>(10);
         ArrayList<Element> data = readXMLbyTagName("https://www.finnkino.fi/xml/TheatreAreas/", "TheatreArea");
@@ -107,7 +107,7 @@ public class FinnkinoXMLParser {
 
     }
 
-    ArrayList<Show> getShows(ArrayList<Theatre> theatresToSearch, String date) throws SAXException, IOException {
+    public ArrayList<Show> getShows(Theatre theatreToSearch, String date) throws SAXException, IOException {
 
         ArrayList<Show> shows = new ArrayList<>();
         ArrayList<Element> data;
@@ -115,28 +115,49 @@ public class FinnkinoXMLParser {
         String showTitle;
         Calendar showStartDT;
         String theatreLocAndName;
+        boolean found = false;
 
-        for (Theatre t : theatresToSearch) {
-            if (t == null || t.getName().equals("All")) {
-                continue;
-            }
-            url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s/", t.getID(), date);
-            data = readXMLbyTagName(url, "Show");
-            if (!data.isEmpty()) {
-                for (Element e : data) {
-                    try {
-                        // Parsing Show's title, start datetime, theatre location and name.
-                        showStartDT = parseDateTime(e.getElementsByTagName("dttmShowStart").item(0).getTextContent().trim());
-                        showTitle = e.getElementsByTagName("Title").item(0).getTextContent().trim();
-                        theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
-                        // Validating values
-                        if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
-                            shows.add(new Show(showTitle, showStartDT, theatreLocAndName));
+        if (theatreToSearch == null || theatreToSearch.getName().equals("All")) {
+            return null;
+        }
+        url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s/", theatreToSearch.getID(), date);
+        data = readXMLbyTagName(url, "Show");
+        if (!data.isEmpty()) {
+            for (Element e : data) {
+                try {
+                    // Parsing Show's title, start datetime, theatre location and name.
+                    showStartDT = parseDateTime(e.getElementsByTagName("dttmShowStart").item(0).getTextContent().trim());
+                    showTitle = e.getElementsByTagName("Title").item(0).getTextContent().trim();
+                    theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
+                    // Validating values
+                    if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
+
+                        if (shows.size() > 1) {
+                            found = false;
+
+                            for (Show s : shows) {
+                                if (s.getTitle().equals(showTitle) && s.getLocationAndName().equals(theatreLocAndName)) {
+                                    s.addStartDT(showStartDT);
+                                    found = true;
+                                }
+                            }
+
+                            if (!found) {
+                                ArrayList<Calendar> calendars = new ArrayList<>();
+                                calendars.add(showStartDT);
+                                shows.add(new Show(showTitle, calendars, theatreLocAndName));
+                            }
+
+                        } else {
+                            ArrayList<Calendar> calendars = new ArrayList<>();
+                            calendars.add(showStartDT);
+                            shows.add(new Show(showTitle, calendars, theatreLocAndName));
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        System.out.println("LOGGER: Unknown Exception thrown: " + ex.getMessage());
+
                     }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("LOGGER: Unknown Exception thrown: " + ex.getMessage());
                 }
             }
         }
@@ -145,17 +166,6 @@ public class FinnkinoXMLParser {
             Collections.sort(shows);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-
-        for (Show s : shows) { // TODO: remove this
-            System.out.println("LOGGER: "  + s.getTitle() + " " +
-                    s.getStartDT().get(Calendar.DAY_OF_MONTH) + "." +
-                    s.getStartDT().get(Calendar.MONTH) + "." +
-                    s.getStartDT().get(Calendar.YEAR) + " " +
-                    s.getStartDT().get(Calendar.HOUR_OF_DAY) + ":" +
-                    s.getStartDT().get(Calendar.MINUTE) + " || " +
-                    s.getLocationAndName()
-            );
         }
 
         return shows;
