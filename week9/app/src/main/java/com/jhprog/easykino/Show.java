@@ -30,6 +30,10 @@ public class Show implements Comparable<Show> {
         this.startDT.add(DT);
     }
 
+    public void remStartDT(Calendar DT) {
+        this.startDT.remove(DT);
+    }
+
     @Override
     public int compareTo(Show o) {
         return this.title.compareTo(o.getTitle());

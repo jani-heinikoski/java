@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class BackgroundWorker {
 
@@ -60,6 +61,7 @@ public class BackgroundWorker {
             finished = false;
             ArrayList<Theatre> theatresToSearch = new ArrayList<>();
             FinnkinoXMLParser parser = FinnkinoXMLParser.getInstance();
+            boolean doesTimeMatter = timeMatters();
             shows.clear();
 
             StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -83,6 +85,7 @@ public class BackgroundWorker {
             }
 
             ArrayList<Show> gottenShows;
+            ArrayList<Show> parsedShows;
             Handler handler = new Handler(Looper.getMainLooper());
 
             if (theatresToSearch != null) {
@@ -93,6 +96,12 @@ public class BackgroundWorker {
                     try {
                         gottenShows = parser.getShows(t, showFormData.getDateString());
                         if (gottenShows != null) {
+                            if (doesTimeMatter) {
+                                // If time matters, then we want to remove the elements whose time don't match
+
+
+                            }
+
                             shows.addAll(gottenShows);
                             handler.post(new Runnable() {
                                 @Override
@@ -101,9 +110,6 @@ public class BackgroundWorker {
                                     sco.iChanged();
                                 }
                             });
-
-                        } else {
-                            continue;
                         }
                     } catch (SAXException | IOException e) {
                         e.printStackTrace();
@@ -112,6 +118,45 @@ public class BackgroundWorker {
             }
 
             finished = true;
+        }
+
+        private boolean timeMatches(Calendar c) {
+            Calendar startCal, endCal;
+            startCal = Calendar.getInstance();
+            endCal = Calendar.getInstance();
+
+            startCal.clear();
+            endCal.clear();
+
+            startCal.set(
+                    c.get(Calendar.YEAR),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.DATE),
+                    showFormData.getStartHour(),
+                    showFormData.getStartMinute()
+            );
+
+            endCal.set(
+                    c.get(Calendar.YEAR),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.DATE),
+                    showFormData.getEndHour(),
+                    showFormData.getEndMinute()
+            );
+
+            if (c.compareTo(startCal) >= 0 && c.compareTo(endCal) <= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private boolean timeMatters() {
+            if (showFormData.getStartHour() == showFormData.getEndHour() && showFormData.getStartMinute() == showFormData.getEndMinute()) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         // Find the theatre whose name and location match selected ones
