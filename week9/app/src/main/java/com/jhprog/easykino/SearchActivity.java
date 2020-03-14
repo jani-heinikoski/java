@@ -153,6 +153,7 @@ public class SearchActivity extends AppCompatActivity {
                 binding.spinnerTheatres.getSelectedItem().toString(),
                 binding.spinnerLocations.getSelectedItem().toString(),
                 date,
+                binding.movieNameEtext.getText().toString(),
                 binding.startTimePicker.getHour(),
                 binding.startTimePicker.getMinute(),
                 binding.endTimePicker.getHour(),

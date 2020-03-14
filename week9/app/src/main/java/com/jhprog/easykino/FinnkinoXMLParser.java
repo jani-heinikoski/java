@@ -107,7 +107,7 @@ public class FinnkinoXMLParser {
 
     }
 
-    public ArrayList<Show> getShows(Theatre theatreToSearch, SearchFormData searchFormData, boolean timeMatters) throws SAXException, IOException {
+    public ArrayList<Show> getShows(Theatre theatreToSearch, SearchFormData searchFormData, boolean timeMatters, boolean movieNameMatters) throws SAXException, IOException {
 
         String date = searchFormData.getDateString();
         ArrayList<Show> shows = new ArrayList<>();
@@ -134,6 +134,10 @@ public class FinnkinoXMLParser {
                     if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
                         // If time matters and time doesn't match criteria we want to skip the whole element
                         if (timeMatters && !timeMatches(showStartDT, searchFormData)) {
+                            continue;
+                        }
+
+                        if (movieNameMatters && !movieMatches(showTitle, searchFormData.getMovieName())) {
                             continue;
                         }
 
@@ -175,6 +179,23 @@ public class FinnkinoXMLParser {
 
         return shows;
         
+    }
+
+    private boolean movieMatches(String showTitle, String searchTitle) {
+
+        if (showTitle == null || searchTitle == null || showTitle.trim().isEmpty() || searchTitle.trim().isEmpty()) {
+            return false;
+        }
+
+        String first = showTitle.toLowerCase().trim();
+        String second = searchTitle.toLowerCase().trim();
+
+        if (first.contains(second) || first.equals(second)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     private boolean timeMatches(Calendar c, SearchFormData searchFormData) {

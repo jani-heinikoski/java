@@ -91,7 +91,7 @@ public class BackgroundWorker {
                         continue;
                     }
                     try {
-                        gottenShows = parser.getShows(t, searchFormData, timeMatters());
+                        gottenShows = parser.getShows(t, searchFormData, timeMatters(), movieNameMatters());
                         if (gottenShows != null) {
                             shows.addAll(gottenShows);
                             handler.post(new Runnable() {
@@ -109,6 +109,14 @@ public class BackgroundWorker {
             }
 
             finished = true;
+        }
+
+        private boolean movieNameMatters() {
+            if (searchFormData.getDateString() == null || searchFormData.getMovieName().trim().isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         private boolean timeMatters() {
