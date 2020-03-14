@@ -198,6 +198,38 @@
                     android:translationZ="8dp">
                 </TimePicker>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/movie_name_header"
+                    android:textColor="@color/colorTextSecondary"
+                    android:layout_below="@+id/end_time_picker"
+                    android:layout_alignStart="@+id/end_time_picker"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/movie_name_header_text"
+                    android:textSize="30sp">
+                </TextView>
+
+                <EditText
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/movie_name_etext"
+                    android:layout_below="@+id/movie_name_header"
+                    android:layout_alignStart="@+id/movie_name_header"
+                    android:layout_marginEnd="10dp"
+                    android:minHeight="100dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorTextPrimary"
+                    android:lines="3"
+                    android:maxLines="3"
+                    android:maxLength="75"
+                    android:gravity="top|left"
+                    android:translationZ="4dp"
+                    android:elevation="4dp">
+                </EditText>
+
             </RelativeLayout>
 
         </ScrollView>

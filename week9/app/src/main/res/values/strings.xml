@@ -12,4 +12,5 @@
     <string name="show_item_theatres_title_text">In Theatres:</string>
     <string name="show_item_theatres_text">Kinopalatsi, Helsinki</string>
     <string name="show_item_time_text">Starts at: 10:50</string>
+    <string name="movie_name_header_text">Movie name</string>
 </resources>
