@@ -1,3 +1,8 @@
+/*
+Author: Jani Heinikoski
+Date: 14.3.2020
+Version: 1.0
+ */
 package com.jhprog.mybrowser;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,18 +11,14 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
-
 import com.jhprog.mybrowser.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 String url = parseURL();
                 int i;
                 if (!url.isEmpty()) {
+                    if (url.equals("index.html")) {
+                        url = startURL;
+                    }
                     currentURL = url;
                     if (iterator != null) {
                         if (iterator.hasNext()) {
