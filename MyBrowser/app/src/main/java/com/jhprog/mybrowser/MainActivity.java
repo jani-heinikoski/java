@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski
 Date: 14.3.2020
-Version: 1.0
+Version: 1.1
  */
 package com.jhprog.mybrowser;
 
@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private ListIterator iterator;
     private ActivityMainBinding binding;
     private ArrayList<String> searchHistory;
-    Animation anim;
+    private boolean clicked;
+    private Animation anim;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         iterator = null;
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_scale_down);
         currentURL = startURL;
+        clicked = false;
 
 
         initWebView();
@@ -74,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 String url = parseURL();
                 int i;
                 if (!url.isEmpty()) {
-                    if (url.equals("index.html")) {
-                        url = startURL;
-                    }
                     currentURL = url;
                     if (iterator != null) {
                         if (iterator.hasNext()) {
@@ -111,6 +110,31 @@ public class MainActivity extends AppCompatActivity {
                 forward();
             }
         });
+
+        binding.refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.refreshButton.startAnimation(anim);
+                binding.webView.loadUrl(currentURL);
+            }
+        });
+
+        binding.invokeJavascriptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.invokeJavascriptButton.startAnimation(anim);
+                if (currentURL.equals(startURL)) {
+                    if (clicked) {
+                        binding.webView.evaluateJavascript("javascript:initialize()", null);
+                        clicked = false;
+                    } else {
+                        binding.webView.evaluateJavascript("javascript:shoutOut()", null);
+                        clicked = true;
+                    }
+
+                }
+            }
+        });
     }
 
     private String parseURL() {
@@ -122,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
             if (url.contains("http://")) {
                 return url;
             } else {
+                if (url.equals("index.html")) {
+                    return startURL;
+                }
                 return String.format(Locale.getDefault(),"http://%s", url);
             }
         }
