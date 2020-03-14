@@ -1,6 +1,6 @@
 package com.jhprog.easykino;
 
-public class ShowFormData {
+public class SearchFormData {
     private String selectedTheatre;
     private String selectedLocation;
     private String dateString;
@@ -9,7 +9,7 @@ public class ShowFormData {
     private int endHour;
     private int endMinute;
 
-    public ShowFormData(String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
+    public SearchFormData(String selectedTheatre, String selectedLocation, String dateString, int startHour, int startMinute, int endHour, int endMinute) {
         this.selectedTheatre = selectedTheatre;
         this.selectedLocation = selectedLocation;
         this.dateString = dateString;

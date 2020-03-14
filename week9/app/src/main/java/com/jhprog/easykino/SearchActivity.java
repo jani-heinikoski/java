@@ -10,17 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.jhprog.easykino.databinding.ActivitySearchBinding;
-import org.xml.sax.SAXException;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-
-import javax.xml.parsers.ParserConfigurationException;
 
 public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
@@ -154,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        backgroundWorker.searchShows(new ShowFormData(
+        backgroundWorker.searchShows(new SearchFormData(
                 binding.spinnerTheatres.getSelectedItem().toString(),
                 binding.spinnerLocations.getSelectedItem().toString(),
                 date,

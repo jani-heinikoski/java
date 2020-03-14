@@ -107,8 +107,9 @@ public class FinnkinoXMLParser {
 
     }
 
-    public ArrayList<Show> getShows(Theatre theatreToSearch, String date) throws SAXException, IOException {
+    public ArrayList<Show> getShows(Theatre theatreToSearch, SearchFormData searchFormData, boolean timeMatters) throws SAXException, IOException {
 
+        String date = searchFormData.getDateString();
         ArrayList<Show> shows = new ArrayList<>();
         ArrayList<Element> data;
         String url;
@@ -131,23 +132,27 @@ public class FinnkinoXMLParser {
                     theatreLocAndName = e.getElementsByTagName("Theatre").item(0).getTextContent().trim();
                     // Validating values
                     if (!showTitle.isEmpty() && !theatreLocAndName.isEmpty() && showStartDT != null) {
+                        // If time matters and time doesn't match criteria we want to skip the whole element
+                        if (timeMatters && !timeMatches(showStartDT, searchFormData)) {
+                            continue;
+                        }
 
-                        if (shows.size() > 1) {
+                        if (shows.size() > 0) {
                             found = false;
-
+                            // Just add a new starting time if show is already listed
                             for (Show s : shows) {
                                 if (s.getTitle().equals(showTitle) && s.getLocationAndName().equals(theatreLocAndName)) {
                                     s.addStartDT(showStartDT);
                                     found = true;
                                 }
                             }
-
+                            // If not listed, create a new one
                             if (!found) {
                                 ArrayList<Calendar> calendars = new ArrayList<>();
                                 calendars.add(showStartDT);
                                 shows.add(new Show(showTitle, calendars, theatreLocAndName));
                             }
-
+                        // Create a new show if none have been found yet.
                         } else {
                             ArrayList<Calendar> calendars = new ArrayList<>();
                             calendars.add(showStartDT);
@@ -170,6 +175,37 @@ public class FinnkinoXMLParser {
 
         return shows;
         
+    }
+
+    private boolean timeMatches(Calendar c, SearchFormData searchFormData) {
+        Calendar startCal, endCal;
+        startCal = Calendar.getInstance();
+        endCal = Calendar.getInstance();
+
+        startCal.clear();
+        endCal.clear();
+
+        startCal.set(
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DATE),
+                searchFormData.getStartHour(),
+                searchFormData.getStartMinute()
+        );
+
+        endCal.set(
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DATE),
+                searchFormData.getEndHour(),
+                searchFormData.getEndMinute()
+        );
+
+        if (c.compareTo(startCal) >= 0 && c.compareTo(endCal) <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Nullable
