@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski
 Date: 14.3.2020
-Version: 1.1
+Version: 1.2
  */
 package com.jhprog.mybrowser;
 
@@ -165,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
             String url = iterator.previous().toString();
             if (url.equals(currentURL) && iterator.hasPrevious()) {
                 url = iterator.previous().toString();
+                if (url.equals(currentURL) && iterator.hasPrevious()) {
+                    url = iterator.previous().toString();
+                }
             }
             System.out.println("LOGGER: Pressed back: " + url);
             binding.webView.loadUrl(url);
@@ -186,6 +189,9 @@ public class MainActivity extends AppCompatActivity {
             String url = iterator.next().toString();
             if (currentURL.equals(url) && iterator.hasNext()) {
                 url = iterator.next().toString();
+                if(currentURL.equals(url) && iterator.hasNext()) {
+                    url = iterator.next().toString();
+                }
             }
             System.out.println("LOGGER: Pressed forward: " + url);
             binding.webView.loadUrl(url);
