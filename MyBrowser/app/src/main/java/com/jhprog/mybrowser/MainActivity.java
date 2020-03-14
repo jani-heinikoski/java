@@ -9,6 +9,8 @@ import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ListIterator iterator;
     private ActivityMainBinding binding;
     private ArrayList<String> searchHistory;
+    Animation anim;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         searchHistory = new ArrayList<>();
         searchHistory.add(startURL);
         iterator = null;
-        //iterator.next();
+        anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_scale_down);
         currentURL = startURL;
 
 
@@ -66,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         binding.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.searchButton.startAnimation(anim);
                 String url = parseURL();
                 int i;
-
                 if (!url.isEmpty()) {
                     currentURL = url;
                     if (iterator != null) {
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         searchHistory.add(url);
                     }
-
                     binding.webView.loadUrl(url);
+                    currentURL = url;
                 }
             }
         });
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.backButton.startAnimation(anim);
                 back();
             }
         });
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         binding.forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.forwardButton.startAnimation(anim);
                 forward();
             }
         });
@@ -127,8 +132,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (iterator.hasPrevious()) {
             String url = iterator.previous().toString();
+            if (url.equals(currentURL) && iterator.hasPrevious()) {
+                url = iterator.previous().toString();
+            }
             System.out.println("LOGGER: Pressed back: " + url);
             binding.webView.loadUrl(url);
+            currentURL = url;
         }
 
         for (String s : searchHistory) {
@@ -144,8 +153,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (iterator.hasNext()) {
             String url = iterator.next().toString();
+            if (currentURL.equals(url) && iterator.hasNext()) {
+                url = iterator.next().toString();
+            }
             System.out.println("LOGGER: Pressed forward: " + url);
             binding.webView.loadUrl(url);
+            currentURL = url;
         }
     }
 
