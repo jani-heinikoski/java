@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski
 Date: 14.3.2020
-Version: 1.2
+Version: 1.3 [first working]
  */
 package com.jhprog.mybrowser;
 
@@ -18,17 +18,13 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebViewClient;
 import com.jhprog.mybrowser.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private final String startURL = "file:///android_asset/index.html";
-    private String currentURL;
-    private ListIterator iterator;
     private ActivityMainBinding binding;
-    private ArrayList<String> searchHistory;
+    private SearchHistory searchHistory;
     private boolean clicked;
     private Animation anim;
 
@@ -47,13 +43,9 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        searchHistory = new ArrayList<>();
+        searchHistory = new SearchHistory();
         searchHistory.add(startURL);
-        iterator = null;
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_scale_down);
-        currentURL = startURL;
-        clicked = false;
-
 
         initWebView();
         initButtons();
@@ -74,24 +66,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.searchButton.startAnimation(anim);
                 String url = parseURL();
-                int i;
                 if (!url.isEmpty()) {
-                    currentURL = url;
-                    if (iterator != null) {
-                        if (iterator.hasNext()) {
-                            i = iterator.nextIndex();
-                            for (int j = i; j < searchHistory.size(); j++) {
-                                searchHistory.remove(j);
-                            }
-                        }
-                        iterator = null;
-                        searchHistory.add(url);
-                    } else {
-                        searchHistory.add(url);
-                    }
+                    searchHistory.add(url);
                     binding.webView.loadUrl(url);
-                    currentURL = url;
                 }
+
             }
         });
 
@@ -115,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.refreshButton.startAnimation(anim);
-                binding.webView.loadUrl(currentURL);
+                binding.webView.loadUrl(searchHistory.getCurrentURL());
             }
         });
 
@@ -123,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.invokeJavascriptButton.startAnimation(anim);
-                if (currentURL.equals(startURL)) {
+                if (searchHistory.getCurrentURL().equals(startURL)) {
                     if (clicked) {
                         binding.webView.evaluateJavascript("javascript:initialize()", null);
                         clicked = false;
@@ -156,46 +135,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void back() {
-
-        if (iterator == null) {
-            iterator = searchHistory.listIterator(searchHistory.size());
-        }
-
-        if (iterator.hasPrevious()) {
-            String url = iterator.previous().toString();
-            if (url.equals(currentURL) && iterator.hasPrevious()) {
-                url = iterator.previous().toString();
-                if (url.equals(currentURL) && iterator.hasPrevious()) {
-                    url = iterator.previous().toString();
-                }
-            }
-            System.out.println("LOGGER: Pressed back: " + url);
-            binding.webView.loadUrl(url);
-            currentURL = url;
-        }
-
-        for (String s : searchHistory) {
-            System.out.println(s);
+        if (searchHistory.hasPrevious()) {
+            binding.webView.loadUrl(searchHistory.previous());
         }
     }
 
     private void forward() {
-
-        if (iterator == null) {
-            iterator = searchHistory.listIterator(0);
-        }
-
-        if (iterator.hasNext()) {
-            String url = iterator.next().toString();
-            if (currentURL.equals(url) && iterator.hasNext()) {
-                url = iterator.next().toString();
-                if(currentURL.equals(url) && iterator.hasNext()) {
-                    url = iterator.next().toString();
-                }
-            }
-            System.out.println("LOGGER: Pressed forward: " + url);
-            binding.webView.loadUrl(url);
-            currentURL = url;
+        if (searchHistory.hasNext()) {
+            binding.webView.loadUrl(searchHistory.next());
         }
     }
 
@@ -203,4 +150,5 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         back();
     }
+
 }
