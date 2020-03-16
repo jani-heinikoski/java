@@ -1,3 +1,8 @@
+/*
+Author: Jani Heinikoski | 0541122
+Date: 15.3.2020
+Version: 1.4
+ */
 package com.jhprog.menudemo;
 
 import android.os.Bundle;
@@ -21,14 +26,12 @@ public class MainFragment extends Fragment {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        binding.changeTextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.changeTextButton.setText(getString(R.string.app_name));
-            }
-        });
-
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 }

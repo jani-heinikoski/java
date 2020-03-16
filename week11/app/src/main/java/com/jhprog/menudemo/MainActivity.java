@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.3
+Version: 1.4
  */
 
 package com.jhprog.menudemo;
@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         binding.mainDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        setTitle("Main View");
+
         initFragments();
         initNavButtons();
     }
@@ -69,9 +71,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (getSupportFragmentManager().findFragmentByTag("main") != null) {
                             getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
+                            mainFragment.onResume();
                         } else {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment, "main");
                         }
+                        binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                        setTitle("Main View");
                         break;
                     case R.id.nav_settings:
                         if (getSupportFragmentManager().findFragmentByTag("main") != null) {
@@ -79,9 +84,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (getSupportFragmentManager().findFragmentByTag("settings") != null) {
                             getSupportFragmentManager().beginTransaction().show(settingsFragment).commit();
+                            settingsFragment.onResume();
                         } else {
-                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, settingsFragment, "main");
+                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, settingsFragment, "settings");
                         }
+                        binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                        setTitle("Settings");
                         break;
                     case R.id.nav_close:
                         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
@@ -92,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        binding.navigation.setCheckedItem(R.id.nav_main);
     }
 
     @Override

@@ -2,22 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray">
+    android:background="@color/white">
 
     <TextView
+        android:id="@+id/main_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="HELLO WORLD! MAIN"
-        android:textSize="40sp" />
+        android:text="@string/main_fragment_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/changeTextButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="XD"
-        android:textSize="38sp"/>
 
 </RelativeLayout>
