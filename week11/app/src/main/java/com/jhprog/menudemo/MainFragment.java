@@ -76,8 +76,12 @@ public class MainFragment extends Fragment {
         viewModel.getTextEditable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                // TODO FIX THIS BULLSHIT
                 if (aBoolean) {
                     binding.mainEdittext.setFocusableInTouchMode(true);
+                } else {
+                    binding.mainEdittext.setFocusableInTouchMode(false);
+                    binding.mainEdittext.clearFocus();
                 }
                 binding.mainEdittext.setFocusable(aBoolean);
             }
