@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.7
+Version: 1.8
  */
 package com.jhprog.menudemo;
 
@@ -27,6 +27,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
+        // TODO edittext changed listener
+
         return binding.getRoot();
     }
 
@@ -68,6 +70,23 @@ public class MainFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 binding.mainTextview.setAllCaps(aBoolean);
+            }
+        });
+
+        viewModel.getTextEditable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    binding.mainEdittext.setFocusableInTouchMode(true);
+                }
+                binding.mainEdittext.setFocusable(aBoolean);
+            }
+        });
+
+        viewModel.getEditText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.mainTextview.setText(s);
             }
         });
     }

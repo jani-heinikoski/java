@@ -73,6 +73,13 @@ public class SettingsFragment extends Fragment {
                 viewModel.setTextAllCaps(isChecked);
             }
         });
+
+        binding.editableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                viewModel.setTextEditable(isChecked);
+            }
+        });
     }
 
     private void initFonts() {
