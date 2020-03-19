@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -21,9 +23,10 @@ import com.jhprog.menudemo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
-    MainFragment mainFragment;
-    SettingsFragment settingsFragment;
+    private ActivityMainBinding binding;
+    private MainFragment mainFragment;
+    private SettingsFragment settingsFragment;
+    private SharedViewModel viewModel;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.mainDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
         setTitle("Main View");
 
@@ -71,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (getSupportFragmentManager().findFragmentByTag("main") != null) {
                             getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-                            mainFragment.onResume();
                         } else {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment, "main");
                         }
@@ -84,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (getSupportFragmentManager().findFragmentByTag("settings") != null) {
                             getSupportFragmentManager().beginTransaction().show(settingsFragment).commit();
-                            settingsFragment.onResume();
                         } else {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, settingsFragment, "settings");
                         }

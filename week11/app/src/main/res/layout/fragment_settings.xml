@@ -5,24 +5,48 @@
     android:background="@color/white">
 
     <TextView
+        android:id="@+id/font_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/font_size_spinner"
-        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:text="Font size:"
         android:textColor="@color/black"
-        android:textSize="28sp" />
-
+        android:textSize="24sp" />
 
     <Spinner
         android:id="@+id/font_size_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/font_header"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_stroke"
+        android:elevation="4dp"
+        android:minWidth="150dp"
+        android:minHeight="50dp" />
+
+    <TextView
+        android:id="@+id/color_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/font_color_spinner"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:text="Font color:"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/font_color_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/color_header"
         android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/spinner_stroke"
