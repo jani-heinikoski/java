@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.6
+Version: 1.7
  */
 package com.jhprog.menudemo;
 
@@ -64,6 +64,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 viewModel.setTextVisible(isChecked);
+            }
+        });
+
+        binding.allCapsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                viewModel.setTextAllCaps(isChecked);
             }
         });
     }
@@ -156,7 +163,6 @@ public class SettingsFragment extends Fragment {
         }
 
         return getActivity().getColor(color);
-
     }
 
 }

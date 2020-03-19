@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.6
+Version: 1.7
  */
 package com.jhprog.menudemo;
 
@@ -27,9 +27,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -63,6 +61,13 @@ public class MainFragment extends Fragment {
                 } else {
                     binding.mainTextview.setVisibility(View.INVISIBLE);
                 }
+            }
+        });
+
+        viewModel.getTextAllCaps().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                binding.mainTextview.setAllCaps(aBoolean);
             }
         });
     }

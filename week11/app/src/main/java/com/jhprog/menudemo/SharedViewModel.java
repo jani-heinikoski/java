@@ -13,6 +13,11 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<Integer> fontSize = new MutableLiveData<>();
     private MutableLiveData<Integer> fontColor = new MutableLiveData<>();
     private MutableLiveData<Boolean> textVisible = new MutableLiveData<>();
+    private MutableLiveData<Boolean> textAllCaps = new MutableLiveData<>();
+
+    public void setTextAllCaps(boolean allCaps) {
+        this.textAllCaps.setValue(allCaps);
+    }
 
     public void setTextVisible(boolean checked) {
         this.textVisible.setValue(checked);
@@ -24,6 +29,10 @@ public class SharedViewModel extends ViewModel {
 
     public void setFontSize(int fontSize) {
         this.fontSize.setValue(fontSize);
+    }
+
+    public LiveData<Boolean> getTextAllCaps() {
+        return textAllCaps;
     }
 
     public LiveData<Boolean> getTextVisible() {
