@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.5
+Version: 1.6
  */
 package com.jhprog.menudemo;
 
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +50,22 @@ public class SettingsFragment extends Fragment {
         initFonts();
         initColors();
         initSpinners();
+        initSwitches();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+    }
+
+    private void initSwitches() {
+        binding.visibleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                viewModel.setTextVisible(isChecked);
+            }
+        });
     }
 
     private void initFonts() {
@@ -89,7 +106,7 @@ public class SettingsFragment extends Fragment {
                 viewModel.setFontColor(R.color.navy);
             }
         });
-
+        // Item selected listener for font size spinner
         binding.fontSizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -103,13 +120,7 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-    }
-
-    public int getFontSize() {
+    private int getFontSize() {
         int fontSize;
         String chosenElement;
         Object element = binding.fontSizeSpinner.getSelectedItem();
@@ -122,7 +133,7 @@ public class SettingsFragment extends Fragment {
         return fontSize;
     }
 
-    public int getColour() {
+    private int getColour() {
         int color;
         String chosenElement;
         Object element = binding.fontColorSpinner.getSelectedItem();

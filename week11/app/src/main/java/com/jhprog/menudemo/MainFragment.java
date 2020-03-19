@@ -1,7 +1,7 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.5
+Version: 1.6
  */
 package com.jhprog.menudemo;
 
@@ -51,6 +51,17 @@ public class MainFragment extends Fragment {
             public void onChanged(Integer integer) {
                 if (integer != null) {
                     binding.mainTextview.setTextSize(integer);
+                }
+            }
+        });
+
+        viewModel.getTextVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    binding.mainTextview.setVisibility(View.VISIBLE);
+                } else {
+                    binding.mainTextview.setVisibility(View.INVISIBLE);
                 }
             }
         });

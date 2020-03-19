@@ -54,4 +54,25 @@
         android:minWidth="150dp"
         android:minHeight="50dp" />
 
+    <TextView
+        android:id="@+id/visible_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/font_size_spinner"
+        android:layout_alignStart="@+id/font_size_spinner"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:text="Visible:"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <Switch
+        android:id="@+id/visible_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/visible_header"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@id/visible_header"
+        android:checked="true" />
+
 </RelativeLayout>
