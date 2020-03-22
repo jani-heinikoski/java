@@ -1,13 +1,12 @@
 /*
 Author: Jani Heinikoski | 0541122
 Date: 15.3.2020
-Version: 1.8
+Version: 1.9
  */
 package com.jhprog.menudemo;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +113,18 @@ public class MainFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 binding.mainTextview.setText(s);
+            }
+        });
+
+        viewModel.getDisplayText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null && !s.trim().isEmpty()) {
+                    binding.displayTextview.setText(s);
+                    binding.displayTextview.setVisibility(View.VISIBLE);
+                } else {
+                    binding.displayTextview.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }

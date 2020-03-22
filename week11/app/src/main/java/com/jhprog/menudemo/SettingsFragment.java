@@ -40,7 +40,6 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
         return view;
     }
 
@@ -51,12 +50,22 @@ public class SettingsFragment extends Fragment {
         initColors();
         initSpinners();
         initSwitches();
+        initButtons();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+    }
+
+    private void initButtons() {
+        binding.applyDisplayText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.setDisplayText(binding.titleEdittext.getText().toString());
+            }
+        });
     }
 
     private void initSwitches() {

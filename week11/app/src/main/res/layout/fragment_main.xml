@@ -40,5 +40,16 @@
         android:text="@string/main_fragment_text"
         android:textSize="24sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_textview"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:text="Hello world!"
+        android:visibility="invisible" />
 
 </RelativeLayout>

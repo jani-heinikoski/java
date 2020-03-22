@@ -130,16 +130,16 @@
         android:layout_alignBaseline="@id/title_edittext"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Title:"
+        android:text="Display text:"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/title_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/group_sep"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="140dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:lines="1"
@@ -149,20 +149,20 @@
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/apply_title"
+        android:id="@+id/apply_display_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_edittext"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="24dp"
-        android:text="Apply Title"
+        android:text="Apply text"
         android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/group_sep2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/apply_title"
+        android:layout_below="@id/apply_display_text"
         android:layout_marginTop="24dp"
         android:background="@color/black" />
 

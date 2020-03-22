@@ -16,9 +16,10 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<Boolean> textAllCaps = new MutableLiveData<>();
     private MutableLiveData<Boolean> textEditable = new MutableLiveData<>();
     private MutableLiveData<String> editText = new MutableLiveData<>();
+    private MutableLiveData<String> displayText = new MutableLiveData<>();
 
-    private void setEditText(String s) {
-        editText.setValue(s);
+    public void setDisplayText(String s) {
+        this.displayText.setValue(s);
     }
 
     public void setTextEditable(boolean editable) {
@@ -39,6 +40,10 @@ public class SharedViewModel extends ViewModel {
 
     public void setFontSize(int fontSize) {
         this.fontSize.setValue(fontSize);
+    }
+
+    public LiveData<String> getDisplayText() {
+        return displayText;
     }
 
     public LiveData<String> getEditText() {
