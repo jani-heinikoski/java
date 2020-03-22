@@ -116,11 +116,55 @@
         android:checked="false" />
 
     <ImageView
+        android:id="@+id/group_sep"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/black"
         android:layout_below="@id/editable_header"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/title_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/title_edittext"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Title:"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/title_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_sep"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:lines="1"
+        android:maxEms="35"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/apply_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_edittext"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="Apply Title"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/group_sep2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/apply_title"
+        android:layout_marginTop="24dp"
+        android:background="@color/black" />
 
 
 </RelativeLayout>
