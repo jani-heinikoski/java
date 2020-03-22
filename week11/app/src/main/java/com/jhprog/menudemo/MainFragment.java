@@ -6,6 +6,9 @@ Version: 1.8
 package com.jhprog.menudemo;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,25 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         // TODO edittext changed listener
+        binding.mainEdittext.setEnabled(false);
+        binding.mainEdittext.setFocusable(false);
+
+        binding.mainEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Nothing to do.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.mainTextview.setText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Nothing to do.
+            }
+        });
 
         return binding.getRoot();
     }
@@ -76,12 +98,13 @@ public class MainFragment extends Fragment {
         viewModel.getTextEditable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                // TODO FIX THIS BULLSHIT
                 if (aBoolean) {
+                    binding.mainEdittext.setEnabled(true);
+                    binding.mainEdittext.setFocusable(true);
                     binding.mainEdittext.setFocusableInTouchMode(true);
                 } else {
-                    binding.mainEdittext.setFocusableInTouchMode(false);
-                    binding.mainEdittext.clearFocus();
+                    binding.mainEdittext.setEnabled(false);
+                    binding.mainEdittext.setFocusable(false);
                 }
                 binding.mainEdittext.setFocusable(aBoolean);
             }
