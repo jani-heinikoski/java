@@ -3,4 +3,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="main_fragment_text">Luo tekstikenttä, johon syötät vähintään 50 merkkiä tekstiä.</string>
+    <string name="enable_editing">Enable editing in settings.</string>
+    <string name="supported_languages">Supported languages: english, finnish (suomi)</string>
+    <string name="apply_button_text">Apply text</string>
+    <string name="display_text">Display text: </string>
+    <string name="text_editable">Text editable: </string>
+    <string name="all_caps">All caps: </string>
+    <string name="visible">Visible: </string>
+    <string name="font_color">Font Color:</string>
+    <string name="font_size">Font Size:</string>
 </resources>

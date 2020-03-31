@@ -29,7 +29,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
-        // TODO edittext changed listener
+
         binding.mainEdittext.setEnabled(false);
         binding.mainEdittext.setFocusable(false);
 
