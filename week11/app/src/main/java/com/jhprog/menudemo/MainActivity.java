@@ -21,6 +21,8 @@ import android.view.Window;
 import com.google.android.material.navigation.NavigationView;
 import com.jhprog.menudemo.databinding.ActivityMainBinding;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -46,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        System.out.println("LOGGER: " + Locale.getDefault().getISO3Language());
 
-        setTitle("Main View");
+        if (Locale.getDefault().getISO3Language().equals("fin")) {
+            setTitle("Päänäkymä");
+        } else {
+            setTitle("Main View");
+        }
 
         initFragments();
         initNavButtons();
@@ -80,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment, "main");
                         }
                         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                        setTitle("Main View");
+                        if (Locale.getDefault().getISO3Language().equals("fin")) {
+                            setTitle("Päänäkymä");
+                        } else {
+                            setTitle("Main View");
+                        }
                         break;
                     case R.id.nav_settings:
                         if (getSupportFragmentManager().findFragmentByTag("main") != null) {
@@ -92,7 +103,11 @@ public class MainActivity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, settingsFragment, "settings");
                         }
                         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                        setTitle("Settings");
+                        if (Locale.getDefault().getISO3Language().equals("fin")) {
+                            setTitle("Asetukset");
+                        } else {
+                            setTitle("Settings");
+                        }
                         break;
                     case R.id.nav_close:
                         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);

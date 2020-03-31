@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Menu Demo</string>
+    <string name="navigation_drawer_open">Avaa navigaatiopaneeli</string>
+    <string name="navigation_drawer_close">Sulje navigaatiopaneeli</string>
+    <string name="main_fragment_text">Luo tekstikenttä, johon syötät vähintään 50 merkkiä tekstiä.</string>
+    <string name="enable_editing">Salli muokkaus asetuksissa.</string>
+    <string name="supported_languages">Tuetut kielet: englanti (english), suomi</string>
+    <string name="apply_button_text">Aseta teksti</string>
+    <string name="display_text">Näytä teksti: </string>
+    <string name="text_editable">Teksti muokattava: </string>
+    <string name="all_caps">Kaikki caps: </string>
+    <string name="visible">Näkyvä: </string>
+    <string name="font_color">Fontin väri:</string>
+    <string name="font_size">Fontin koko:</string>
+    <string name="close_menu">Sulje menu</string>
+    <string name="main_view">Päänäkymä</string>
+    <string name="settings">Asetukset</string>
+</resources>
