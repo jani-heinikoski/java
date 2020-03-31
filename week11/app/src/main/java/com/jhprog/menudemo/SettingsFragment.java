@@ -5,6 +5,7 @@ Version: 1.7
  */
 package com.jhprog.menudemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,15 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.setDisplayText(binding.titleEdittext.getText().toString());
+            }
+        });
+
+        binding.changeLanguageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS);
+                getActivity().finish();
+                startActivity(i);
             }
         });
     }

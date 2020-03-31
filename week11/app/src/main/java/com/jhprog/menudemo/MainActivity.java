@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.navigation.setCheckedItem(R.id.nav_main);
+        System.out.println("LOGGER: Herer we wew");
+        binding.navigation.refreshDrawableState();
     }
 
     @Override
@@ -130,4 +132,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }
