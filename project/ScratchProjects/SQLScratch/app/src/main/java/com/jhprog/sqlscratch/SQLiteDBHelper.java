@@ -19,10 +19,17 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         final String SQL_QUERY = "CREATE TABLE " + DatabaseContract.FeedEntry.TABLE_NAME +
                 " (" + DatabaseContract.FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DatabaseContract.FeedEntry.COLUMN_NAME_NAME + " TEXT NOT NULL);";
+        db.execSQL(SQL_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
 
     }
 }
