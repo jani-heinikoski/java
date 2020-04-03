@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/execute_query_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="EXECUTE"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:elevation="8dp" />
+
+    <TextView
+        android:id="@+id/edit_query_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_query"
+        android:layout_centerHorizontal="true"
+        android:text="SQL QUERY"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/result_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/execute_query_button"
+        android:text="RESULT: "
+        android:textSize="24sp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/edit_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+
+</RelativeLayout>

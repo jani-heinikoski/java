@@ -8,28 +8,44 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:elevation="8dp" >
+        android:elevation="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="@string/main_activity_header_text"
             android:textColor="@android:color/white"
-            android:textSize="30sp"
-            android:layout_centerInParent="true" />
+            android:textSize="30sp" />
 
         <Button
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/ic_close"
-            android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:layout_margin="4dp" />
+            android:layout_centerVertical="true"
+            android:layout_margin="4dp"
+            android:background="@drawable/ic_close" />
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/main_activity_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/main_activity_header_linlay"
+        android:layout_alignBottom="@+id/main_activity_expand_banks_button"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="50dp" />
 
-
+    <Button
+        android:id="@+id/main_activity_expand_banks_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/ic_expand_more"
+        android:elevation="8dp" />
 
 
 </RelativeLayout>
