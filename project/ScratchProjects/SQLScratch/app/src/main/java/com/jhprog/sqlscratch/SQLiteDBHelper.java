@@ -10,13 +10,15 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "testi";
     public static final int DATABASE_VERSION = 1;
 
-    public SQLiteDBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public SQLiteDBHelper(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        final String SQL_QUERY = "CREATE TABLE " + DatabaseContract.FeedEntry.TABLE_NAME +
+                " (" + DatabaseContract.FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.FeedEntry.COLUMN_NAME_NAME + " TEXT NOT NULL);";
     }
 
     @Override
