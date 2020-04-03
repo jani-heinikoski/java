@@ -22,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
         databaseHelper = new SQLiteDBHelper(this);
 
+        /*
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         System.out.println("LOGGER: " + database.getPath());
         database.close();
+
+         */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -50,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
 
         if ((cursor = database.rawQuery(query, null)) != null) {
             String retVal;
-            if (cursor.moveToNext()) {
-                if ((retVal = cursor.getString(1)) != null) {
-                    binding.resultTextview.setText(String.format(Locale.getDefault(), "RESULT: %s", retVal));
+
+            while (cursor.moveToNext()) {
+                if ((retVal = cursor.getString(cursor.getColumnIndex("field3"))) != null) {
+                    System.out.println("LOGGER: " + retVal + ", ID: " + cursor.getColumnIndex("field3"));
                 }
             }
+
             cursor.close();
         }
         database.close();
