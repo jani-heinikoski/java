@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DaBank</string>
+    <string name="main_activity_header_text">Login page</string>
+</resources>
