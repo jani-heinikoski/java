@@ -9,6 +9,8 @@
 package com.jhprog.dabank;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
@@ -24,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private Animation onClickScaleAnim;
 
     private ActivityMainBinding binding;
-    private ChooseBankFragment chooseBankFragment;
-    private int latestBackstackID;
+
+    private ChooseBankFragment chooseBankFragment; // TODO Check if needed
+    private LoginFragment loginFragment; // TODO Check me too
+    private FragmentManager fragmentManager;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -56,17 +60,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.mainActivityExpandBanksButton.startAnimation(onClickScaleAnim);
+                // TODO replace code below
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, loginFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
 
     // Initializes all fragments in MainActivity
     private void initFragments() {
+        // Maintain reference to chooseBankFragment and loginFragment
         chooseBankFragment = new ChooseBankFragment();
-        // Get the backstack ID of the added fragment and display chooseBankFragment inside of main_activity_fragment_container
-        latestBackstackID = getSupportFragmentManager().beginTransaction().add(R.id.main_activity_fragment_container,
-                chooseBankFragment, "chooseBankFragment").commit();
+        loginFragment = new LoginFragment();
 
+        fragmentManager = getSupportFragmentManager();
+        // Display chooseBankFragment inside of main_activity_fragment_container
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_fragment_container,
+                chooseBankFragment, "chooseBankFragment");
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
         /*
         // Create new fragment and transaction
         Fragment newFragment = new ExampleFragment();
@@ -81,4 +96,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
          */
     }
+
 }
