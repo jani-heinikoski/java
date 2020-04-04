@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 03.04.2020
+ * Version: alpha
+ * Sources:
+ * https://developer.android.com/guide/components/fragments
+ */
 package com.jhprog.dabank;
 
 import android.os.Bundle;
@@ -8,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.databinding.FragmentLoginBinding;

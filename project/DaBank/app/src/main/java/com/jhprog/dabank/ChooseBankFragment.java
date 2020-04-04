@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 03.04.2020
+ * Version: alpha
+ * Sources:
+ * https://developer.android.com/guide/components/fragments
+ */
 package com.jhprog.dabank;
 
 import android.os.Bundle;
