@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <RelativeLayout
         android:id="@+id/main_activity_header_linlay"
@@ -14,9 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="center"
             android:text="@string/main_activity_header_text"
             android:textColor="@android:color/white"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <Button
             android:layout_width="40dp"
@@ -35,17 +38,32 @@
         android:layout_alignTop="@+id/main_activity_header_linlay"
         android:layout_alignBottom="@+id/main_activity_expand_banks_button"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginBottom="60dp" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_activity_expand_banks_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/main_activity_expand_banks_button_text"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:elevation="8dp"
+        app:fabSize="normal"
+        app:maxImageSize="56dp"
+        app:srcCompat="@drawable/ic_add_circle"
+        app:useCompatPadding="false" />
+
+    <TextView
+        android:id="@+id/main_activity_expand_banks_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/ic_expand_more"
-        android:elevation="8dp" />
+        android:layout_marginBottom="40dp"
+        android:text="@string/main_activity_expand_banks_button_text"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="italic" />
 
 
 </RelativeLayout>

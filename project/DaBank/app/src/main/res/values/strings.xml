@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DaBank</string>
     <string name="main_activity_header_text">Login page</string>
+    <string name="main_activity_expand_banks_button_text">More banks</string>
 </resources>
