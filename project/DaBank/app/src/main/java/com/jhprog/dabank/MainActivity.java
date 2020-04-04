@@ -1,7 +1,7 @@
 /*
 * Author: Jani Olavi Heinikoski
 * Date: 03.04.2020
-* Version: 1.0
+* Version: alpha
 * Sources:
 * https://material.io/
 * https://developer.android.com/training/data-storage/sqlite
