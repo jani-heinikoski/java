@@ -22,7 +22,7 @@ import android.view.animation.AnimationUtils;
 
 import com.jhprog.dabank.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {
 
     private LoginViewModel loginViewModel;
     private Animation onClickScaleAnim;
@@ -61,11 +61,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.mainActivityExpandBanksButton.startAnimation(onClickScaleAnim);
-                // TODO replace code below
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new LoginFragment());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         });
     }
@@ -77,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_activity_fragment_container,
                 new ChooseBankFragment(), "chooseBankFragment");
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onChoose() {
+        // Replace choose bank fragment with login fragment and save the transaction to back stack.
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_fragment_container, new LoginFragment());
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

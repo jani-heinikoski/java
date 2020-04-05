@@ -7,41 +7,45 @@
  */
 package com.jhprog.dabank;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.jhprog.dabank.LoginViewModel.IBankChosenCallback;
 
 import com.jhprog.dabank.databinding.FragmentChooseBankBinding;
 
-public class ChooseBankFragment extends Fragment {
+public class ChooseBankFragment extends Fragment implements IBankChosenCallback {
 
     private FragmentChooseBankBinding binding;
+    private IBankChosenCallback onChooseBankListener;
     private LoginViewModel viewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // See if context (MainActivity in this case) has implemented IBankChosenCallback,
+        // throws ClassCastException if it hasn't.
+        if (context instanceof IBankChosenCallback) {
+            onChooseBankListener = (IBankChosenCallback) context;
+        } else {
+            throw new ClassCastException(context.toString() +
+                    " must implement LoginViewModel.IBankChosenCallback!");
+        }
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentChooseBankBinding.inflate(inflater, container, false);
-
         initButtons();
-
         return binding.getRoot();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -57,7 +61,20 @@ public class ChooseBankFragment extends Fragment {
             public void onClick(View v) {
                 // TODO define DaBank b_id
                 viewModel.setB_id(1);
+                viewModel.setB_name("DaBank");
+                onChoose();
             }
         });
+    }
+
+    @Override
+    public void onChoose() {
+        onChooseBankListener.onChoose();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onChooseBankListener = null;
     }
 }
