@@ -1,18 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/fragment_login_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="@string/fragment_login_header_text"
-        android:layout_margin="8dp"
-        android:textSize="22sp"
-        android:textStyle="italic"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
+        android:layout_marginTop="24dp"
+        android:text="@string/fragment_login_header_text"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/fragment_login_edittext_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_login_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="center"
+        android:hint="Username"
+        android:inputType="phone"
+        android:lines="1"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/fragment_login_edittext_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_login_edittext_username"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="center"
+        android:hint="Password"
+        android:inputType="numberPassword"
+        android:lines="1"
+        android:maxLength="4"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/frament_login_button_login"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/fragment_login_edittext_password"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:elevation="8dp"
+        android:textSize="30sp" />
 
 
 </RelativeLayout>
