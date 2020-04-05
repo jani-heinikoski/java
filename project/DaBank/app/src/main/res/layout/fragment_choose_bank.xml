@@ -3,14 +3,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/choose_bank_fragment_image_button_dabank"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <TextView
+        android:id="@+id/choose_bank_fragment_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
-        android:background="@drawable/image_button_rounded_corners"
-        android:padding="2dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dabank_logo" />
+        android:text="Choose your bank"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="italic" />
+
+    <RelativeLayout
+        android:id="@+id/choose_bank_fragment_dabank_relay"
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choose_bank_fragment_header"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/choose_bank_fragment_image_button_dabank"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/image_button_rounded_corners"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dabank_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choose_bank_fragment_image_button_dabank"
+            android:layout_centerHorizontal="true"
+            android:text="DaBank"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/choose_bank_fragment_star_bank_relay"
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choose_bank_fragment_header"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/choose_bank_fragment_image_button_star_bank"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/image_button_rounded_corners"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/star_bank_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choose_bank_fragment_image_button_star_bank"
+            android:layout_centerHorizontal="true"
+            android:text="Star Bank"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choose_bank_fragment_dabank_relay"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp">
+
+        <ImageButton
+            android:id="@+id/choose_bank_fragment_image_button_flash_bank"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/image_button_rounded_corners"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/flash_bank_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choose_bank_fragment_image_button_flash_bank"
+            android:layout_centerHorizontal="true"
+            android:text="Flash Bank"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choose_bank_fragment_star_bank_relay"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp">
+
+        <ImageButton
+            android:id="@+id/choose_bank_fragment_image_button_sun_bank"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/image_button_rounded_corners"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/sun_bank_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choose_bank_fragment_image_button_sun_bank"
+            android:layout_centerHorizontal="true"
+            android:text="Sun Bank"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

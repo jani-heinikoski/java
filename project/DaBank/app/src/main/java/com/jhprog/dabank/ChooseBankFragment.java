@@ -56,12 +56,43 @@ public class ChooseBankFragment extends Fragment implements IBankChosenCallback 
     }
 
     private void initButtons() {
+        // DaBank onClickListener
         binding.chooseBankFragmentImageButtonDabank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO define DaBank b_id
                 viewModel.setB_id(1);
                 viewModel.setB_name("DaBank");
+                onChoose();
+            }
+        });
+        // Star Bank onClickListener
+        binding.chooseBankFragmentImageButtonStarBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO define Star Bank b_id
+                viewModel.setB_id(2);
+                viewModel.setB_name("Star Bank");
+                onChoose();
+            }
+        });
+        // Flash Bank onClickListener
+        binding.chooseBankFragmentImageButtonFlashBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO define Flash Bank b_id
+                viewModel.setB_id(3);
+                viewModel.setB_name("Flash Bank");
+                onChoose();
+            }
+        });
+        // Sun Bank onClickListener
+        binding.chooseBankFragmentImageButtonSunBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO define Sun Bank b_id
+                viewModel.setB_id(4);
+                viewModel.setB_name("Sun Bank");
                 onChoose();
             }
         });
