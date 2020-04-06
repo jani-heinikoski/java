@@ -4,16 +4,27 @@ package com.jhprog.dabank;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+
 import androidx.annotation.Nullable;
+
+import java.util.Locale;
 
 // This class handles all functionality with the SQLite database.
 public class DataManager {
-    //TODO FIGURE OUT APP CONTEXT
+
     private static DataManager dataManager = new DataManager();
     private SQLiteDBHelper dbHelper;
 
     private DataManager() {
-        dbHelper = new SQLiteDBHelper(null);
+        dbHelper = new SQLiteDBHelper(DaBank.getAppContext());
+        try {
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            database.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     public static DataManager getInstance() {
@@ -37,12 +48,12 @@ public class DataManager {
 
     }
     // Contract class for the SQLite database
-    private static final class DatabaseContract {
+    private static final class Contract {
         // Disables the ability to instantiate this class
-        private DatabaseContract() {}
+        private Contract() {}
 
         // Inner class that defines the user table contents
-        public static final class UserTable {
+        public static final class UserTable implements BaseColumns {
             public static final String TABLE_NAME = "user";
             public static final String COLUMN_USERNAME = "username";
             public static final String COLUMN_PASSWORD = "password";
@@ -70,6 +81,11 @@ public class DataManager {
         @Override
         public void onCreate(SQLiteDatabase db) {
             // TODO create the database here
+            final String SQL_QUERY = String.format(Locale.getDefault(),
+                    "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);",
+                    Contract.UserTable.TABLE_NAME, Contract.UserTable._ID, Contract.UserTable.COLUMN_USERNAME, Contract.UserTable.COLUMN_PASSWORD
+            );
+            db.execSQL(SQL_QUERY);
         }
 
         @Override

@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements LoginViewModel.IB
     private Animation onClickScaleAnim;
     private ActivityMainBinding binding;
     private FragmentManager fragmentManager;
+    private DataManager dataManager;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoginViewModel.IB
         initAnims();
         initButtons();
         initFragments();
+        // Initialize the DataManager Singleton in order to authenticate user login
+        dataManager = DataManager.getInstance();
     }
 
     private void initAnims() {
