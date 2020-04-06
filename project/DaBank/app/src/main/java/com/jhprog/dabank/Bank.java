@@ -1,5 +1,7 @@
 package com.jhprog.dabank;
 
+
+// POJO -class for bank table in the database
 public class Bank {
 
     private int b_id;

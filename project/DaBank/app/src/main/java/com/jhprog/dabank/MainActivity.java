@@ -4,7 +4,8 @@
 * Version: alpha
 * Sources:
 * https://material.io/
-* https://developer.android.com/training/data-storage/sqlite
+* https://developer.android.com/topic/libraries/view-binding
+* https://developer.android.com/guide/components/fragments
 * */
 package com.jhprog.dabank;
 

@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 06.04.2020
+ * Version: alpha
+ * Sources:
+ * https://developer.android.com/training/data-storage/sqlite
+ * */
 package com.jhprog.dabank;
 
 
