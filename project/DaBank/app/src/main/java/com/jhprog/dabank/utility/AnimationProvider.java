@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 07.04.2020
+ * Version: alpha
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.utility;
 
 import com.jhprog.dabank.R;
@@ -15,7 +22,7 @@ public final class AnimationProvider {
 
     public static Animation getOnClickAnimation() {
         onClickAnimation.setDuration(100);
-        onClickAnimation.setRepeatMode(1);
+        onClickAnimation.setRepeatCount(1);
         onClickAnimation.setRepeatMode(Animation.REVERSE);
         return onClickAnimation;
     }

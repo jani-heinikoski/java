@@ -4,30 +4,33 @@
  * Version: alpha
  * Sources:
  * https://developer.android.com/topic/libraries/architecture/viewmodel
+ * https://developer.android.com/topic/libraries/architecture/livedata
  */
 package com.jhprog.dabank.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.jhprog.dabank.data.Bank;
+
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<Integer> b_id = new MutableLiveData<>();
-    private MutableLiveData<String> b_name = new MutableLiveData<>();
+    private MutableLiveData<Bank> bank = new MutableLiveData<>();
 
-    public LiveData<Integer> getB_id() {
-        return b_id;
+    @NonNull
+    public LiveData<Bank> getBank() {
+        // This should NOT be null, since it is initialized in ChooseBankFragment
+        if (bank == null) {
+            bank = new MutableLiveData<>();
+            bank.setValue(new Bank(1, "Error"));
+        }
+        return bank;
     }
-    public LiveData<String> getB_name() {return b_name; }
 
-    public void setB_id(int b_id) {
-        this.b_id.setValue(b_id);
-    }
-    public void setB_name(String b_name) { this.b_name.setValue(b_name); }
-
-    public interface IBankChosenCallback {
-        void onChoose();
+    public void setBank(@NonNull Bank bank) {
+        this.bank.setValue(bank);
     }
 
 }

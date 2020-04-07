@@ -42,20 +42,7 @@ public class DataManager {
         }
         return dataManager;
     }
-    // Authentication class in order to validate user credentials
-    private static final class UserAuthenticator {
 
-        private String username;
-        private String password;
-        private Bank bank;
-
-        public UserAuthenticator(String username, String password, Bank bank) {
-            this.username = username;
-            this.password = password;
-            this.bank = bank;
-        }
-
-    }
     // Contract class for the SQLite database
     private static final class Contract {
         // Disables the ability to instantiate this class

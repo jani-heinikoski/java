@@ -1,23 +1,36 @@
 package com.jhprog.dabank.data;
 
 
-// POJO -class for bank table in the database
-public class Bank {
+import androidx.annotation.NonNull;
 
-    private int b_id;
-    private String b_name;
+import com.jhprog.dabank.login.IAuthentication;
 
-    public Bank(int b_id, String b_name) {
-        this.b_id = b_id;
-        this.b_name = b_name;
+// POJO model class for bank table in the database
+public class Bank implements IAuthentication {
+
+    private int id;
+    private String name;
+
+    public Bank(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getB_id() {
-        return b_id;
+    public int getId() {
+        return id;
     }
 
-    public String getB_name() {
-        return b_name;
+    public String getName() {
+        return name;
     }
 
+    @NonNull
+    @Override
+    public boolean handleAuthentication(String username, String password) {
+        DataManager dataManager = DataManager.getInstance();
+
+        // TODO Authenticate the user here!
+
+        return true;
+    }
 }

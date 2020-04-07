@@ -19,17 +19,16 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
-public class LoginActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {
+public class LoginActivity extends AppCompatActivity implements IBankChosenCallback {
 
     private LoginViewModel loginViewModel;
-    private Animation onClickScaleAnim;
+    private Animation onClickAnimation;
     private ActivityLoginBinding binding;
     private FragmentManager fragmentManager;
     private DataManager dataManager;
@@ -46,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewModel.I
         // Initialize loginViewModel to LoginActivity's scope
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         // Initialize UI components
-        onClickScaleAnim = AnimationProvider.getOnClickAnimation();
+        onClickAnimation = AnimationProvider.getOnClickAnimation();
         initButtons();
         initFragments();
         // Initialize the DataManager Singleton in order to authenticate user login
@@ -58,7 +57,14 @@ public class LoginActivity extends AppCompatActivity implements LoginViewModel.I
         binding.loginActivityExpandBanksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.loginActivityExpandBanksButton.startAnimation(onClickScaleAnim);
+                binding.loginActivityExpandBanksButton.startAnimation(onClickAnimation);
+            }
+        });
+
+        binding.loginActivityExitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.loginActivityExitButton.startAnimation(onClickAnimation);
             }
         });
     }
