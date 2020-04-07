@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class SQLiteDBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "testi";
+    public static final String DATABASE_NAME = "ban.db";
     public static final int DATABASE_VERSION = 1;
 
     public SQLiteDBHelper(@Nullable Context context) {
@@ -16,10 +16,20 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_QUERY = "CREATE TABLE " + DatabaseContract.FeedEntry.TABLE_NAME +
-                " (" + DatabaseContract.FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DatabaseContract.FeedEntry.COLUMN_NAME_NAME + " TEXT NOT NULL);";
+        final String SQL_QUERY = "CREATE TABLE " +
+                DatabaseContract.TransactionTable.table_name +
+                " (" + DatabaseContract.TransactionTable.trans_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.TransactionTable.trans_type + " INTEGER NOT NULL,"+
+                DatabaseContract.TransactionTable.trans_from_acc_id + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.TransactionTable.trans_to_acc_id + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.TransactionTable.trans_date + " DATETIME NOT NULL"+
+                ");";
+
         db.execSQL(SQL_QUERY);
+
+
+
+
     }
 
     @Override

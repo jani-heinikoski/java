@@ -22,12 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         databaseHelper = new SQLiteDBHelper(this);
 
-        /*
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         System.out.println("LOGGER: " + database.getPath());
         database.close();
 
-         */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
