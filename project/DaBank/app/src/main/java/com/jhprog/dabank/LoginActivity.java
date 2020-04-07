@@ -21,13 +21,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.jhprog.dabank.databinding.ActivityMainBinding;
+import com.jhprog.dabank.databinding.ActivityLoginBinding;
 
-public class MainActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {
+public class LoginActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {
 
     private LoginViewModel loginViewModel;
     private Animation onClickScaleAnim;
-    private ActivityMainBinding binding;
+    private ActivityLoginBinding binding;
     private FragmentManager fragmentManager;
     private DataManager dataManager;
 
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements LoginViewModel.IB
         // Disables screen rotation (locked to portrait mode)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Initialize ViewBinding
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        // Initialize loginViewModel to MainActivity's scope
+        // Initialize loginViewModel to LoginActivity's scope
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         // Initialize UI components
         initAnims();
@@ -59,22 +59,22 @@ public class MainActivity extends AppCompatActivity implements LoginViewModel.IB
         onClickScaleAnim.setRepeatMode(Animation.REVERSE);
     }
 
-    // Initializes all buttons in MainActivity
+    // Initializes all buttons in LoginActivity
     private void initButtons() {
-        binding.mainActivityExpandBanksButton.setOnClickListener(new View.OnClickListener() {
+        binding.loginActivityExpandBanksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.mainActivityExpandBanksButton.startAnimation(onClickScaleAnim);
+                binding.loginActivityExpandBanksButton.startAnimation(onClickScaleAnim);
             }
         });
     }
 
-    // Initializes all fragments in MainActivity
+    // Initializes all fragments in LoginActivity
     private void initFragments() {
         fragmentManager = getSupportFragmentManager();
         // Display chooseBankFragment inside of main_activity_fragment_container
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_fragment_container,
+        fragmentTransaction.replace(R.id.login_activity_fragment_container,
                 new ChooseBankFragment(), "chooseBankFragment");
         fragmentTransaction.commit();
     }
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoginViewModel.IB
     public void onChoose() {
         // Replace choose bank fragment with login fragment and save the transaction to back stack.
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_fragment_container, new LoginFragment());
+        fragmentTransaction.replace(R.id.login_activity_fragment_container, new LoginFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

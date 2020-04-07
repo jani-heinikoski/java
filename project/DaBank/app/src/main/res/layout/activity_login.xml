@@ -6,7 +6,7 @@
     android:background="@color/colorBackground">
 
     <RelativeLayout
-        android:id="@+id/main_activity_header_linlay"
+        android:id="@+id/login_activity_header_linlay"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/main_activity_header_text"
+            android:text="@string/login_activity_header_text"
             android:textColor="@android:color/white"
             android:textSize="28sp" />
 
@@ -32,19 +32,19 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/main_activity_fragment_container"
+        android:id="@+id/login_activity_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/main_activity_header_linlay"
-        android:layout_alignBottom="@+id/main_activity_expand_banks_button"
+        android:layout_alignTop="@+id/login_activity_header_linlay"
+        android:layout_alignBottom="@+id/login_activity_expand_banks_button"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="60dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_activity_expand_banks_button"
+        android:id="@+id/login_activity_expand_banks_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/main_activity_expand_banks_button_text"
+        android:layout_above="@id/login_activity_expand_banks_button_text"
         android:layout_centerInParent="true"
         android:layout_margin="4dp"
         android:elevation="8dp"
@@ -54,13 +54,13 @@
         app:useCompatPadding="false" />
 
     <TextView
-        android:id="@+id/main_activity_expand_banks_button_text"
+        android:id="@+id/login_activity_expand_banks_button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="@string/main_activity_expand_banks_button_text"
+        android:text="@string/login_activity_expand_banks_button_text"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="italic" />

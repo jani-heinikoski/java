@@ -29,7 +29,7 @@ public class ChooseBankFragment extends Fragment implements IBankChosenCallback 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        // See if context (MainActivity in this case) has implemented IBankChosenCallback,
+        // See if context (LoginActivity in this case) has implemented IBankChosenCallback,
         // throws ClassCastException if it hasn't.
         if (context instanceof IBankChosenCallback) {
             onChooseBankListener = (IBankChosenCallback) context;
@@ -51,7 +51,7 @@ public class ChooseBankFragment extends Fragment implements IBankChosenCallback 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Get a reference to MainActivity's viewModel (loginViewModel)
+        // Get a reference to LoginActivity's viewModel (loginViewModel)
         viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     }
 

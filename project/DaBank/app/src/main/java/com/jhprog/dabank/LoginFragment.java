@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Get a reference to MainActivity's viewModel (loginViewModel)
+        // Get a reference to LoginActivity's viewModel (loginViewModel)
         viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         // Get the id of the chosen bank and set the correct login header
         if (viewModel.getB_id().getValue() != null) {
