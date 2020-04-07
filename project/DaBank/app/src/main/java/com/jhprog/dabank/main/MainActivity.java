@@ -8,6 +8,7 @@
 package com.jhprog.dabank.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private MainViewModel mainViewModel;
+    private FragmentManager fragmentManager;
     private Animation onClickAnimation;
     private Bank bank;
 
@@ -56,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFragments() {
+        fragmentManager = getSupportFragmentManager();
+        // Display MainFragment inside of main_activity_fragment_container
+        
+
+
+
     }
 
     private void initButtons() {

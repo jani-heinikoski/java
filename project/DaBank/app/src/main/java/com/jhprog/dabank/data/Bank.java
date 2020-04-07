@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import com.jhprog.dabank.login.IAuthentication;
 
-// POJO model class for bank table in the database
+
 public class Bank implements IAuthentication {
 
     private int id;
@@ -27,10 +27,10 @@ public class Bank implements IAuthentication {
     @NonNull
     @Override
     public boolean handleAuthentication(String username, String password) {
-        DataManager dataManager = DataManager.getInstance();
+        //DataManager dataManager = DataManager.getInstance();
 
         // TODO Authenticate the user here!
 
-        return true;
+        return false;
     }
 }

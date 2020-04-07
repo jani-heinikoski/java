@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/fragment_main_button_new_payment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:elevation="8dp"
+        android:text="@string/fragment_main_button_new_payment_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/fragment_main_button_new_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/fragment_main_button_new_payment"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:elevation="8dp"
+        android:text="@string/fragment_main_button_new_transfer_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/fragment_main_button_transactions"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/fragment_main_button_new_transfer"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:elevation="8dp"
+        android:text="@string/fragment_main_button_transactions_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/fragment_main_button_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/fragment_main_button_transactions"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:elevation="8dp"
+        android:text="@string/fragment_main_button_accounts_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/fragment_main_button_simulations"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/fragment_main_button_transactions"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button"
+        android:elevation="8dp"
+        android:text="@string/fragment_main_button_accounts_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+
+
+</RelativeLayout>

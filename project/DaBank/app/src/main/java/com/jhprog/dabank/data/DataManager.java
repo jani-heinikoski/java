@@ -49,8 +49,9 @@ public class DataManager {
         private Contract() {}
 
         // Inner class that defines the user table contents
-        public static final class UserTable implements BaseColumns {
+        public static final class UserTable {
             public static final String TABLE_NAME = "user";
+            public static final String COLUMN_ID = "user_id";
             public static final String COLUMN_USERNAME = "username";
             public static final String COLUMN_PASSWORD = "password";
             public static final String COLUMN_BANK_ID = "b_id";
@@ -77,11 +78,15 @@ public class DataManager {
         @Override
         public void onCreate(SQLiteDatabase db) {
             // TODO create the database here
-            final String SQL_QUERY = String.format(Locale.getDefault(),
+            /*
+            final String CREATE_USER = String.format(Locale.getDefault(),
                     "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);",
-                    Contract.UserTable.TABLE_NAME, Contract.UserTable._ID, Contract.UserTable.COLUMN_USERNAME, Contract.UserTable.COLUMN_PASSWORD
+                    Contract.UserTable.TABLE_NAME, Contract.UserTable.COLUMN_ID, Contract.UserTable.COLUMN_USERNAME, Contract.UserTable.COLUMN_PASSWORD
             );
-            db.execSQL(SQL_QUERY);
+
+            db.execSQL(CREATE_USER);
+             */
+
         }
 
         @Override
