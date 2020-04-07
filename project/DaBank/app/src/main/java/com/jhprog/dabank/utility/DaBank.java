@@ -5,7 +5,7 @@
  * Sources:
  * https://stackoverflow.com/Questions/987072/using-Application-Context-Everywhere
  * */
-package com.jhprog.dabank;
+package com.jhprog.dabank.utility;
 
 import android.app.Application;
 import android.content.Context;

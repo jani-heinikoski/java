@@ -7,7 +7,7 @@
 * https://developer.android.com/topic/libraries/view-binding
 * https://developer.android.com/guide/components/fragments
 * */
-package com.jhprog.dabank;
+package com.jhprog.dabank.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.jhprog.dabank.data.DataManager;
+import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {

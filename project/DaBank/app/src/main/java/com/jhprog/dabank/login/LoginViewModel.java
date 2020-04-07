@@ -5,7 +5,7 @@
  * Sources:
  * https://developer.android.com/topic/libraries/architecture/viewmodel
  */
-package com.jhprog.dabank;
+package com.jhprog.dabank.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

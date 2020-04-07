@@ -5,7 +5,7 @@
  * Sources:
  * https://developer.android.com/training/data-storage/sqlite
  * */
-package com.jhprog.dabank;
+package com.jhprog.dabank.data;
 
 
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import androidx.annotation.Nullable;
+
+import com.jhprog.dabank.utility.DaBank;
 
 import java.util.Locale;
 

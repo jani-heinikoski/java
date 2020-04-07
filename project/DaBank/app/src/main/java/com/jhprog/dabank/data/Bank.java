@@ -1,4 +1,4 @@
-package com.jhprog.dabank;
+package com.jhprog.dabank.data;
 
 
 // POJO -class for bank table in the database

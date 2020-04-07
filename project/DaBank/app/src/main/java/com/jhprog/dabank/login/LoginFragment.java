@@ -5,7 +5,7 @@
  * Sources:
  * https://developer.android.com/guide/components/fragments
  */
-package com.jhprog.dabank;
+package com.jhprog.dabank.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.FragmentLoginBinding;
 
 import java.util.Locale;

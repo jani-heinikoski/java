@@ -5,7 +5,7 @@
  * Sources:
  * https://developer.android.com/guide/components/fragments
  */
-package com.jhprog.dabank;
+package com.jhprog.dabank.login;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.jhprog.dabank.LoginViewModel.IBankChosenCallback;
+
+import com.jhprog.dabank.login.LoginViewModel.IBankChosenCallback;
 
 import com.jhprog.dabank.databinding.FragmentChooseBankBinding;
 
