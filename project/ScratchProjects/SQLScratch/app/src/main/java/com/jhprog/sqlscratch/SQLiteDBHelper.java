@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class SQLiteDBHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "ban.db";
+    public static final String DATABASE_NAME = "banv3.db";
     public static final int DATABASE_VERSION = 1;
 
     public SQLiteDBHelper(@Nullable Context context) {
@@ -16,7 +16,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_QUERY = "CREATE TABLE " +
+        String SQL_QUERY = "CREATE TABLE " +
                 DatabaseContract.TransactionTable.table_name +
                 " (" + DatabaseContract.TransactionTable.trans_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DatabaseContract.TransactionTable.trans_type + " INTEGER NOT NULL,"+
@@ -26,9 +26,52 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                 ");";
 
         db.execSQL(SQL_QUERY);
+        // todo tätän debug out
+        SQL_QUERY = "CREATE TABLE " +
+                DatabaseContract.BankTable.table_name +
+                " (" + DatabaseContract.BankTable.bank_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.BankTable.bank_bic + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.BankTable.bank_name + " VARCHAR(30) NOT NULL"+
+                ");";
 
+        db.execSQL(SQL_QUERY);
+// todo tätän debug out
 
+        SQL_QUERY = "CREATE TABLE " +
+                DatabaseContract.BankCardTable.table_name +
+                " (" + DatabaseContract.BankCardTable.bcard_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.BankCardTable.bcard_acc_id + "  INTEGER NOT NULL,"+
+                DatabaseContract.BankCardTable.bcard_type + " INTEGER NOT NULL"+
+                ");";
 
+        db.execSQL(SQL_QUERY);
+    // todo tätän debug out
+        SQL_QUERY = "CREATE TABLE " +
+                DatabaseContract.CustomerTable.table_name +
+                " (" + DatabaseContract.CustomerTable.cust_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.CustomerTable.cust_user+ " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.CustomerTable.cust_passwd + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.CustomerTable.cust_name + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.CustomerTable.cust_address + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.CustomerTable.cust_zipcode + " VARCHAR(30) NOT NULL,"+
+                DatabaseContract.CustomerTable.cust_phone + " VARCHAR(30) NOT NULL"+
+                ");" +
+                "";
+        db.execSQL(SQL_QUERY);
+        // todo tätän debug out
+        SQL_QUERY = "CREATE TABLE " +
+                DatabaseContract.AccountTable.table_name +
+                " (" + DatabaseContract.AccountTable.acc_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DatabaseContract.AccountTable.acc_type+ "  INTEGER  NOT NULL,"+
+                DatabaseContract.AccountTable.acc_cust_id + " INTEGER   NOT NULL,"+
+                DatabaseContract.AccountTable.acc_balance+ " DOUBLE(12,2) NOT NULL,"+
+                DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
+                DatabaseContract.AccountTable.acc_interest + " DOUBLE(6,2),"+
+                DatabaseContract.AccountTable.acc_withdrawlimit + " DOUBLE(12,2),"+
+                DatabaseContract.AccountTable.acc_duedate + "  DATETIME"+
+                ");" +
+                "";
+        db.execSQL(SQL_QUERY);
 
     }
 

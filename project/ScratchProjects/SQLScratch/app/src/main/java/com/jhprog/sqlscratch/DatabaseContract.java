@@ -27,7 +27,7 @@ public class DatabaseContract {
         public static final String table_name = "bankcard";
         public static final String bcard_id = "bcard_id";
         public static final String bcard_acc_id  = "bcard_acc_id";
-        public static final String bcard_type  = "bcard_type int";
+        public static final String bcard_type  = "bcard_type";
     }
     public static class CustomerTable {
         public static final String table_name = "customer";
