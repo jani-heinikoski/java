@@ -15,6 +15,18 @@
         android:textSize="22sp"
         android:textStyle="italic" />
 
+    <TextView
+        android:id="@+id/fragment_login_textview_invalid_credentials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_login_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:text="@string/fragment_login_invalid_credentials_text"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="24sp"
+        android:visibility="invisible" />
+
     <EditText
         android:id="@+id/fragment_login_edittext_username"
         android:layout_width="match_parent"

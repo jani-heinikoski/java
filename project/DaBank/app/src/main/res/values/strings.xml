@@ -4,4 +4,11 @@
     <string name="login_activity_expand_banks_button_text">More banks</string>
 
     <string name="fragment_login_header_text"><u>Login to bank: </u></string>
+    <string name="fragment_login_invalid_credentials_text">Invalid credentials!</string>
+
+    <string name="fragment_main_button_new_payment_text">New Payment</string>
+    <string name="fragment_main_button_new_transfer_text">My Transfer</string>
+    <string name="fragment_main_button_transactions_text">Transactions</string>
+    <string name="fragment_main_button_accounts_text">Accounts</string>
+
 </resources>

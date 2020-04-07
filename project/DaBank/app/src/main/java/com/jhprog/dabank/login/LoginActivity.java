@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements IBankChosenCallb
     // Initializes all fragments in LoginActivity
     private void initFragments() {
         fragmentManager = getSupportFragmentManager();
-        // Display chooseBankFragment inside of main_activity_fragment_container
+        // Display ChooseBankFragment inside of login_activity_fragment_container
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.login_activity_fragment_container,
                 new ChooseBankFragment(), "chooseBankFragment");

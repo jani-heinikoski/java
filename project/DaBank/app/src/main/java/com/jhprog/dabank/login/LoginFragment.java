@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +54,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Get a reference to LoginActivity's viewModel (loginViewModel)
+        // Get a reference to LoginActivity's viewModel (LoginViewModel)
         viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         // Get the id of the chosen bank and set the correct login header
         this.bank = viewModel.getBank().getValue();
@@ -83,11 +82,10 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("b_id", bank.getId());
                     intent.putExtra("b_name", bank.getName());
+                    binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.INVISIBLE);
                     startActivity(intent);
-
                 } else {
-                    // TODO: If user's credentials are invalid
-                    Toast.makeText(getActivity(), "Invalid creds!", Toast.LENGTH_SHORT).show();
+                    binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.VISIBLE);
                 }
             }
         });
