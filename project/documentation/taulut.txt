@@ -1,0 +1,39 @@
+transaction
+trans_id int primary key autoincrement 
+trans_type int
+trans_from_acc_id int
+trans_to_acc_id int
+trans_date DATETIME
+
+bank
+bank_id int primary key autoincrement 
+bank_bic varchar(30)
+bank_name varchar(30)
+
+
+customer
+cust_id int primary key autoincrement
+cust_user varchar(30)
+cust_passwd varchar(30)
+cust_name varchar(30)
+cust_address varchar(30)
+cust_zipcode varchar(5)
+cust_phone varchar(30)
+
+
+account
+acc_id int primary key autoincrement
+acc_type int 
+acc_bank_id int
+acc_cust_id int
+acc_balance double(12,2)
+acc_creditlimit double(12,2)
+acc_interest double(12,2)
+acc_withdrawlimit double(12,2)
+acc_duedate DATETIME
+
+bankcard
+bcard_id int primary key autoincrement
+bcard_acc_id int 
+bcard_type int  //C=0 tai D=1
+
