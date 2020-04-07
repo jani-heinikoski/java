@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
+import com.jhprog.dabank.utility.AnimationProvider;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewModel.IBankChosenCallback {
 
@@ -45,20 +46,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewModel.I
         // Initialize loginViewModel to LoginActivity's scope
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         // Initialize UI components
-        initAnims();
+        onClickScaleAnim = AnimationProvider.getOnClickAnimation();
         initButtons();
         initFragments();
         // Initialize the DataManager Singleton in order to authenticate user login
         dataManager = DataManager.getInstance();
-    }
-
-    private void initAnims() {
-        // Get the onClickAnimation from resources and initialize it
-        onClickScaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale_down_animation);
-        onClickScaleAnim.setDuration(100);
-        // Plays backwards after completion
-        onClickScaleAnim.setRepeatCount(1);
-        onClickScaleAnim.setRepeatMode(Animation.REVERSE);
     }
 
     // Initializes all buttons in LoginActivity
