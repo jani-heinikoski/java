@@ -121,7 +121,8 @@ public class FinnkinoXMLParser {
         if (theatreToSearch == null || theatreToSearch.getName().equals("All")) {
             return null;
         }
-        url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s/", theatreToSearch.getID(), date);
+        url = String.format(Locale.getDefault(), "https://www.finnkino.fi/xml/Schedule/?area=%d&dt=%s", theatreToSearch.getID(), date);
+        System.out.println("LOGGER: " + url);
         data = readXMLbyTagName(url, "Show");
         if (!data.isEmpty()) {
             for (Element e : data) {

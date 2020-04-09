@@ -68,6 +68,7 @@ public class BackgroundWorker {
             // Theatre nor location selected
             if (searchFormData.getSelectedTheatre().equals("All") && searchFormData.getSelectedLocation().equals("All")) {
                 theatresToSearch = theatreArrayList;
+                //theatresToSearch.add(new Theatre(1029, "everything", "everywhere"));
             }
             // Location selected, theatre not
             if (searchFormData.getSelectedTheatre().equals("All") && !searchFormData.getSelectedLocation().equals("All")) {
