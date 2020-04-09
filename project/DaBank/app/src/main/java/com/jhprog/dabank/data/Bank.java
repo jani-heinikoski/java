@@ -31,6 +31,6 @@ public class Bank implements IAuthentication {
 
         // TODO Authenticate the user here!
 
-        return false;
+        return true;
     }
 }

@@ -1,25 +1,35 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 09.04.2020
+ * Version: alpha
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.databinding.FragmentMainBinding;
+import com.jhprog.dabank.utility.AnimationProvider;
 
+// This fragment is purely a cross point for navigating into different functionalities
 public class MainFragment extends Fragment {
 
     private FragmentMainBinding binding;
-    private MainViewModel viewModel;
+    private Animation onClickAnimation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onClickAnimation = AnimationProvider.getOnClickAnimation();
     }
 
     @Nullable
@@ -30,14 +40,38 @@ public class MainFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Get a reference to MainActivity's viewModel (MainViewModel)
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-    }
-
     private void initButtons() {
+
+        binding.fragmentMainButtonNewPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentMainButtonNewPayment.startAnimation(onClickAnimation);
+                if (getActivity() instanceof IFragmentOwner) {
+                    ((IFragmentOwner) getActivity()).changeFragment(new NewPaymentFragment(), true);
+                }
+            }
+        });
+
+        binding.fragmentMainButtonNewTransfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentMainButtonNewTransfer.startAnimation(onClickAnimation);
+            }
+        });
+
+        binding.fragmentMainButtonAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentMainButtonAccounts.startAnimation(onClickAnimation);
+            }
+        });
+
+        binding.fragmentMainButtonSimulations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentMainButtonSimulations.startAnimation(onClickAnimation);
+            }
+        });
 
     }
 }

@@ -8,7 +8,7 @@
 
     <string name="fragment_main_button_new_payment_text">New Payment</string>
     <string name="fragment_main_button_new_transfer_text">My Transfer</string>
-    <string name="fragment_main_button_transactions_text">Transactions</string>
     <string name="fragment_main_button_accounts_text">Accounts</string>
+    <string name="fragment_main_button_simulations_text">Simulations</string>
 
 </resources>

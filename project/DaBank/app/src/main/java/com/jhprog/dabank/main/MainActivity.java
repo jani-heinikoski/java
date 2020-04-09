@@ -8,7 +8,9 @@
 package com.jhprog.dabank.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -23,7 +25,7 @@ import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.databinding.ActivityMainBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IFragmentOwner {
 
     private ActivityMainBinding binding;
     private MainViewModel mainViewModel;
@@ -45,11 +47,6 @@ public class MainActivity extends AppCompatActivity {
         // Get the intent used to start this activity and construct the passed bank
         Intent intent = getIntent();
         bank = new Bank(intent.getIntExtra("b_id", 0), intent.getStringExtra("b_name"));
-        // Handle error in passing bank by value
-        if (bank.getId() == 0) {
-            // TODO Handle error in passing bank byVal
-            finish();
-        }
         binding.mainActivityHeaderText.setText(bank.getName());
         // Initialize UI components
         onClickAnimation = AnimationProvider.getOnClickAnimation();
@@ -60,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
     private void initFragments() {
         fragmentManager = getSupportFragmentManager();
         // Display MainFragment inside of main_activity_fragment_container
-        
-
-
-
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_fragment_container,
+                new MainFragment());
+        fragmentTransaction.commit();
     }
 
     private void initButtons() {
@@ -75,4 +72,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void changeFragment(Fragment newFragment, boolean addToBackStack) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_fragment_container, newFragment);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
+    }
 }
