@@ -11,4 +11,10 @@
     <string name="fragment_main_button_accounts_text">Accounts</string>
     <string name="fragment_main_button_simulations_text">Simulations</string>
 
+    <string name="fragment_new_payment_payee_account">Payee\'s account</string>
+    <string name="fragment_new_payment_payee_name">Payee\'s name</string>
+    <string name="fragment_new_payment_reference_text">Reference number</string>
+    <string name="fragment_new_payment_message_text">Message</string>
+    <string name="fragment_new_payment_date_text">Due date</string>
+
 </resources>
