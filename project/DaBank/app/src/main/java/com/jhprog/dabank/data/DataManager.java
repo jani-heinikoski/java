@@ -11,13 +11,11 @@ package com.jhprog.dabank.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 import androidx.annotation.Nullable;
 
 import com.jhprog.dabank.utility.DaBank;
 
-import java.util.Locale;
 
 // This class handles all functionality with the SQLite database.
 public class DataManager {
