@@ -3,7 +3,10 @@ trans_id int primary key autoincrement
 trans_type int
 trans_from_acc_id int
 trans_to_acc_id int
-trans_date DATETIME
+trans_due_date DATETIME
+trans_date_time DATETIME
+trans_amount double
+trans_recurrence int
 
 bank
 bank_id int primary key autoincrement 
