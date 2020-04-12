@@ -66,7 +66,7 @@ public class NewPaymentFragment extends Fragment {
     @Override
     public void onDestroy() {
         // TODO tie db conn to the Activity's lifecycle and remove this
-        dataManager.closeDatabaseConnection();
+        //dataManager.closeDatabaseConnection();
         super.onDestroy();
     }
 

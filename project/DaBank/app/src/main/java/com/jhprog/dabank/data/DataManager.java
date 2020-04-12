@@ -30,6 +30,15 @@ public class DataManager {
     private DataManager() {
         dbHelper = new SQLiteDBHelper(DaBank.getAppContext());
         database = dbHelper.getWritableDatabase();
+        insertCustomer(new Customer(
+                1,
+                "1337",
+                "4321",
+                "admin",
+                "localhost",
+                "48220",
+                "1234"
+        ));
     }
 
     public static DataManager getInstance() {
@@ -67,6 +76,7 @@ public class DataManager {
             public static final String bcard_type  = "bcard_type";
         }
         public static class CustomerTable implements BaseColumns {
+            public static final String cust_bank_id  = "cust_bank_id";
             public static final String table_name = "customer";
             public static final String cust_user  = "cust_user";
             public static final String cust_passwd  = "cust_passwd";
@@ -88,7 +98,7 @@ public class DataManager {
 
     }
 
-    private static final class SQLiteDBHelper extends SQLiteOpenHelper {
+    private final class SQLiteDBHelper extends SQLiteOpenHelper {
 
         public static final String DATABASE_NAME = "data.db";
         public static final int DATABASE_VERSION = 1;
@@ -152,7 +162,8 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.CustomerTable.table_name +
                     " (" + DatabaseContract.CustomerTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.CustomerTable.cust_user+ " VARCHAR(30) NOT NULL,"+
+                    DatabaseContract.CustomerTable.cust_bank_id + " INTEGER NOT NULL,"+
+                    DatabaseContract.CustomerTable.cust_user + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_passwd + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_name + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_address + " VARCHAR(30) NOT NULL,"+
@@ -191,7 +202,32 @@ public class DataManager {
         }
     }
 
+    public void insertCustomer(@NonNull Customer customer) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        String INSERT_TRANSACT = "INSERT INTO " + DatabaseContract.CustomerTable.table_name + "(" +
+                DatabaseContract.CustomerTable.cust_bank_id + "," +
+                DatabaseContract.CustomerTable.cust_address + "," +
+                DatabaseContract.CustomerTable.cust_name + "," +
+                DatabaseContract.CustomerTable.cust_passwd + "," +
+                DatabaseContract.CustomerTable.cust_phone + "," +
+                DatabaseContract.CustomerTable.cust_user + "," +
+                DatabaseContract.CustomerTable.cust_zipcode + ") VALUES (" +
+                customer.getCust_bank_id() + "," +
+                "'" + customer.getCust_address() + "'," +
+                "'" + customer.getCust_name() + "'," +
+                "'" + customer.getCust_passwd() + "'," +
+                "'" + customer.getCust_phone() + "'," +
+                "'" + customer.getCust_user() + "'," +
+                "'" + customer.getCust_zipcode() + "');";
+        database.execSQL(INSERT_TRANSACT);
+    }
+
     public void insertTransaction(Transaction transaction) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
         String INSERT_TRANSACT = "INSERT INTO " + DatabaseContract.TransactionTable.table_name + "(" +
                 DatabaseContract.TransactionTable.trans_type + "," +
                 DatabaseContract.TransactionTable.trans_from_acc_id + "," +
@@ -208,23 +244,34 @@ public class DataManager {
                 transaction.getTrans_recurrence() + "," +
                 "datetime('now', 'localtime')" +
                 ");";
-        if (!database.isOpen()) {
-            database = dbHelper.getWritableDatabase();
-        }
-
         database.execSQL(INSERT_TRANSACT);
     }
 
     public Customer getCustomerByID(int id) {
-        return new Customer(
-                id,
-                "574783",
-                "1999",
-                "Jani",
-                "Mökkitie 20",
-                "48220",
-                "0400440040"
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        Customer retval = null;
+
+        Cursor cursor = database.rawQuery(
+                "SELECT *" +
+                        " FROM " + DatabaseContract.CustomerTable.table_name +
+                        " WHERE " + DatabaseContract.CustomerTable._ID + "=" + id + ";",
+                null
         );
+
+        if (cursor.moveToFirst()) {
+           retval = new Customer(
+                   cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+           );
+        }
+        return retval;
     }
 
     public Customer getCustomerByID(String id) {
@@ -249,18 +296,44 @@ public class DataManager {
         if (cursor.moveToFirst()) {
             bank_id = cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID));
             bank_bic = cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_bic));
-            System.out.println("LOGGER: " + bank_id + ", " + bank_bic);
             bank = new Bank(bank_id, bankName, bank_bic);
         }
 
         cursor.close();
 
-        if (bank == null) {
-            System.out.println("LOGGER: BANK WAS NULL! got param: " + bankName);
-            System.exit(-1);
+        return bank;
+    }
+
+    public Customer getCustomerByUserPassword(Bank bank, String username, String password) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        Customer retval = null;
+
+        Cursor cursor = database.rawQuery(
+                "SELECT *" +
+                        " FROM " + DatabaseContract.CustomerTable.table_name +
+                        " WHERE " + DatabaseContract.CustomerTable.cust_user + "='" + username + "' AND " +
+                        DatabaseContract.CustomerTable.cust_passwd + "='" + password + "' AND " +
+                        DatabaseContract.CustomerTable.cust_bank_id + "=" + bank.getBank_id() + ";"
+                        ,
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            retval = new Customer(
+                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+            );
         }
 
-        return bank;
+        return retval;
     }
 
 }

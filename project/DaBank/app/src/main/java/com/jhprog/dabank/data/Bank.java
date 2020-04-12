@@ -2,11 +2,10 @@ package com.jhprog.dabank.data;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.jhprog.dabank.login.IAuthentication;
 
-
-public class Bank implements IAuthentication {
+public class Bank {
 
     private int bank_id;
     private String bank_name;
@@ -30,13 +29,4 @@ public class Bank implements IAuthentication {
         return bank_bic;
     }
 
-    @NonNull
-    @Override
-    public boolean handleAuthentication(String username, String password) {
-        //DataManager dataManager = DataManager.getInstance();
-
-        // TODO Authenticate the user here!
-
-        return true;
-    }
 }

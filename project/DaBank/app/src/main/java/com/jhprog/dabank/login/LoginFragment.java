@@ -9,6 +9,7 @@ package com.jhprog.dabank.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Bank;
+import com.jhprog.dabank.data.Customer;
+import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentLoginBinding;
 import com.jhprog.dabank.main.MainActivity;
 import com.jhprog.dabank.utility.AnimationProvider;
@@ -69,16 +72,20 @@ public class LoginFragment extends Fragment {
     }
 
     private void initButtons() {
+
         binding.framentLoginButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.framentLoginButtonLogin.startAnimation(AnimationProvider.getOnClickAnimation());
-                if (viewModel.getBank().getValue().handleAuthentication(
-                        binding.fragmentLoginEdittextUsername.getText().toString(),
-                        binding.fragmentLoginEdittextPassword.getText().toString()
-                )) {
-                    // If user authenticates successfully, start MainActivity and give it
-                    // the bank by value.
+                DataManager dataManager = DataManager.getInstance();
+                Customer customer =
+                        dataManager.getCustomerByUserPassword(
+                                viewModel.getBank().getValue(),
+                                binding.fragmentLoginEdittextUsername.getText().toString(),
+                                binding.fragmentLoginEdittextPassword.getText().toString()
+                        );
+                if (customer != null) {
+                   // User authenticated succesfully
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("b_id", bank.getBank_id());
                     intent.putExtra("b_name", bank.getBank_name());
@@ -91,6 +98,7 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
     }
 
 }
