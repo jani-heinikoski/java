@@ -8,20 +8,26 @@ import com.jhprog.dabank.login.IAuthentication;
 
 public class Bank implements IAuthentication {
 
-    private int id;
-    private String name;
+    private int bank_id;
+    private String bank_name;
+    private String bank_bic;
 
-    public Bank(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public Bank(int bank_id, String bank_name, String bank_bic) {
+        this.bank_id = bank_id;
+        this.bank_name = bank_name;
+        this.bank_bic = bank_bic;
     }
 
-    public int getId() {
-        return id;
+    public int getBank_id() {
+        return bank_id;
     }
 
-    public String getName() {
-        return name;
+    public String getBank_name() {
+        return bank_name;
+    }
+
+    public String getBank_bic() {
+        return bank_bic;
     }
 
     @NonNull

@@ -25,7 +25,7 @@ import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
-public class LoginActivity extends AppCompatActivity implements IBankChosenCallback {
+public class LoginActivity extends AppCompatActivity implements IBankChosenListener {
 
     private LoginViewModel loginViewModel;
     private Animation onClickAnimation;

@@ -17,28 +17,34 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.jhprog.dabank.data.Bank;
-
+import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentChooseBankBinding;
 
-public class ChooseBankFragment extends Fragment implements IBankChosenCallback {
+public class ChooseBankFragment extends Fragment {
 
     private FragmentChooseBankBinding binding;
-    private IBankChosenCallback onChooseBankListener;
+    private IBankChosenListener onChooseBankListener;
     private LoginViewModel viewModel;
+    private DataManager dataManager;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         // See if context (LoginActivity in this case) has implemented IBankChosenCallback,
         // throws ClassCastException if it hasn't.
-        if (context instanceof IBankChosenCallback) {
-            onChooseBankListener = (IBankChosenCallback) context;
+        if (context instanceof IBankChosenListener) {
+            onChooseBankListener = (IBankChosenListener) context;
         } else {
             throw new ClassCastException(context.toString() +
                     " must implement LoginViewModel.IBankChosenCallback!");
         }
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dataManager = DataManager.getInstance();
     }
 
     @Nullable
@@ -62,39 +68,34 @@ public class ChooseBankFragment extends Fragment implements IBankChosenCallback 
         binding.chooseBankFragmentImageButtonDabank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setBank(new Bank(1, "DaBank"));
-                onChoose();
+                viewModel.setBank(dataManager.getBankByName("DaBank"));
+                onChooseBankListener.onChoose();
             }
         });
         // Star Bank onClickListener
         binding.chooseBankFragmentImageButtonStarBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setBank(new Bank(2, "Star Bank"));
-                onChoose();
+                viewModel.setBank(dataManager.getBankByName("Star Bank"));
+                onChooseBankListener.onChoose();
             }
         });
         // Flash Bank onClickListener
         binding.chooseBankFragmentImageButtonFlashBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setBank(new Bank(3, "Flash Bank"));
-                onChoose();
+                viewModel.setBank(dataManager.getBankByName("Flash Bank"));
+                onChooseBankListener.onChoose();
             }
         });
         // Sun Bank onClickListener
         binding.chooseBankFragmentImageButtonSunBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.setBank(new Bank(4, "Sun Bank"));
-                onChoose();
+                viewModel.setBank(dataManager.getBankByName("Sun Bank"));
+                onChooseBankListener.onChoose();
             }
         });
-    }
-
-    @Override
-    public void onChoose() {
-        onChooseBankListener.onChoose();
     }
 
     @Override

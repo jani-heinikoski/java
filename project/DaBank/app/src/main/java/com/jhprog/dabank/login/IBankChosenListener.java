@@ -1,5 +1,5 @@
 package com.jhprog.dabank.login;
 
-public interface IBankChosenCallback {
+public interface IBankChosenListener {
     void onChoose();
 }

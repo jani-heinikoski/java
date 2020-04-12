@@ -22,10 +22,6 @@ public class LoginViewModel extends ViewModel {
     @NonNull
     public LiveData<Bank> getBank() {
         // This should NOT be null, since it is initialized in ChooseBankFragment
-        if (bank == null) {
-            bank = new MutableLiveData<>();
-            bank.setValue(new Bank(1, "Error"));
-        }
         return bank;
     }
 

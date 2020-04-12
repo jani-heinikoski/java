@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
         // Get the intent used to start this activity and construct the passed bank
         Intent intent = getIntent();
         mainViewModel.setBank(
-                new Bank(intent.getIntExtra("b_id", 0), intent.getStringExtra("b_name"))
+                new Bank(intent.getIntExtra("b_id", 0), intent.getStringExtra("b_name"), intent.getStringExtra("b_bic"))
         );
         mainViewModel.setCustomer(dataManager.getCustomerByID(
                 intent.getIntExtra("cust_id", 0)
         ));
-        binding.mainActivityHeaderText.setText(mainViewModel.getBank().getValue().getName());
+        binding.mainActivityHeaderText.setText(mainViewModel.getBank().getValue().getBank_name());
         // Initialize UI components
         onClickAnimation = AnimationProvider.getOnClickAnimation();
         initButtons();

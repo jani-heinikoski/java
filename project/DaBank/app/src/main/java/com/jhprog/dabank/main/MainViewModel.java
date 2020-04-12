@@ -28,7 +28,7 @@ public class MainViewModel extends ViewModel {
     private void loadAccounts() {
         // TODO get the accounts from DataManager where bank_id matches this.bank and cust_id matches this.customer
         ArrayList<Account> ahkountit = new ArrayList<>();
-        ahkountit.add(new CurrentAccount(Account.TYPE_CURRENT,bank.getValue().getId(), customer.getValue().getCust_id(), 100));
+        ahkountit.add(new CurrentAccount(Account.TYPE_CURRENT,bank.getValue().getBank_id(), customer.getValue().getCust_id(), 100));
         accounts.setValue(ahkountit);
     }
 

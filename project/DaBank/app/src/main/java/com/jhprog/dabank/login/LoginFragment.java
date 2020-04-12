@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment {
                         Locale.getDefault(),
                         "%s%s",
                         getString(R.string.fragment_login_header_text),
-                        bank.getName()
+                        bank.getBank_name()
                 )
         );
     }
@@ -80,8 +80,9 @@ public class LoginFragment extends Fragment {
                     // If user authenticates successfully, start MainActivity and give it
                     // the bank by value.
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("b_id", bank.getId());
-                    intent.putExtra("b_name", bank.getName());
+                    intent.putExtra("b_id", bank.getBank_id());
+                    intent.putExtra("b_name", bank.getBank_name());
+                    intent.putExtra("b_bic", bank.getBank_bic());
                     intent.putExtra("cust_id", 1);
                     binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.INVISIBLE);
                     startActivity(intent);

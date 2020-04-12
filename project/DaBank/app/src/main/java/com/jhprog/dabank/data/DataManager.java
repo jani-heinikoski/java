@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jhprog.dabank.utility.DaBank;
@@ -89,7 +90,7 @@ public class DataManager {
 
     private static final class SQLiteDBHelper extends SQLiteOpenHelper {
 
-        public static final String DATABASE_NAME = "data2.db";
+        public static final String DATABASE_NAME = "data.db";
         public static final int DATABASE_VERSION = 1;
 
         public SQLiteDBHelper(@Nullable Context context) {
@@ -127,6 +128,17 @@ public class DataManager {
                     ");";
 
             db.execSQL(SQL_QUERY);
+
+            SQL_QUERY = "INSERT INTO " +
+                    DatabaseContract.BankTable.table_name +
+                    " ("  +
+                    DatabaseContract.BankTable.bank_bic + "," +
+                    DatabaseContract.BankTable.bank_name +
+                    ") values('DABAFI', 'DaBank'),('STABAFI', 'Star Bank')," +
+                    "('FLABAFI', 'Flash Bank'),('SUBAFI', 'Sun Bank');";
+
+            db.execSQL(SQL_QUERY);
+
 
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.BankCardTable.table_name +
@@ -217,6 +229,38 @@ public class DataManager {
 
     public Customer getCustomerByID(String id) {
         return getCustomerByID(Integer.parseInt(id));
+    }
+
+    public Bank getBankByName(@NonNull String bankName) {
+        int bank_id;
+        String bank_bic;
+        Bank bank = null;
+
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        Cursor cursor = database.rawQuery(
+                "SELECT *" +
+                " FROM " + DatabaseContract.BankTable.table_name +
+                " WHERE " + DatabaseContract.BankTable.bank_name + "='" + bankName + "';",
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            bank_id = cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID));
+            bank_bic = cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_bic));
+            System.out.println("LOGGER: " + bank_id + ", " + bank_bic);
+            bank = new Bank(bank_id, bankName, bank_bic);
+        }
+
+        cursor.close();
+
+        if (bank == null) {
+            System.out.println("LOGGER: BANK WAS NULL! got param: " + bankName);
+            System.exit(-1);
+        }
+
+        return bank;
     }
 
 }
