@@ -82,6 +82,7 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("b_id", bank.getId());
                     intent.putExtra("b_name", bank.getName());
+                    intent.putExtra("cust_id", 1);
                     binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.INVISIBLE);
                     startActivity(intent);
                 } else {

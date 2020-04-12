@@ -203,4 +203,20 @@ public class DataManager {
         database.execSQL(INSERT_TRANSACT);
     }
 
+    public Customer getCustomerByID(int id) {
+        return new Customer(
+                id,
+                "574783",
+                "1999",
+                "Jani",
+                "Mökkitie 20",
+                "48220",
+                "0400440040"
+        );
+    }
+
+    public Customer getCustomerByID(String id) {
+        return getCustomerByID(Integer.parseInt(id));
+    }
+
 }

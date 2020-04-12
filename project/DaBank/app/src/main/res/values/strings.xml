@@ -20,4 +20,10 @@
     <string name="fragment_new_payment_payer_text">Payer account</string>
     <string name="fragment_new_payment_recurrence_text">Recurrence</string>
 
+    <string-array name="fragment_new_payment_recurrence">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
 </resources>

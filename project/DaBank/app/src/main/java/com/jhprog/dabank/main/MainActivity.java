@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Bank;
+import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.ActivityMainBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
@@ -31,12 +32,13 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
     private MainViewModel mainViewModel;
     private FragmentManager fragmentManager;
     private Animation onClickAnimation;
-    private Bank bank;
+    private DataManager dataManager;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataManager = DataManager.getInstance();
         // Disables screen rotation (locked to portrait mode)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Initialize ViewBinding
@@ -46,8 +48,13 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         // Get the intent used to start this activity and construct the passed bank
         Intent intent = getIntent();
-        bank = new Bank(intent.getIntExtra("b_id", 0), intent.getStringExtra("b_name"));
-        binding.mainActivityHeaderText.setText(bank.getName());
+        mainViewModel.setBank(
+                new Bank(intent.getIntExtra("b_id", 0), intent.getStringExtra("b_name"))
+        );
+        mainViewModel.setCustomer(dataManager.getCustomerByID(
+                intent.getIntExtra("cust_id", 0)
+        ));
+        binding.mainActivityHeaderText.setText(mainViewModel.getBank().getValue().getName());
         // Initialize UI components
         onClickAnimation = AnimationProvider.getOnClickAnimation();
         initButtons();
