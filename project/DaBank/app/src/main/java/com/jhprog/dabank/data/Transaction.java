@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 13.04.2020
+ * Version: alpha
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.data;
 
 public final class Transaction {

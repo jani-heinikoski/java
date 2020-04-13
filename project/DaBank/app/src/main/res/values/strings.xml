@@ -20,10 +20,14 @@
     <string name="fragment_new_payment_payer_text">Payer account</string>
     <string name="fragment_new_payment_recurrence_text">Recurrence</string>
 
-    <string-array name="fragment_new_payment_recurrence">
-        <item>Daily</item>
-        <item>Weekly</item>
-        <item>Monthly</item>
-    </string-array>
+    <string name="fragment_navigation_button_new_customer_text">Create a new customer</string>
+    <string name="fragment_navigation_button_add_accounts_text">Add an account to an existing customer</string>
+
+    <string name="fragment_new_customer_name_text">Customer\'s name</string>
+    <string name="fragment_new_customer_user_text">Customer\'s username (for login)</string>
+    <string name="fragment_new_customer_password_text">Customer\'s password (for login)</string>
+    <string name="fragment_new_customer_address_text">Customer\'s address</string>
+    <string name="fragment_new_customer_zipcode_text">Customer\'s zipcode</string>
+    <string name="fragment_new_customer_phone_text">Customer\'s phone number</string>
 
 </resources>

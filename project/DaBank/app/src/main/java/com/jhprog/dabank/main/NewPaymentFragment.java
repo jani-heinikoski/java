@@ -37,7 +37,6 @@ import java.util.Objects;
 public class NewPaymentFragment extends Fragment {
 
     private FragmentNewPaymentBinding binding;
-    private DataManager dataManager = DataManager.getInstance();
     private ArrayAdapter<Account> payerAdapter;
     private ArrayList<Account> accounts;
     private MainViewModel viewModel;
@@ -90,7 +89,7 @@ public class NewPaymentFragment extends Fragment {
                 if (!validateFormData()) {
                     return;
                 }
-                /*
+
                 Transaction transaction = new Transaction(
                     Transaction.TYPE_PAYMENT,
                     "'MAKSAJA'",
@@ -99,7 +98,7 @@ public class NewPaymentFragment extends Fragment {
                     Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString()),
                     1
                 );
-                 */
+
                 //dataManager.insertTransaction(transaction);
             }
         });

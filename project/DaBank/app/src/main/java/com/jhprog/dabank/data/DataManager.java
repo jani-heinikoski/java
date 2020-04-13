@@ -176,8 +176,8 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.AccountTable.table_name +
                     " (" + DatabaseContract.AccountTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.AccountTable.acc_type+ "  INTEGER  NOT NULL,"+
-                    DatabaseContract.AccountTable.acc_cust_id + " INTEGER   NOT NULL,"+
+                    DatabaseContract.AccountTable.acc_type+ "  INTEGER NOT NULL,"+
+                    DatabaseContract.AccountTable.acc_cust_id + " INTEGER NOT NULL,"+
                     DatabaseContract.AccountTable.acc_balance+ " DOUBLE(12,2) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
                     DatabaseContract.AccountTable.acc_interest + " DOUBLE(6,2),"+

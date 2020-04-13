@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 13.04.2020
+ * Version: alpha
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.data;
 
 import androidx.annotation.NonNull;
@@ -6,11 +13,11 @@ import java.util.Locale;
 
 public abstract class Account {
 
-    private int acc_id;
-    private int acc_type;
-    private int acc_bank_id;
-    private int acc_cust_id;
-    private double acc_balance;
+    protected int acc_id;
+    protected int acc_type;
+    protected int acc_bank_id;
+    protected int acc_cust_id;
+    protected double acc_balance;
 
     public static final int TYPE_CURRENT = 1;
     public static final int TYPE_SAVING = 2;
