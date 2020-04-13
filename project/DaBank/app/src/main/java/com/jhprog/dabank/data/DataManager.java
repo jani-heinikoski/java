@@ -4,6 +4,7 @@
  * Version: alpha
  * Sources:
  * https://developer.android.com/training/data-storage/sqlite
+ * https://www.sqlitetutorial.net/sqlite-like/
  * */
 package com.jhprog.dabank.data;
 
@@ -18,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jhprog.dabank.utility.DaBank;
+
+import java.util.ArrayList;
 
 
 // This class handles all functionality with the SQLite database.
@@ -335,6 +338,39 @@ public class DataManager {
         }
 
         return retval;
+    }
+
+    public ArrayList<Customer> getCustomersByName(int bank_id, @NonNull String cust_name) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        // TODO Add the SQL Query! Select id from sometable where cust_name like '% + cust_name + %' %
+        // Source: https://www.sqlitetutorial.net/sqlite-like/
+        ArrayList<Customer> customers = new ArrayList<>();
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.CustomerTable.table_name + " WHERE " +
+                DatabaseContract.CustomerTable.cust_name + " LIKE '%" + cust_name + "%' AND " +
+                DatabaseContract.CustomerTable.cust_bank_id + "=" + bank_id + ";",
+                null
+        );
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                customers.add(new Customer(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+                ));
+            }
+        } else {
+            customers = null;
+        }
+
+        return customers;
     }
 
 }

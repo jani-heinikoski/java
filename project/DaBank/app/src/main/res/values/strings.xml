@@ -29,5 +29,7 @@
     <string name="fragment_new_customer_address_text">Customer\'s address</string>
     <string name="fragment_new_customer_zipcode_text">Customer\'s zipcode</string>
     <string name="fragment_new_customer_phone_text">Customer\'s phone number</string>
+    
+    <string name="fragment_add_account_customer_header_text">Pick customer after searching</string>
 
 </resources>
