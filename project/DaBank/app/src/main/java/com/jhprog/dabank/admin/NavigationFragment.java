@@ -39,7 +39,7 @@ public class NavigationFragment extends Fragment {
     }
 
     private void initButtons() {
-
+        // Changes fragment to the NewCustomerFragment
         binding.fragmentAdminButtonNewCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,12 +47,12 @@ public class NavigationFragment extends Fragment {
                 activity.changeFragment(new NewCustomerFragment(), true);
             }
         });
-
+        // Changes fragment to the AddAccountFragment
         binding.fragmentAdminButtonAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.fragmentAdminButtonNewCustomer.startAnimation(AnimationProvider.getOnClickAnimation());
-
+                activity.changeFragment(new AddAccountFragment(), true);
             }
         });
 

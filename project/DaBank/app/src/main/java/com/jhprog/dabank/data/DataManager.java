@@ -225,6 +225,7 @@ public class DataManager {
     }
 
     public void insertTransaction(Transaction transaction) {
+        // TODO from/to_acc_id's need to be fixed
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }

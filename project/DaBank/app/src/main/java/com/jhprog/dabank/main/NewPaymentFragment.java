@@ -87,6 +87,7 @@ public class NewPaymentFragment extends Fragment {
                 binding.fragmentNewPaymentButtonContinue.startAnimation(AnimationProvider.getOnClickAnimation());
 
                 if (!validateFormData()) {
+                    Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

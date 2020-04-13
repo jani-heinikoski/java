@@ -11,11 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.jhprog.dabank.data.Customer;
+import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentNewCustomerBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
 public class NewCustomerFragment extends Fragment {
-
 
     private FragmentNewCustomerBinding binding;
 
@@ -23,6 +23,7 @@ public class NewCustomerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentNewCustomerBinding.inflate(inflater, container, false);
+        initButtons();
         return binding.getRoot();
     }
 
@@ -36,7 +37,6 @@ public class NewCustomerFragment extends Fragment {
                     return;
                 }
 
-                // TODO Insert the customer row using DataManager
                 Customer customer = new Customer(
                         AdminActivity.getB_id(),
                         binding.fragmentNewCustomerEdittextUser.getText().toString().trim(),
@@ -47,13 +47,89 @@ public class NewCustomerFragment extends Fragment {
                         binding.fragmentNewCustomerEdittextPhone.getText().toString().trim()
                 );
 
+                DataManager dataManager = DataManager.getInstance();
+                dataManager.insertCustomer(customer);
+
             }
         });
     }
 
     private boolean validateFormData() {
         // TODO validate new customer form data
-        return false;
+        String tempString = "";
+        boolean valid = true;
+        boolean lowerCase = false;
+        boolean upperCase = false;
+        boolean number = false;
+        boolean specialChar = false;
+        // Name
+        tempString = binding.fragmentNewCustomerEdittextName.getText().toString().trim();
+        if (tempString.isEmpty()) {
+            valid = false;
+            Toast.makeText(getActivity(), "Enter name for customer", Toast.LENGTH_SHORT).show();
+        }
+        // Username
+        tempString = binding.fragmentNewCustomerEdittextUser.getText().toString().trim();
+        if (tempString.isEmpty() || tempString.length() < 8) {
+            valid = false;
+            Toast.makeText(getActivity(), "Username must be >8 characters", Toast.LENGTH_SHORT).show();
+        }
+        // Password check
+        tempString = binding.fragmentNewCustomerEdittextPassword.getText().toString().trim();
+        if (tempString.matches("\\s+")) {
+            valid = false;
+        } else {
+            for (char c : tempString.toCharArray()) {
+                if (Character.isDigit(c)) {
+                    number = true;
+                } else if (Character.isLowerCase(c) && Character.isLetter(c)) {
+                    lowerCase = true;
+                } else if (Character.isUpperCase(c) && Character.isLetter(c)) {
+                    upperCase = true;
+                } else if (!Character.isLetterOrDigit(c)) {
+                    specialChar = true;
+                }
+            }
+            if (!(number && lowerCase && upperCase && specialChar)) {
+                valid = false;
+                Toast.makeText(getActivity(), "Invalid password!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Address check
+        tempString = binding.fragmentNewCustomerEdittextAddress.getText().toString().trim();
+        if (tempString.isEmpty()) {
+            valid = false;
+            Toast.makeText(getActivity(), "Empty address!", Toast.LENGTH_SHORT).show();
+        }
+        // Zipcode check
+        tempString = binding.fragmentNewCustomerEdittextZipcode.getText().toString().trim();
+        if (tempString.isEmpty() || tempString.matches("\\s+")) {
+            valid = false;
+            Toast.makeText(getActivity(), "Invalid zipcode!", Toast.LENGTH_SHORT).show();
+        } else {
+            for (char c : tempString.toCharArray()) {
+                if (!Character.isDigit(c)) {
+                    valid = false;
+                    Toast.makeText(getActivity(), "Invalid zipcode!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        }
+        // Phone number check
+        tempString = binding.fragmentNewCustomerEdittextPhone.getText().toString().trim();
+        if (tempString.isEmpty() || tempString.length() < 6) {
+            valid = false;
+            Toast.makeText(getActivity(), "Invalid phone number!", Toast.LENGTH_SHORT).show();
+        } else {
+            for (char c : tempString.toCharArray()) {
+                if (!(Character.isDigit(c) || c == '+')) {
+                    valid = false;
+                    Toast.makeText(getActivity(), "Invalid phone number!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        }
+        return valid;
     }
 
 }
