@@ -1,5 +1,9 @@
 package com.jhprog.dabank.data;
 
+import androidx.annotation.NonNull;
+
+import java.util.Locale;
+
 public final class Customer {
 
     private int cust_id;
@@ -62,5 +66,13 @@ public final class Customer {
 
     public int getCust_bank_id() {
         return cust_bank_id;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(),
+                "%d | %s | %s",
+                this.cust_id, this.cust_name, this.cust_address);
     }
 }

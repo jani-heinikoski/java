@@ -24,7 +24,9 @@ import com.jhprog.dabank.main.IFragmentOwner;
 public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
 
     private ActivityAdminBinding binding;
+    // TODO Replace with AdminViewModel
     private static int b_id;
+    private static int cust_id;
     private FragmentManager fragmentManager;
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -35,6 +37,7 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent = getIntent();
         b_id = intent.getIntExtra("b_id", 1);
+        cust_id = intent.getIntExtra("cust_id", 1);
         initFragments();
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -61,5 +64,8 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
 
     public static int getB_id() {
         return b_id;
+    }
+    public static int getCust_id() {
+        return cust_id;
     }
 }

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
+import com.jhprog.dabank.data.CurrentAccount;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
@@ -100,10 +101,60 @@ public class AddAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Give a name to search for", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    customers = DataManager.getInstance().getCustomersByName(AdminActivity.getB_id(), cust_name);
+                    ArrayList<Customer> temp = DataManager.getInstance().getCustomersByName(AdminActivity.getB_id(), cust_name);
+                    customers.clear();
+                    if (temp != null) {
+                        customers.addAll(temp);
+                    }
                     customerArrayAdapter.notifyDataSetChanged();
                 }
             }
         });
+
+        binding.fragmentAddAccountButtonAddAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!validateForm()) {
+                    Toast.makeText(getActivity(), "Invalid form data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // TODO Account constructors don't have account number
+                switch (accountType) {
+                    case Account.TYPE_CURRENT:
+                        CurrentAccount account = new CurrentAccount(
+                            AdminActivity.getB_id(),
+                            AdminActivity.getCust_id(),
+                            Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim())
+                        );
+                }
+            }
+        });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+        String tempString;
+        // Account number check, TODO see if account number is already in use
+        tempString = binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim();
+        if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
+            Toast.makeText(getActivity(), "Payee acc non-valid", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        // Money amount check
+        tempString = binding.fragmentAddAccountEdittextAmount.getText().toString().trim();
+        if (tempString.isEmpty() || tempString.matches("[A-Z][a-z]")) {
+            Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
+            valid = false;
+        } else {
+            try {
+                Double.parseDouble(tempString);
+            } catch (Exception e) {
+                valid = false;
+                Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+
+        return valid;
     }
 }

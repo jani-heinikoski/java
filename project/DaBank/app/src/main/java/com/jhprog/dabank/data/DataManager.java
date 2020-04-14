@@ -42,6 +42,7 @@ public class DataManager {
                 "48220",
                 "1234"
         ));
+        System.out.println("LOGGER: CONSTRUCTOR CALLED!");
     }
 
     public static DataManager getInstance() {
@@ -344,8 +345,7 @@ public class DataManager {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
-        // TODO Add the SQL Query! Select id from sometable where cust_name like '% + cust_name + %' %
-        // Source: https://www.sqlitetutorial.net/sqlite-like/
+
         ArrayList<Customer> customers = new ArrayList<>();
         Cursor cursor = database.rawQuery(
                 "SELECT * FROM " + DatabaseContract.CustomerTable.table_name + " WHERE " +
@@ -353,6 +353,7 @@ public class DataManager {
                 DatabaseContract.CustomerTable.cust_bank_id + "=" + bank_id + ";",
                 null
         );
+
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 customers.add(new Customer(

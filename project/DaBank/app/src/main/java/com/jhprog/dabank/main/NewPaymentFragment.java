@@ -109,19 +109,19 @@ public class NewPaymentFragment extends Fragment {
     private boolean validateFormData() {
         String tempString = "";
         boolean valid = true;
-        // Payee's account
+        // Payee's account number check
         tempString = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim().toUpperCase();
         if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
             Toast.makeText(getActivity(), "Payee acc non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
         }
-
+        // Payee's name check
         tempString = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
         if (tempString.isEmpty() || tempString.matches("[0-9]")) {
             Toast.makeText(getActivity(), "Payee name non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
         }
-
+        // Reference number check
         tempString = binding.fragmentNewPaymentEdittextReference.getText().toString().trim();
         if ((tempString.isEmpty() && binding.fragmentNewPaymentEdittextMessage.getText().toString().trim().isEmpty())
                 || tempString.matches("[A-Za-z]")
@@ -130,7 +130,7 @@ public class NewPaymentFragment extends Fragment {
             Toast.makeText(getActivity(), "Ref non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
         }
-
+        // Money amount check
         tempString = binding.fragmentNewPaymentEdittextAmount.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("[A-Z][a-z]")) {
             Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
@@ -140,6 +140,7 @@ public class NewPaymentFragment extends Fragment {
                 Double.parseDouble(tempString);
             } catch (Exception e) {
                 valid = false;
+                Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }

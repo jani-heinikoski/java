@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
+import com.jhprog.dabank.admin.AdminActivity;
 import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
@@ -85,13 +86,24 @@ public class LoginFragment extends Fragment {
                                 binding.fragmentLoginEdittextPassword.getText().toString()
                         );
                 if (customer != null) {
-                   // User authenticated succesfully
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("b_id", bank.getBank_id());
-                    intent.putExtra("b_name", bank.getBank_name());
-                    intent.putExtra("b_bic", bank.getBank_bic());
-                    intent.putExtra("cust_id", 1);
+                    // User authenticated succesfully
+                    Intent intent;
+                    // See if user is admin
+                    if (customer.getCust_user().equals("1337")) {
+                        intent = new Intent(getActivity(), AdminActivity.class);
+                        intent.putExtra("b_id", bank.getBank_id());
+                        intent.putExtra("cust_id", customer.getCust_id());
+                    } else {
+                        intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("b_id", bank.getBank_id());
+                        intent.putExtra("b_name", bank.getBank_name());
+                        intent.putExtra("b_bic", bank.getBank_bic());
+                        intent.putExtra("cust_id", customer.getCust_id());
+                    }
+
                     binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.INVISIBLE);
+                    binding.fragmentLoginEdittextUsername.setText("");
+                    binding.fragmentLoginEdittextPassword.setText("");
                     startActivity(intent);
                 } else {
                     binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.VISIBLE);

@@ -55,7 +55,6 @@ public class NewCustomerFragment extends Fragment {
     }
 
     private boolean validateFormData() {
-        // TODO validate new customer form data
         String tempString = "";
         boolean valid = true;
         boolean lowerCase = false;
