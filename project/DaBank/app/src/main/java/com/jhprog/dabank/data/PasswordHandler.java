@@ -31,8 +31,6 @@ public final class PasswordHandler {
     public boolean passwordMatches(Password password, String passwordPlaintext) {
         String passwordAsString = passwordPlaintext + password.getSalt();
         String hashedPassword = new String(Hex.encodeHex(DigestUtils.sha256(passwordAsString)));
-        System.out.println("LOGGER: hashedpassword=" + hashedPassword);
-        System.out.println("LOGGER: password.getHash()=" + password.getHash());
         return (hashedPassword.equals(password.getHash()));
     }
 
