@@ -84,6 +84,7 @@ public class DataManager {
             public static final String table_name = "customer";
             public static final String cust_user  = "cust_user";
             public static final String cust_passwd  = "cust_passwd";
+            public static final String cust_salt = "cust_salt";
             public static final String cust_name = "cust_name";
             public static final String cust_address = "cust_address";
             public static final String cust_zipcode = "cust_zipcode";
@@ -91,6 +92,7 @@ public class DataManager {
         }
         public static class AccountTable implements BaseColumns {
             public static final String table_name = "account";
+            public static final String acc_number  = "acc_number";
             public static final String acc_type  = "acc_type";
             public static final String acc_cust_id  = "acc_cust_id";
             public static final String acc_balance = "acc_balance";
@@ -169,6 +171,7 @@ public class DataManager {
                     DatabaseContract.CustomerTable.cust_bank_id + " INTEGER NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_user + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_passwd + " VARCHAR(30) NOT NULL,"+
+                    DatabaseContract.CustomerTable.cust_salt + " VARCHAR(8) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_name + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_address + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_zipcode + " VARCHAR(30) NOT NULL,"+
@@ -182,6 +185,7 @@ public class DataManager {
                     " (" + DatabaseContract.AccountTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DatabaseContract.AccountTable.acc_type+ "  INTEGER NOT NULL,"+
                     DatabaseContract.AccountTable.acc_cust_id + " INTEGER NOT NULL,"+
+                    DatabaseContract.AccountTable.acc_number + " VARCHAR(18) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_balance+ " DOUBLE(12,2) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
                     DatabaseContract.AccountTable.acc_interest + " DOUBLE(6,2),"+
@@ -265,17 +269,21 @@ public class DataManager {
                 null
         );
 
-        if (cursor.moveToFirst()) {
-           retval = new Customer(
-                   cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
-                   cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
-           );
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retval = new Customer(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+                );
+            }
+            cursor.close();
         }
+
         return retval;
     }
 
@@ -291,6 +299,7 @@ public class DataManager {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
+
         Cursor cursor = database.rawQuery(
                 "SELECT *" +
                 " FROM " + DatabaseContract.BankTable.table_name +
@@ -298,13 +307,14 @@ public class DataManager {
                 null
         );
 
-        if (cursor.moveToFirst()) {
-            bank_id = cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID));
-            bank_bic = cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_bic));
-            bank = new Bank(bank_id, bankName, bank_bic);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                bank_id = cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID));
+                bank_bic = cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_bic));
+                bank = new Bank(bank_id, bankName, bank_bic);
+            }
+            cursor.close();
         }
-
-        cursor.close();
 
         return bank;
     }
@@ -324,18 +334,20 @@ public class DataManager {
                         ,
                 null
         );
-
-        if (cursor.moveToFirst()) {
-            retval = new Customer(
-                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
-                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
-            );
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retval = new Customer(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+                );
+            }
+            cursor.close();
         }
 
         return retval;
@@ -366,12 +378,57 @@ public class DataManager {
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
                 ));
+                cursor.close();
             }
         } else {
             customers = null;
         }
 
         return customers;
+    }
+
+    public boolean accountExists(@NonNull String accountNumber) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        Cursor cursor = database.rawQuery(
+                "SELECT " + DatabaseContract.AccountTable._ID + " FROM " + DatabaseContract.AccountTable.table_name +
+                " WHERE " + DatabaseContract.AccountTable.acc_number + "='" + accountNumber + "';",
+                null
+        );
+
+        return cursor != null && cursor.moveToFirst();
+    }
+
+    public Customer getCustomerByUsername(@NonNull String username) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        Customer customer = null;
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.CustomerTable.table_name + " WHERE " + DatabaseContract.CustomerTable.cust_user +
+                "='" + username + "';",
+                null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                customer = new Customer(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
+                );
+            }
+            cursor.close();
+        }
+
+        return customer;
     }
 
 }

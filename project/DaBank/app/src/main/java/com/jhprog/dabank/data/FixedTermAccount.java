@@ -14,14 +14,14 @@ public final class FixedTermAccount extends Account {
     private Date acc_due_date;
     private double interest;
 
-    public FixedTermAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, Date acc_due_date, double interest) {
-        super(acc_id, acc_type, acc_bank_id, acc_cust_id, acc_balance);
+    public FixedTermAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, Date acc_due_date, double interest) {
+        super(acc_id, acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
         this.acc_due_date = acc_due_date;
         this.interest = interest;
     }
 
-    public FixedTermAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, Date acc_due_date, double interest) {
-        super(acc_type, acc_bank_id, acc_cust_id, acc_balance);
+    public FixedTermAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, Date acc_due_date, double interest) {
+        super(acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
         this.acc_due_date = acc_due_date;
         this.interest = interest;
     }

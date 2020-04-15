@@ -134,11 +134,16 @@ public class AddAccountFragment extends Fragment {
     private boolean validateForm() {
         boolean valid = true;
         String tempString;
-        // Account number check, TODO see if account number is already in use
+        // Account number check
         tempString = binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim();
         if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
-            Toast.makeText(getActivity(), "Payee acc non-valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Account number non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
+        } else {
+            if (DataManager.getInstance().accountExists(tempString)) {
+                valid = false;
+                Toast.makeText(getActivity(), "Account number exists!", Toast.LENGTH_SHORT).show();
+            }
         }
         // Money amount check
         tempString = binding.fragmentAddAccountEdittextAmount.getText().toString().trim();
