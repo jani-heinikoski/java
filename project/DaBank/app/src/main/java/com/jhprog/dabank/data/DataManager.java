@@ -465,4 +465,36 @@ public class DataManager {
         return customer;
     }
 
+    public void insertAccount(Account account) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        String INSERT_QUERY = "";
+        switch (account.getType()) {
+
+            case Account.TYPE_CURRENT:
+                INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
+                        DatabaseContract.AccountTable.acc_type + "," +
+                        DatabaseContract.AccountTable.acc_cust_id + "," +
+                        DatabaseContract.AccountTable.acc_number + "," +
+                        DatabaseContract.AccountTable.acc_balance +
+                        ") VALUES (" +
+                        Account.TYPE_CURRENT + "," +
+                        account.getAcc_cust_id() + "," +
+                        "'" + account.getAcc_number() + "'," +
+                        account.getAcc_balance();
+                break;
+            case Account.TYPE_SAVING:
+                INSERT_QUERY = "";
+                break;
+            case Account.TYPE_FIXED_TERM:
+                INSERT_QUERY = "";
+                break;
+
+        }
+
+        database.execSQL(INSERT_QUERY);
+
+    }
+
 }

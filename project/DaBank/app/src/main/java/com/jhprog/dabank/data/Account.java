@@ -45,16 +45,16 @@ public abstract class Account {
         return acc_id;
     }
 
-    public int getAcc_type() {
-        return acc_type;
-    }
-
     public int getAcc_bank_id() {
         return acc_bank_id;
     }
 
     public int getAcc_cust_id() {
         return acc_cust_id;
+    }
+
+    public String getAcc_number() {
+        return acc_number;
     }
 
     public double getAcc_balance() {
