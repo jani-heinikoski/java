@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
+import com.jhprog.dabank.data.PasswordHandler;
 import com.jhprog.dabank.databinding.FragmentNewCustomerBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
@@ -40,7 +41,7 @@ public class NewCustomerFragment extends Fragment {
                 Customer customer = new Customer(
                         AdminActivity.getB_id(),
                         binding.fragmentNewCustomerEdittextUser.getText().toString().trim(),
-                        binding.fragmentNewCustomerEdittextPassword.getText().toString().trim(),
+                        PasswordHandler.getInstance().newPassword(binding.fragmentNewCustomerEdittextPassword.getText().toString().trim()),
                         binding.fragmentNewCustomerEdittextName.getText().toString().trim(),
                         binding.fragmentNewCustomerEdittextAddress.getText().toString().trim(),
                         binding.fragmentNewCustomerEdittextZipcode.getText().toString().trim(),

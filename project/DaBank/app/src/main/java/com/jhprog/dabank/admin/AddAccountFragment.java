@@ -118,13 +118,14 @@ public class AddAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Invalid form data", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // TODO Account constructors don't have account number
+
                 switch (accountType) {
                     case Account.TYPE_CURRENT:
                         CurrentAccount account = new CurrentAccount(
                             AdminActivity.getB_id(),
                             AdminActivity.getCust_id(),
-                            Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim())
+                            Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                            binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
                         );
                 }
             }

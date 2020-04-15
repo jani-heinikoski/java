@@ -9,24 +9,20 @@
 package com.jhprog.dabank.login;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.jhprog.dabank.data.Bank;
 
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<Bank> bank = new MutableLiveData<>();
+    private Bank bank = null;
 
-    @NonNull
-    public LiveData<Bank> getBank() {
-        // This should NOT be null, since it is initialized in ChooseBankFragment
+    public Bank getBank() {
         return bank;
     }
 
     public void setBank(@NonNull Bank bank) {
-        this.bank.setValue(bank);
+        this.bank = bank;
     }
 
 }

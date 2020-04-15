@@ -129,7 +129,7 @@
                 android:background="@drawable/custom_edittext"
                 android:gravity="start"
                 android:hint="e.g. FI00 0000 0000 0000 00"
-                android:inputType="text|number"
+                android:inputType="text"
                 android:maxLength="18"
                 android:maxLines="1"
                 android:paddingHorizontal="8dp"

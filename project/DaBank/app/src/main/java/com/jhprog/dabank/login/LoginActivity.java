@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.R;
+import com.jhprog.dabank.data.PasswordHandler;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
