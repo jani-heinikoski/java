@@ -17,8 +17,10 @@ public class MainViewModel extends ViewModel {
     private Customer customer = null;
 
     private void loadAccounts() {
-        // TODO get the accounts from DataManager where bank_id matches this.bank and cust_id matches this.customer
         DataManager dataManager = DataManager.getInstance();
+        if (bank != null && customer != null) {
+            accounts.addAll(dataManager.getCustomerAccounts(bank.getBank_id(), customer.getCust_id()));
+        }
     }
 
     public ArrayList<Account> getAccounts() {

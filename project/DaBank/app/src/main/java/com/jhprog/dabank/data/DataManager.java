@@ -188,6 +188,7 @@ public class DataManager {
             db.execSQL(SQL_QUERY);
 
             insertAdmins(db);
+            insertTestUsers(db);
 
         }
 
@@ -231,6 +232,41 @@ public class DataManager {
                             "'" + password.getSalt() + "'," +
                             "'none'," +
                             "'1337'," +
+                            "'none');";
+                    db.execSQL(INSERT_TRANSACT);
+                }
+                cursor.close();
+            }
+        }
+    }
+
+    private void insertTestUsers(SQLiteDatabase db) {
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + DatabaseContract.BankTable._ID + " FROM " +
+                            DatabaseContract.BankTable.table_name + ";",
+                    null
+            );
+            if (cursor != null) {
+                PasswordHandler passwordHandler = PasswordHandler.getInstance();
+                while (cursor.moveToNext()) {
+                    Password password = passwordHandler.newPassword("password");
+                    String INSERT_TRANSACT = "INSERT INTO " + DatabaseContract.CustomerTable.table_name + "(" +
+                            DatabaseContract.CustomerTable.cust_bank_id + "," +
+                            DatabaseContract.CustomerTable.cust_address + "," +
+                            DatabaseContract.CustomerTable.cust_name + "," +
+                            DatabaseContract.CustomerTable.cust_passwd + "," +
+                            DatabaseContract.CustomerTable.cust_salt + "," +
+                            DatabaseContract.CustomerTable.cust_phone + "," +
+                            DatabaseContract.CustomerTable.cust_user + "," +
+                            DatabaseContract.CustomerTable.cust_zipcode + ") VALUES (" +
+                            cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID)) + "," +
+                            "'none'," +
+                            "'Johnson Johnson'," +
+                            "'" + password.getHash() + "'," +
+                            "'" + password.getSalt() + "'," +
+                            "'none'," +
+                            "'username'," +
                             "'none');";
                     db.execSQL(INSERT_TRANSACT);
                 }
@@ -378,8 +414,8 @@ public class DataManager {
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
                 ));
-                cursor.close();
             }
+            cursor.close();
         } else {
             customers = null;
         }
@@ -443,12 +479,14 @@ public class DataManager {
             INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
                     DatabaseContract.AccountTable.acc_type + "," +
                     DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
                     DatabaseContract.AccountTable.acc_creditlimit +
                     ") VALUES (" +
                     Account.TYPE_CURRENT + "," +
                     account.getAcc_cust_id() + "," +
+                    account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
                     ((CurrentAccount) account).getAcc_creditlimit() + ");";
@@ -518,12 +556,29 @@ public class DataManager {
                         ));
                         break;
                     case Account.TYPE_SAVING:
+                        accounts.add(new SavingsAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                Account.TYPE_SAVING,
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit))
+                        ));
                         break;
                     case Account.TYPE_FIXED_TERM:
+                        accounts.add(new FixedTermAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                Account.TYPE_FIXED_TERM,
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_duedate))
+                        ));
                         break;
                 }
             }
-
             cursor.close();
         }
 
