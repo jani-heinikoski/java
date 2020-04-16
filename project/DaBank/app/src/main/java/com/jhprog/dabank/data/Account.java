@@ -13,12 +13,12 @@ import java.util.Locale;
 
 public abstract class Account {
 
-    protected int acc_id;
-    protected int acc_type;
-    protected int acc_bank_id;
-    protected int acc_cust_id;
-    protected double acc_balance;
-    protected String acc_number;
+    private int acc_id;
+    private int acc_type;
+    private int acc_bank_id;
+    private int acc_cust_id;
+    private double acc_balance;
+    private String acc_number;
 
     public static final int TYPE_CURRENT = 1;
     public static final int TYPE_SAVING = 2;

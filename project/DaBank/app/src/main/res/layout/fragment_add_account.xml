@@ -4,22 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <TextView
-        android:id="@+id/fragment_add_account_textview_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="Add an account to an existing user"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="italic" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/fragment_add_account_textview_header"
         android:layout_marginTop="8dp">
 
         <RelativeLayout
@@ -32,9 +19,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/fragment_new_customer_name_text"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <EditText
@@ -74,7 +61,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_add_account_customer_header_text"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <Spinner
@@ -95,7 +82,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_add_account_type_header_text"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <Spinner
@@ -116,7 +103,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_add_account_account_number_header_text"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <EditText
@@ -144,7 +131,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_add_account_amount_header_text"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <EditText
@@ -156,7 +143,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/custom_edittext"
                 android:gravity="start"
-                android:hint="e.g. 100,0"
+                android:hint="e.g. 100.35"
                 android:inputType="numberDecimal"
                 android:maxLength="15"
                 android:maxLines="1"
@@ -164,11 +151,49 @@
                 android:paddingVertical="4dp"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/fragment_add_account_is_credit_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_add_account_edittext_amount"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/fragment_add_account_is_credit_header_text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/fragment_add_account_switch_is_credit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/fragment_add_account_is_credit_header"
+                android:layout_marginStart="16dp"
+                android:layout_alignBaseline="@id/fragment_add_account_is_credit_header" />
+
+            <EditText
+                android:id="@+id/fragment_add_account_edittext_credit_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/fragment_add_account_switch_is_credit"
+                android:layout_alignBaseline="@id/fragment_add_account_switch_is_credit"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/custom_edittext"
+                android:gravity="start"
+                android:hint="Amount e.g. 100.10"
+                android:inputType="numberDecimal"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/fragment_add_account_button_add_account"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/fragment_add_account_edittext_amount"
+                android:layout_below="@id/fragment_add_account_is_credit_header"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_selector"

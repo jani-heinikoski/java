@@ -34,5 +34,6 @@
     <string name="fragment_add_account_type_header_text">Account type</string>
     <string name="fragment_add_account_account_number_header_text">Account number</string>
     <string name="fragment_add_account_amount_header_text">Initial balance in euros</string>
+    <string name="fragment_add_account_is_credit_header_text">Credit account</string>
 
 </resources>

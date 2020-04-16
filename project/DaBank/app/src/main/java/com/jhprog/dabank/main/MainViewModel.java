@@ -1,47 +1,46 @@
 package com.jhprog.dabank.main;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.Customer;
+import com.jhprog.dabank.data.DataManager;
 
 import java.util.ArrayList;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<Account>> accounts = new MutableLiveData<>();
-    private MutableLiveData<Bank> bank = new MutableLiveData<>();
-    private MutableLiveData<Customer> customer = new MutableLiveData<>();
+    private ArrayList<Account> accounts = new ArrayList<>();
+    private Bank bank = null;
+    private Customer customer = null;
 
-    public LiveData<ArrayList<Account>> getAccounts() {
-        if (accounts.getValue() == null || accounts.getValue().size() == 0) {
+    private void loadAccounts() {
+        // TODO get the accounts from DataManager where bank_id matches this.bank and cust_id matches this.customer
+        DataManager dataManager = DataManager.getInstance();
+    }
+
+    public ArrayList<Account> getAccounts() {
+        if (accounts.size() == 0) {
             loadAccounts();
         }
         return accounts;
     }
 
-    private void loadAccounts() {
-        // TODO get the accounts from DataManager where bank_id matches this.bank and cust_id matches this.customer
+    public Bank getBank() {
+        return this.bank;
     }
 
-    public LiveData<Bank> getBank() {
-        return bank;
+    public void setBank(@NonNull Bank bank) {
+        this.bank = bank;
     }
 
-    public void setBank(Bank bank) {
-        if (bank != null) {
-            this.bank.setValue(bank);
-        }
-    }
-
-    public LiveData<Customer> getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer.setValue(customer);
+    public void setCustomer(@NonNull Customer customer) {
+        this.customer = customer;
     }
 }

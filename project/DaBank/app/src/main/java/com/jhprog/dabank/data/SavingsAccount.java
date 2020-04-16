@@ -9,27 +9,20 @@ package com.jhprog.dabank.data;
 
 public final class SavingsAccount extends Account {
 
-    private double interest;
-    private double withdrawLimit;
+    private int acc_withdrawlimit;
 
-    public SavingsAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, double interest, double withdrawLimit) {
+    public SavingsAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, int acc_withdrawlimit) {
         super(acc_id, acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
-        this.interest = interest;
-        this.withdrawLimit = withdrawLimit;
+        this.acc_withdrawlimit = acc_withdrawlimit;
     }
 
-    public SavingsAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, double interest, double withdrawLimit) {
+    public SavingsAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, int acc_withdrawlimit) {
         super(acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
-        this.interest = interest;
-        this.withdrawLimit = withdrawLimit;
+        this.acc_withdrawlimit = acc_withdrawlimit;
     }
 
-    public double getInterest() {
-        return interest;
-    }
-
-    public double getWithdrawLimit() {
-        return withdrawLimit;
+    public int getAcc_withdrawlimit() {
+        return acc_withdrawlimit;
     }
 
     @Override

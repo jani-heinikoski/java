@@ -18,13 +18,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
-import com.jhprog.dabank.data.CurrentAccount;
-import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.data.Transaction;
 import com.jhprog.dabank.databinding.FragmentNewPaymentBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
@@ -54,23 +51,11 @@ public class NewPaymentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         initSpinners();
-        viewModel.getAccounts().observe(getViewLifecycleOwner(), new Observer<ArrayList<Account>>() {
-            @Override
-            public void onChanged(ArrayList<Account> accounts) {
-                payerAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    @Override
-    public void onDestroy() {
-        // TODO tie db conn to the Activity's lifecycle and remove this
-        //dataManager.closeDatabaseConnection();
-        super.onDestroy();
+        //payerAdapter.notifyDataSetChanged();
     }
 
     private void initSpinners() {
-        accounts = viewModel.getAccounts().getValue();
+        accounts = viewModel.getAccounts();
         payerAdapter = new ArrayAdapter<>(
                 Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.layout.fragment_new_payment_spinner_item,
@@ -90,7 +75,7 @@ public class NewPaymentFragment extends Fragment {
                     Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                // TODO transaction insert
                 Transaction transaction = new Transaction(
                     Transaction.TYPE_PAYMENT,
                     "'MAKSAJA'",

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class AddAccountFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddAccountBinding.inflate(inflater, container, false);
         initButtons();
+        initSwitches();
         return binding.getRoot();
     }
 
@@ -75,19 +77,37 @@ public class AddAccountFragment extends Fragment {
         binding.fragmentAddAccountSpinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selected = view.toString();
-                if (selected.equals(accountTypes[0])) {
-                    accountType = Account.TYPE_CURRENT;
-                } else if (selected.equals(accountTypes[1])) {
-                    accountType = Account.TYPE_SAVING;
-                } else if (selected.equals(accountTypes[2])) {
-                    accountType = Account.TYPE_FIXED_TERM;
+                String selected = accountTypeArrayAdapter.getItem(position);
+                if (selected != null) {
+                    if (selected.equals(accountTypes[0])) {
+                        accountType = Account.TYPE_CURRENT;
+                    } else if (selected.equals(accountTypes[1])) {
+                        accountType = Account.TYPE_SAVING;
+                    } else if (selected.equals(accountTypes[2])) {
+                        accountType = Account.TYPE_FIXED_TERM;
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Invalid account type", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 accountType = 0;
+            }
+        });
+    }
+
+    private void initSwitches() {
+        binding.fragmentAddAccountSwitchIsCredit.setChecked(false);
+        binding.fragmentAddAccountSwitchIsCredit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    binding.fragmentAddAccountEdittextCreditAmount.setVisibility(View.VISIBLE);
+                } else {
+                    binding.fragmentAddAccountEdittextCreditAmount.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
@@ -118,16 +138,25 @@ public class AddAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Invalid form data", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                System.out.println("LOGGER: " + accountType);
+                Account account;
 
                 switch (accountType) {
                     case Account.TYPE_CURRENT:
-                        CurrentAccount account = new CurrentAccount(
+                        account = new CurrentAccount(
                             AdminActivity.getB_id(),
                             AdminActivity.getCust_id(),
                             Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                            binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0,
                             binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
                         );
+                        break;
+
+                    default:
+                        return;
                 }
+
+                DataManager.getInstance().insertAccount(account);
             }
         });
     }
@@ -159,6 +188,13 @@ public class AddAccountFragment extends Fragment {
                 Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
+        }
+        // Credit amount check
+        if (binding.fragmentAddAccountSwitchIsCredit.isChecked()) {
+            tempString = binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim();
+
+
+
         }
 
         return valid;

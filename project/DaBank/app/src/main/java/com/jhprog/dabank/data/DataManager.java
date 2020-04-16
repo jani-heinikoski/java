@@ -14,12 +14,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jhprog.dabank.utility.DaBank;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -84,10 +86,10 @@ public class DataManager {
             public static final String table_name = "account";
             public static final String acc_number  = "acc_number";
             public static final String acc_type  = "acc_type";
+            public static final String acc_bank_id = "acc_bank_id";
             public static final String acc_cust_id  = "acc_cust_id";
             public static final String acc_balance = "acc_balance";
             public static final String acc_creditlimit = "acc_creditlimit";
-            public static final String acc_interest = "acc_interest";
             public static final String acc_withdrawlimit  = "acc_withdrawlimit";
             public static final String acc_duedate  = "acc_duedate";
         }
@@ -175,11 +177,11 @@ public class DataManager {
                     " (" + DatabaseContract.AccountTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DatabaseContract.AccountTable.acc_type+ "  INTEGER NOT NULL,"+
                     DatabaseContract.AccountTable.acc_cust_id + " INTEGER NOT NULL,"+
+                    DatabaseContract.AccountTable.acc_bank_id + " INTEGER NOT NULL," +
                     DatabaseContract.AccountTable.acc_number + " VARCHAR(18) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_balance+ " DOUBLE(12,2) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
-                    DatabaseContract.AccountTable.acc_interest + " DOUBLE(6,2),"+
-                    DatabaseContract.AccountTable.acc_withdrawlimit + " DOUBLE(12,2),"+
+                    DatabaseContract.AccountTable.acc_withdrawlimit + " INTEGER,"+
                     DatabaseContract.AccountTable.acc_duedate + "  DATETIME"+
                     ");" +
                     "";
@@ -350,41 +352,6 @@ public class DataManager {
         return bank;
     }
 
-    public Customer getCustomerByUserPassword(Bank bank, String username, String password) {
-        if (!database.isOpen()) {
-            database = dbHelper.getWritableDatabase();
-        }
-        Customer retval = null;
-
-        Cursor cursor = database.rawQuery(
-                "SELECT *" +
-                        " FROM " + DatabaseContract.CustomerTable.table_name +
-                        " WHERE " + DatabaseContract.CustomerTable.cust_user + "='" + username + "' AND " +
-                        DatabaseContract.CustomerTable.cust_passwd + "='" + password + "' AND " +
-                        DatabaseContract.CustomerTable.cust_bank_id + "=" + bank.getBank_id() + ";"
-                        ,
-                null
-        );
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                retval = new Customer(
-                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
-                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)),
-                        new Password(cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_passwd)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_salt))),
-                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_name)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_address)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_zipcode)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_phone))
-                );
-            }
-            cursor.close();
-        }
-
-        return retval;
-    }
-
     public ArrayList<Customer> getCustomersByName(int bank_id, @NonNull String cust_name) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
@@ -465,36 +432,102 @@ public class DataManager {
         return customer;
     }
 
-    public void insertAccount(Account account) {
+    public void insertAccount(@NonNull Account account) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
+
         String INSERT_QUERY = "";
-        switch (account.getType()) {
 
-            case Account.TYPE_CURRENT:
-                INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
-                        DatabaseContract.AccountTable.acc_type + "," +
-                        DatabaseContract.AccountTable.acc_cust_id + "," +
-                        DatabaseContract.AccountTable.acc_number + "," +
-                        DatabaseContract.AccountTable.acc_balance +
-                        ") VALUES (" +
-                        Account.TYPE_CURRENT + "," +
-                        account.getAcc_cust_id() + "," +
-                        "'" + account.getAcc_number() + "'," +
-                        account.getAcc_balance();
-                break;
-            case Account.TYPE_SAVING:
-                INSERT_QUERY = "";
-                break;
-            case Account.TYPE_FIXED_TERM:
-                INSERT_QUERY = "";
-                break;
-
+        if (account instanceof CurrentAccount) {
+            INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
+                    DatabaseContract.AccountTable.acc_type + "," +
+                    DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_number + "," +
+                    DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_creditlimit +
+                    ") VALUES (" +
+                    Account.TYPE_CURRENT + "," +
+                    account.getAcc_cust_id() + "," +
+                    "'" + account.getAcc_number() + "'," +
+                    account.getAcc_balance() + "," +
+                    ((CurrentAccount) account).getAcc_creditlimit() + ");";
+        } else if (account instanceof SavingsAccount) {
+            INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
+                    DatabaseContract.AccountTable.acc_type + "," +
+                    DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_number + "," +
+                    DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_withdrawlimit +
+                    ") VALUES (" +
+                    Account.TYPE_SAVING + "," +
+                    account.getAcc_cust_id() + "," +
+                    "'" + account.getAcc_number() + "'," +
+                    account.getAcc_balance() + "," +
+                    ((SavingsAccount) account).getAcc_withdrawlimit() + ");";
+        } else if (account instanceof FixedTermAccount) {
+            INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
+                    DatabaseContract.AccountTable.acc_type + "," +
+                    DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_number + "," +
+                    DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_duedate +
+                    ") VALUES (" +
+                    Account.TYPE_FIXED_TERM + "," +
+                    account.getAcc_cust_id() + "," +
+                    "'" + account.getAcc_number() + "'," +
+                    account.getAcc_balance() + "," +
+                    "'" + ((FixedTermAccount) account).getAcc_due_date() + "');";
         }
 
-        database.execSQL(INSERT_QUERY);
 
+        if (!INSERT_QUERY.equals("")) {
+            database.execSQL(INSERT_QUERY);
+        }
+
+    }
+
+    public ArrayList<Account> getCustomerAccounts(int bank_id, int cust_id) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.AccountTable.table_name + " WHERE " +
+                DatabaseContract.AccountTable.acc_cust_id + "=" + cust_id + " AND " +
+                DatabaseContract.AccountTable.acc_bank_id + "=" + bank_id + ";",
+                null
+        );
+
+        ArrayList<Account> accounts = null;
+
+        if (cursor != null) {
+
+            accounts = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                switch (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_type))) {
+                    case Account.TYPE_CURRENT:
+                        accounts.add(new CurrentAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                        ));
+                        break;
+                    case Account.TYPE_SAVING:
+                        break;
+                    case Account.TYPE_FIXED_TERM:
+                        break;
+                }
+            }
+
+            cursor.close();
+        }
+
+        return accounts;
     }
 
 }

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
         mainViewModel.setCustomer(dataManager.getCustomerByID(
                 intent.getIntExtra("cust_id", 0)
         ));
-        binding.mainActivityHeaderText.setText(mainViewModel.getBank().getValue().getBank_name());
+        binding.mainActivityHeaderText.setText(mainViewModel.getBank().getBank_name());
         // Initialize UI components
         onClickAnimation = AnimationProvider.getOnClickAnimation();
         initButtons();
@@ -88,4 +88,11 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
         }
         fragmentTransaction.commit();
     }
+
+    @Override
+    protected void onPause() {
+        dataManager.closeDatabaseConnection();
+        super.onPause();
+    }
+
 }
