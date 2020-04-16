@@ -55,7 +55,7 @@ public class NewCustomerFragment extends Fragment {
         });
     }
 
-    private boolean validateFormData() {
+    private boolean validateFormData() { // TODO escape ' characters! MyPassword1! 1999
         String tempString = "";
         boolean valid = true;
         boolean lowerCase = false;
@@ -70,9 +70,9 @@ public class NewCustomerFragment extends Fragment {
         }
         // Username
         tempString = binding.fragmentNewCustomerEdittextUser.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.length() < 8) {
+        if (tempString.isEmpty() || tempString.length() < 4) {
             valid = false;
-            Toast.makeText(getActivity(), "Username must be >8 characters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Username must be >=4 characters", Toast.LENGTH_SHORT).show();
         }
         // Password check
         tempString = binding.fragmentNewCustomerEdittextPassword.getText().toString().trim();

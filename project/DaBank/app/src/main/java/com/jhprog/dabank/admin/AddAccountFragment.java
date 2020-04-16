@@ -34,6 +34,7 @@ public class AddAccountFragment extends Fragment {
     
     private FragmentAddAccountBinding binding;
     private ArrayList<Customer> customers;
+    private int chosenCustomerID;
     private ArrayAdapter<Customer> customerArrayAdapter;
     private ArrayAdapter<String> accountTypeArrayAdapter;
     private int accountType;
@@ -67,6 +68,20 @@ public class AddAccountFragment extends Fragment {
                 customers);
         customerArrayAdapter.setDropDownViewResource(R.layout.fragment_new_payment_spinner_dropdown_item);
         binding.fragmentAddAccountSpinnerCustomers.setAdapter(customerArrayAdapter);
+        // Called when user chooses a customer from the spinner
+        binding.fragmentAddAccountSpinnerCustomers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (customerArrayAdapter.getItem(position) != null) {
+                    chosenCustomerID = Objects.requireNonNull(customerArrayAdapter.getItem(position)).getCust_id();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                chosenCustomerID = 0;
+            }
+        });
         // Array adapter for the Account type Spinner
         accountTypeArrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.layout.fragment_new_payment_spinner_item,
@@ -141,22 +156,24 @@ public class AddAccountFragment extends Fragment {
                 System.out.println("LOGGER: " + accountType);
                 Account account;
 
-                switch (accountType) {
+                switch (accountType) { // TODO rest of the account types
                     case Account.TYPE_CURRENT:
-                        account = new CurrentAccount(
-                            AdminActivity.getB_id(),
-                            AdminActivity.getCust_id(),
-                            Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
-                            binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0,
-                            binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
-                        );
+                        if (chosenCustomerID != 0) {
+                            account = new CurrentAccount(
+                                    AdminActivity.getB_id(),
+                                    chosenCustomerID,
+                                    Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                                    binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0,
+                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
+                            );
+                            DataManager.getInstance().insertAccount(account);
+                        }
                         break;
 
                     default:
                         return;
                 }
 
-                DataManager.getInstance().insertAccount(account);
             }
         });
     }
@@ -193,7 +210,7 @@ public class AddAccountFragment extends Fragment {
         if (binding.fragmentAddAccountSwitchIsCredit.isChecked()) {
             tempString = binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim();
 
-
+            // TODO BOI!
 
         }
 

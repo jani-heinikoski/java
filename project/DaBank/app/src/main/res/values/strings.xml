@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">DaBank</string>
+
+    <string name="current_account_as_string">Current Account</string>
+    <string name="savings_account_as_string">Savings Account</string>
+    <string name="fixed_term_account_as_string">Fixed-term Account</string>
+
     <string name="login_activity_header_text">Login page</string>
     <string name="login_activity_expand_banks_button_text">More banks</string>
 
@@ -35,5 +40,7 @@
     <string name="fragment_add_account_account_number_header_text">Account number</string>
     <string name="fragment_add_account_amount_header_text">Initial balance in euros</string>
     <string name="fragment_add_account_is_credit_header_text">Credit account</string>
+
+    <string name="fragment_accounts_textview_header_text">Choose an account to inspect its transactions</string>
 
 </resources>

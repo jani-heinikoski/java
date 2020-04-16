@@ -7,6 +7,7 @@
  * */
 package com.jhprog.dabank.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,15 @@ public class MainFragment extends Fragment {
 
     private FragmentMainBinding binding;
     private Animation onClickAnimation;
+    private IFragmentOwner fragmentOwner;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof IFragmentOwner) {
+            fragmentOwner = (IFragmentOwner) context;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,9 +56,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentMainButtonNewPayment.startAnimation(onClickAnimation);
-                if (getActivity() instanceof IFragmentOwner) {
-                    ((IFragmentOwner) getActivity()).changeFragment(new NewPaymentFragment(), true);
-                }
+                fragmentOwner.changeFragment(new NewPaymentFragment(), true);
             }
         });
 
@@ -63,6 +71,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentMainButtonAccounts.startAnimation(onClickAnimation);
+                fragmentOwner.changeFragment(new AccountsFragment(), true);
             }
         });
 

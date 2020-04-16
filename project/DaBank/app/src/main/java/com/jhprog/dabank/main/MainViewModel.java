@@ -1,6 +1,8 @@
 package com.jhprog.dabank.main;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.jhprog.dabank.data.Account;
@@ -15,11 +17,15 @@ public class MainViewModel extends ViewModel {
     private ArrayList<Account> accounts = new ArrayList<>();
     private Bank bank = null;
     private Customer customer = null;
+    private MutableLiveData<Account> clickedAccount = new MutableLiveData<>();
 
     private void loadAccounts() {
         DataManager dataManager = DataManager.getInstance();
         if (bank != null && customer != null) {
             accounts.addAll(dataManager.getCustomerAccounts(bank.getBank_id(), customer.getCust_id()));
+            System.out.println(
+                    "LOGGER: Accounts size=" + accounts.size() + "|bank_id=" + bank.getBank_id() + "|cust_id=" + customer.getCust_id()
+            );
         }
     }
 
@@ -44,5 +50,13 @@ public class MainViewModel extends ViewModel {
 
     public void setCustomer(@NonNull Customer customer) {
         this.customer = customer;
+    }
+
+    public LiveData<Account> getClickedAccount() {
+        return clickedAccount;
+    }
+
+    public void setClickedAccount(@NonNull Account clickedAccount) {
+        this.clickedAccount.setValue(clickedAccount);
     }
 }
