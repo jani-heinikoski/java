@@ -26,12 +26,12 @@ public final class Transaction {
     public static final int RECURRENCE_MONTHLY = 3;
 
 
-    public Transaction(int trans_id, int trans_type, String trans_from_acc_id, String trans_to_acc_id, String trans_date_time, double trans_amount) {
+    public Transaction(int trans_id, int trans_type, String trans_from_acc_id, String trans_to_acc_id, String trans_date, double trans_amount) {
         this.trans_id = trans_id;
         this.trans_type = trans_type;
         this.trans_from_acc_id = trans_from_acc_id;
         this.trans_to_acc_id = trans_to_acc_id;
-        this.trans_date = trans_date_time;
+        this.trans_date = trans_date;
         this.trans_amount = trans_amount;
     }
 
