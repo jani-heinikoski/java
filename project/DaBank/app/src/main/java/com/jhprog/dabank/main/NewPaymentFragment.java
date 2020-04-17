@@ -75,15 +75,8 @@ public class NewPaymentFragment extends Fragment {
                     Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // TODO transaction insert
-                Transaction transaction = new Transaction(
-                    Transaction.TYPE_PAYMENT,
-                    "'MAKSAJA'",
-                    "'MAKSUNSAAJA'",
-                    "'" + formatter.format(new Date(binding.fragmentNewPaymentCalendarviewDueDate.getDate())) + "'",
-                    Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString()),
-                    1
-                );
+
+                // TODO Handle transaction now OR insert a payment
 
                 //dataManager.insertTransaction(transaction);
             }

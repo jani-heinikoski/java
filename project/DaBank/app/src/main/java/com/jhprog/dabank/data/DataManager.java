@@ -56,9 +56,7 @@ public class DataManager {
             public static final String trans_from_acc_id  = "trans_from_acc_id";
             public static final String trans_to_acc_id  = "trans_to_acc_id";
             public static final String trans_date = "trans_date";
-            public static final String trans_due_date = "trans_due_date";
             public static final String trans_amount = "trans_amount";
-            public static final String trans_recurrence = "trans_recurrence";
         }
 
         public static class BankTable implements BaseColumns {
@@ -120,11 +118,8 @@ public class DataManager {
                     DatabaseContract.TransactionTable.trans_type + " INTEGER NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_from_acc_id + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_to_acc_id + " VARCHAR(30) NOT NULL,"+
-                    DatabaseContract.TransactionTable.trans_due_date + " DATETIME NOT NULL," +
                     DatabaseContract.TransactionTable.trans_amount + " DOUBLE(12,2) NOT NULL," +
-                    DatabaseContract.TransactionTable.trans_recurrence + " INTEGER NOT NULL," +
-                    DatabaseContract.TransactionTable.trans_date + " DATETIME NOT NULL"+
-                    ");";
+                    DatabaseContract.TransactionTable.trans_date + " DATE NOT NULL);";
 
             db.execSQL(SQL_QUERY);
 
@@ -168,8 +163,8 @@ public class DataManager {
                     DatabaseContract.CustomerTable.cust_address + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_zipcode + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.CustomerTable.cust_phone + " VARCHAR(30) NOT NULL"+
-                    ");" +
-                    "";
+                    ");";
+
             db.execSQL(SQL_QUERY);
 
             SQL_QUERY = "CREATE TABLE " +
@@ -183,8 +178,8 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
                     DatabaseContract.AccountTable.acc_withdrawlimit + " INTEGER,"+
                     DatabaseContract.AccountTable.acc_duedate + "  DATETIME"+
-                    ");" +
-                    "";
+                    ");";
+
             db.execSQL(SQL_QUERY);
 
             insertAdmins(db);
@@ -308,17 +303,13 @@ public class DataManager {
                 DatabaseContract.TransactionTable.trans_type + "," +
                 DatabaseContract.TransactionTable.trans_from_acc_id + "," +
                 DatabaseContract.TransactionTable.trans_to_acc_id + "," +
-                DatabaseContract.TransactionTable.trans_due_date + "," +
                 DatabaseContract.TransactionTable.trans_amount + "," +
-                DatabaseContract.TransactionTable.trans_recurrence + "," +
                 DatabaseContract.TransactionTable.trans_date + ")" + " VALUES (" +
                 transaction.getTrans_type() + "," +
                 transaction.getTrans_from_acc_id() + "," +
                 transaction.getTrans_to_acc_id() + "," +
-                transaction.getTrans_due_date() + "," +
                 transaction.getTrans_amount() + "," +
-                transaction.getTrans_recurrence() + "," +
-                "datetime('now', 'localtime')" +
+                transaction.getTrans_date_time() +
                 ");";
         database.execSQL(INSERT_TRANSACT);
     }
@@ -424,17 +415,63 @@ public class DataManager {
     }
 
     public boolean accountExists(@NonNull String accountNumber) {
+        return getAccountByAccountNumber(accountNumber) != null;
+    }
+
+    public Account getAccountByAccountNumber(@NonNull String accountNumber) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
 
+        Account account = null;
+
         Cursor cursor = database.rawQuery(
-                "SELECT " + DatabaseContract.AccountTable._ID + " FROM " + DatabaseContract.AccountTable.table_name +
-                " WHERE " + DatabaseContract.AccountTable.acc_number + "='" + accountNumber + "';",
+                "SELECT * FROM " + DatabaseContract.AccountTable.table_name +
+                        " WHERE " + DatabaseContract.AccountTable.acc_number + "='" + accountNumber + "';",
                 null
         );
 
-        return cursor != null && cursor.moveToFirst();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                switch (cursor.getInt(cursor.getColumnIndex(
+                        DatabaseContract.AccountTable.acc_type
+                ))) {
+                    case Account.TYPE_CURRENT:
+                        account = new CurrentAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                        );
+                        break;
+                    case Account.TYPE_SAVING:
+                        account = new SavingsAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                        );
+                        break;
+                    case Account.TYPE_FIXED_TERM:
+                        account = new FixedTermAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                Account.TYPE_FIXED_TERM,
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_duedate))
+                        );
+                        break;
+                }
+            }
+            cursor.close();
+        }
+        return account;
     }
 
     public Customer getCustomerByUsername(@NonNull Bank bank, @NonNull String username) {
@@ -558,12 +595,11 @@ public class DataManager {
                     case Account.TYPE_SAVING:
                         accounts.add(new SavingsAccount(
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                Account.TYPE_SAVING,
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit))
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
                         ));
                         break;
                     case Account.TYPE_FIXED_TERM:
@@ -583,6 +619,10 @@ public class DataManager {
         }
 
         return accounts;
+    }
+
+    public void updateAccount(Account account) {
+        // TODO update existing account with given one
     }
 
 }

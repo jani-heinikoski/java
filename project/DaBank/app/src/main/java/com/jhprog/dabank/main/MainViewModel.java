@@ -23,9 +23,6 @@ public class MainViewModel extends ViewModel {
         DataManager dataManager = DataManager.getInstance();
         if (bank != null && customer != null) {
             accounts.addAll(dataManager.getCustomerAccounts(bank.getBank_id(), customer.getCust_id()));
-            System.out.println(
-                    "LOGGER: Accounts size=" + accounts.size() + "|bank_id=" + bank.getBank_id() + "|cust_id=" + customer.getCust_id()
-            );
         }
     }
 

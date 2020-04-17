@@ -11,13 +11,13 @@ public final class SavingsAccount extends Account {
 
     private int acc_withdrawlimit;
 
-    public SavingsAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, int acc_withdrawlimit) {
-        super(acc_id, acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
+    public SavingsAccount(int acc_id, int acc_bank_id, int acc_cust_id, double acc_balance, int acc_withdrawlimit, String acc_number) {
+        super(acc_id, Account.TYPE_SAVING, acc_bank_id, acc_cust_id, acc_balance, acc_number);
         this.acc_withdrawlimit = acc_withdrawlimit;
     }
 
-    public SavingsAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, int acc_withdrawlimit) {
-        super(acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
+    public SavingsAccount(int acc_bank_id, int acc_cust_id, double acc_balance, int acc_withdrawlimit, String acc_number) {
+        super(Account.TYPE_SAVING, acc_bank_id, acc_cust_id, acc_balance, acc_number);
         this.acc_withdrawlimit = acc_withdrawlimit;
     }
 

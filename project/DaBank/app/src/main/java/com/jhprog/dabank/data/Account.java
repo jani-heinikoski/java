@@ -17,7 +17,7 @@ public abstract class Account {
     private int acc_type;
     private int acc_bank_id;
     private int acc_cust_id;
-    private double acc_balance;
+    double acc_balance;
     private String acc_number;
 
     public static final int TYPE_CURRENT = 1;
@@ -39,6 +39,10 @@ public abstract class Account {
         this.acc_cust_id = acc_cust_id;
         this.acc_balance = acc_balance;
         this.acc_number = acc_number;
+    }
+
+    public void deposit(double amount) {
+        this.acc_balance += amount;
     }
 
     public int getAcc_id() {

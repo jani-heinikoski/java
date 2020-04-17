@@ -1,5 +1,6 @@
 package com.jhprog.dabank.data;
 
+
 public final class CurrentAccount extends Account {
 
     private double acc_creditlimit;
@@ -21,5 +22,14 @@ public final class CurrentAccount extends Account {
 
     public double getAcc_creditlimit() {
         return acc_creditlimit;
+    }
+
+    public boolean withdraw(double amount) {
+        if ((acc_creditlimit + acc_balance) - amount >= 0) {
+            this.acc_balance -= amount;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
