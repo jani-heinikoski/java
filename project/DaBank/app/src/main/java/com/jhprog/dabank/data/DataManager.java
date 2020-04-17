@@ -92,6 +92,16 @@ public class DataManager {
             public static final String acc_duedate  = "acc_duedate";
         }
 
+        public static class PendingTransactionTable implements BaseColumns {
+            public static final String table_name = "pending_transaction";
+            public static final String pending_transaction_from_acc_id = "pending_transaction_from_acc_id";
+            public static final String pending_transaction_to_acc_id = "pending_transaction_to_acc_id";
+            public static final String pending_transaction_recurrence = "pending_transaction_recurrence";
+            public static final String pending_transaction_amount = "pending_transaction_amount";
+            public static final String pending_transaction_last_paid = "pending_transaction_last_paid";
+            public static final String pending_transaction_due_date = "pending_transaction_due_date";
+        }
+
     }
 
     private final class SQLiteDBHelper extends SQLiteOpenHelper {
@@ -179,6 +189,18 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_withdrawlimit + " INTEGER,"+
                     DatabaseContract.AccountTable.acc_duedate + "  DATETIME"+
                     ");";
+
+            db.execSQL(SQL_QUERY);
+
+            SQL_QUERY = "CREATE TABLE " +
+                    DatabaseContract.PendingTransactionTable.table_name + " (" +
+                    DatabaseContract.PendingTransactionTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_id + " INTEGER NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_id + " INTEGER NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + " INTEGER NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_amount + " DOUBLE(12,2) NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_due_date + " DATE NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_last_paid + " DATE NOT NULL);";
 
             db.execSQL(SQL_QUERY);
 
@@ -295,23 +317,10 @@ public class DataManager {
     }
 
     public void insertTransaction(Transaction transaction) {
-        // TODO from/to_acc_id's need to be fixed
+        // TODO transactions
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
-        String INSERT_TRANSACT = "INSERT INTO " + DatabaseContract.TransactionTable.table_name + "(" +
-                DatabaseContract.TransactionTable.trans_type + "," +
-                DatabaseContract.TransactionTable.trans_from_acc_id + "," +
-                DatabaseContract.TransactionTable.trans_to_acc_id + "," +
-                DatabaseContract.TransactionTable.trans_amount + "," +
-                DatabaseContract.TransactionTable.trans_date + ")" + " VALUES (" +
-                transaction.getTrans_type() + "," +
-                transaction.getTrans_from_acc_id() + "," +
-                transaction.getTrans_to_acc_id() + "," +
-                transaction.getTrans_amount() + "," +
-                transaction.getTrans_date_time() +
-                ");";
-        database.execSQL(INSERT_TRANSACT);
     }
 
     public Customer getCustomerByID(int id) {
@@ -416,6 +425,10 @@ public class DataManager {
 
     public boolean accountExists(@NonNull String accountNumber) {
         return getAccountByAccountNumber(accountNumber) != null;
+    }
+
+    public Account getAccountByID(int accountID) {
+        return null;
     }
 
     public Account getAccountByAccountNumber(@NonNull String accountNumber) {

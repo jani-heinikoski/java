@@ -8,6 +8,8 @@
 package com.jhprog.dabank.data;
 
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -22,6 +24,22 @@ public class Bank {
         this.bank_name = bank_name;
         this.bank_bic = bank_bic;
     }
+
+    public boolean handleTransaction(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
+        DataManager dataManager = DataManager.getInstance();
+        // TODO Transaction handling
+        return false;
+    }
+    // Use this if to- & fromAccount are unknown (gets both from db with account id's)
+    public boolean handleTransaction(@NonNull Transaction transaction) {
+        DataManager dataManager = DataManager.getInstance();
+
+        Account fromAcc = dataManager.getAccountByID(transaction.getTrans_from_acc_id());
+        Account toAcc = dataManager.getAccountByID(transaction.getTrans_to_acc_id());
+
+        return handleTransaction(transaction, fromAcc, toAcc);
+    }
+    /*
     // Used to handle transactions for accounts inside of this application
     public boolean handleTransaction(@NonNull CurrentAccount fromAccount, @NonNull Account toAccount, double amount, @Nullable String date) {
         if (fromAccount.withdraw(amount)) {
@@ -87,6 +105,8 @@ public class Bank {
             return false;
         }
     }
+
+     */
 
     public int getBank_id() {
         return bank_id;
