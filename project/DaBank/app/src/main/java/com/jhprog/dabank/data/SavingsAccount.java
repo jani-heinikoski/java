@@ -21,6 +21,16 @@ public final class SavingsAccount extends Account {
         this.acc_withdrawlimit = acc_withdrawlimit;
     }
 
+    public boolean withdraw(double amount) {
+        if (this.acc_withdrawlimit > 0 && (this.acc_balance - amount) >= 0) {
+            this.acc_balance -= amount;
+            this.acc_withdrawlimit--;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public int getAcc_withdrawlimit() {
         return acc_withdrawlimit;
     }

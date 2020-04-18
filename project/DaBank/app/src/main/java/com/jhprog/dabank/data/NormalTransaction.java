@@ -20,6 +20,11 @@ public final class NormalTransaction extends Transaction {
         this.trans_date = trans_date;
     }
 
+    public NormalTransaction(int trans_type, Account fromAccount, Account toAccount, double trans_amount, String trans_date) {
+        super(trans_type, fromAccount, toAccount, trans_amount);
+        this.trans_date = trans_date;
+    }
+
     public String getTrans_date() {
         return trans_date;
     }

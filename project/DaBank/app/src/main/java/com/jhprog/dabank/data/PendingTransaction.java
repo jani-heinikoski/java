@@ -34,6 +34,13 @@ public final class PendingTransaction extends Transaction {
         this.due_date = due_date;
     }
 
+    public PendingTransaction(int trans_type, Account fromAccount, Account toAccount, double trans_amount, int trans_recurrence, String last_paid, String due_date) {
+        super(trans_type, fromAccount, toAccount, trans_amount);
+        this.trans_recurrence = trans_recurrence;
+        this.last_paid = last_paid;
+        this.due_date = due_date;
+    }
+
     public int getTrans_recurrence() {
         return trans_recurrence;
     }

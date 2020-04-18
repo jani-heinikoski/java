@@ -321,6 +321,8 @@ public class DataManager {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
+
+
     }
 
     public Customer getCustomerByID(int id) {
@@ -634,8 +636,35 @@ public class DataManager {
         return accounts;
     }
 
-    public void updateAccount(Account account) {
-        // TODO update existing account with given one
+    public void updateAccount(@NonNull Account account) {
+
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String UPDATE_ACCOUNT;
+
+        if (account instanceof CurrentAccount) {
+            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + " WHERE " +
+                DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+        } else if (account instanceof SavingsAccount) {
+            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + ", " +
+                DatabaseContract.AccountTable.acc_withdrawlimit + "=" + ((SavingsAccount) account).getAcc_withdrawlimit() +
+                " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+        } else if (account instanceof FixedTermAccount) {
+            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance();
+        } else {
+            return;
+        }
+
+        database.execSQL(UPDATE_ACCOUNT);
+
     }
 
 }

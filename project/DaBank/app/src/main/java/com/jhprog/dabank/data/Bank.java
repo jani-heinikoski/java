@@ -8,16 +8,14 @@
 package com.jhprog.dabank.data;
 
 
-import android.provider.ContactsContract;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class Bank {
 
     private int bank_id;
     private String bank_name;
     private String bank_bic;
+    private DataManager dataManager;
 
     public Bank(int bank_id, String bank_name, String bank_bic) {
         this.bank_id = bank_id;
@@ -26,10 +24,54 @@ public class Bank {
     }
 
     public boolean handleTransaction(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
-        DataManager dataManager = DataManager.getInstance();
-        // TODO Transaction handling
+        dataManager = DataManager.getInstance();
+
+        switch (transaction.getTrans_type()) {
+            case Transaction.TYPE_PAYMENT:
+                // Only payments can be pending
+                if (transaction instanceof NormalTransaction) {
+                    if(normalPayment(transaction, fromAccount, toAccount)) {
+                        dataManager.insertTransaction(transaction);
+                        updateAccounts(fromAccount, toAccount);
+                    } else {
+                        return false;
+                    }
+                } else if (transaction instanceof PendingTransaction) {
+                    if(pendingPayment(transaction, fromAccount, toAccount)) {
+                        dataManager.insertTransaction(transaction);
+                        updateAccounts(fromAccount, toAccount);
+                    } else {
+                        return false;
+                    }
+                }
+                break;
+
+            case Transaction.TYPE_TRANSFER:
+                // Money transfer between customer's own accounts
+                if (transfer(fromAccount, toAccount, transaction.getTrans_amount())) {
+                    dataManager.insertTransaction(transaction);
+                    updateAccounts(fromAccount, toAccount);
+                } else {
+                    return false;
+                }
+                break;
+
+            case Transaction.TYPE_DEPOSIT:
+                deposit(toAccount, transaction.getTrans_amount());
+                updateAccounts(toAccount);
+                break;
+
+            case Transaction.TYPE_WITHDRAW:
+                if (withdraw(fromAccount, transaction.getTrans_amount())) {
+                    updateAccounts(fromAccount);
+                    return true;
+                } else {
+                    return false;
+                }
+        }
         return false;
     }
+
     // Use this if to- & fromAccount are unknown (gets both from db with account id's)
     public boolean handleTransaction(@NonNull Transaction transaction) {
         DataManager dataManager = DataManager.getInstance();
@@ -37,76 +79,76 @@ public class Bank {
         Account fromAcc = dataManager.getAccountByID(transaction.getTrans_from_acc_id());
         Account toAcc = dataManager.getAccountByID(transaction.getTrans_to_acc_id());
 
-        return handleTransaction(transaction, fromAcc, toAcc);
-    }
-    /*
-    // Used to handle transactions for accounts inside of this application
-    public boolean handleTransaction(@NonNull CurrentAccount fromAccount, @NonNull Account toAccount, double amount, @Nullable String date) {
-        if (fromAccount.withdraw(amount)) {
-            toAccount.deposit(amount);
-            Transaction transaction;
-            toAccount.acc_balance += amount;
-            if (date == null) {
-                transaction = new Transaction(
-                        Transaction.TYPE_PAYMENT,
-                        fromAccount.getAcc_number(),
-                        toAccount.getAcc_number(),
-                        amount
-                );
-            } else {
-                transaction = new Transaction(
-                        Transaction.TYPE_PAYMENT,
-                        fromAccount.getAcc_number(),
-                        toAccount.getAcc_number(),
-                        date,
-                        amount
-                );
-            }
-            DataManager dataManager = DataManager.getInstance();
-            dataManager.insertTransaction(transaction);
-            dataManager.updateAccount(toAccount);
-            dataManager.updateAccount(fromAccount);
-            return true;
+        if (fromAcc != null && toAcc != null) {
+            return handleTransaction(transaction, fromAcc, toAcc);
         } else {
             return false;
         }
+
     }
-    // Used to handle transactions for accounts outside of this application
-    public boolean handleTransaction(@NonNull CurrentAccount fromAccount, @NonNull String toAccountNumber, double amount, @Nullable String date) {
-        DataManager dataManager = DataManager.getInstance();
-        Account toAccount = dataManager.getAccountByAccountNumber(toAccountNumber);
 
-        if (toAccount != null) {
-            return handleTransaction(fromAccount, toAccount, amount, date);
+    private void updateAccounts(@NonNull Account ...accounts) {
+        if (dataManager == null) {
+            dataManager = DataManager.getInstance();
         }
+        for (Account acc : accounts) {
+            dataManager.updateAccount(acc);
+        }
+    }
 
-        if (fromAccount.withdraw(amount)) {
-            Transaction transaction;
-            if (date == null) {
-                transaction = new Transaction(
-                        Transaction.TYPE_PAYMENT,
-                        fromAccount.getAcc_number(),
-                        toAccountNumber,
-                        amount
-                );
-            } else {
-                transaction = new Transaction(
-                        Transaction.TYPE_PAYMENT,
-                        fromAccount.getAcc_number(),
-                        toAccountNumber,
-                        date,
-                        amount
-                );
-            }
-            dataManager.insertTransaction(transaction);
-            dataManager.updateAccount(fromAccount);
+    private boolean withdraw(Account from, double amount) {
+        if (from instanceof CurrentAccount) {
+            return ((CurrentAccount) from).withdraw(amount);
+        } else if (from instanceof SavingsAccount) {
+            // TODO implement savingsaccount withdraw
             return true;
         } else {
             return false;
         }
     }
 
-     */
+    private void deposit(@NonNull Account where, double amount) {
+        where.deposit(amount);
+    }
+
+    private boolean transfer(@NonNull Account fromAccount, @NonNull Account toAccount, double amount) {
+        if (fromAccount instanceof CurrentAccount) {
+            if (fromAccount.getAcc_number().equals(toAccount.getAcc_number())) {
+                return false;
+            }
+            if (((CurrentAccount) fromAccount).withdraw(amount)) {
+                toAccount.deposit(amount);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private boolean normalPayment(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
+        if (fromAccount instanceof CurrentAccount) {
+            if (((CurrentAccount) fromAccount).withdraw(transaction.getTrans_amount())) {
+                toAccount.deposit(transaction.getTrans_amount());
+            } else {
+                return false;
+            }
+        } else if (fromAccount instanceof SavingsAccount) {
+            if (((SavingsAccount) fromAccount).withdraw(transaction.getTrans_amount())) {
+                toAccount.deposit(transaction.getTrans_amount());
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean pendingPayment(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
+        return false;
+    }
 
     public int getBank_id() {
         return bank_id;

@@ -35,6 +35,13 @@ public abstract class Transaction {
         this.trans_amount = trans_amount;
     }
 
+    public Transaction(int trans_type, Account fromAccount, Account toAccount, double trans_amount) {
+        this.trans_type = trans_type;
+        this.trans_from_acc_id = fromAccount.getAcc_id();
+        this.trans_to_acc_id = toAccount.getAcc_id();
+        this.trans_amount = trans_amount;
+    }
+
     public int getTrans_id() {
         return trans_id;
     }

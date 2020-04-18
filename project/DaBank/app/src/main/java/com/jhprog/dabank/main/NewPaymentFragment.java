@@ -36,7 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class NewPaymentFragment extends Fragment {
+public class NewPaymentFragment extends Fragment { // TODO might want to organize this clusterfuck
 
     private FragmentNewPaymentBinding binding;
     private ArrayAdapter<Account> payerAdapter;
@@ -144,22 +144,19 @@ public class NewPaymentFragment extends Fragment {
             public void onClick(View v) {
                 binding.fragmentNewPaymentButtonContinue.startAnimation(AnimationProvider.getOnClickAnimation());
 
-
-
                 if (!validateFormData()) {
                     Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // TODO Handle transaction now OR insert a payment
-                Transaction tr = fromFormData();
 
-
-                //dataManager.insertTransaction(transaction);
+                if (!sendTransaction()) {
+                    Toast.makeText(getActivity(), "Payment failed!", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
-    private Transaction fromFormData() {
+    private boolean sendTransaction() {
         Transaction transaction;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         String due_date = simpleDateFormat.format(new Date(binding.fragmentNewPaymentCalendarviewDueDate.getDate()));
@@ -174,8 +171,8 @@ public class NewPaymentFragment extends Fragment {
             // Due date in the future
             transaction = new PendingTransaction(
                 Transaction.TYPE_PAYMENT,
-                selectedAccount.getAcc_id(),
-                receivingAccount.getAcc_id(),
+                selectedAccount,
+                receivingAccount,
                 amount,
                 recurrence,
                 PendingTransaction.NEVER_PAID,
@@ -185,13 +182,13 @@ public class NewPaymentFragment extends Fragment {
             // Due date now
             transaction = new NormalTransaction(
                     Transaction.TYPE_PAYMENT,
-                    selectedAccount.getAcc_id(),
-                    receivingAccount.getAcc_id(),
+                    selectedAccount,
+                    receivingAccount,
                     amount,
                     today
             );
         }
-        return transaction;
+        return viewModel.getBank().handleTransaction(transaction, selectedAccount, receivingAccount);
     }
 
 
