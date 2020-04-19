@@ -191,7 +191,7 @@ public class Bank {
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
                             normalTransaction.setTrans_date(simpleDateFormat.format(date));
-                            addWeek(date, noOfDays);
+                            addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
                         } else {
                             return false;
@@ -199,13 +199,13 @@ public class Bank {
                     } while (date.compareTo(today) <= 0);
 
                 } else {
-                    addWeek(date, noOfDays);
+                    addTimeToDate(date, noOfDays);
                     while (date.compareTo(today) <= 0) {
 
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
                             normalTransaction.setTrans_date(simpleDateFormat.format(date));
-                            addWeek(date, noOfDays);
+                            addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
                         } else {
                             return false;
@@ -218,7 +218,7 @@ public class Bank {
         return true;
     }
 
-    private void addWeek(@NonNull Date date, int days) {
+    private void addTimeToDate(@NonNull Date date, int days) {
         Calendar calendar = (Calendar) Calendar.getInstance().clone();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, days);
