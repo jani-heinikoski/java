@@ -12,8 +12,10 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Bank {
 
@@ -141,21 +143,86 @@ public class Bank {
 
     private boolean pendingPayment(@NonNull PendingTransaction transaction, @NonNull Account fromAccount, Account toAccount) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(Calendar.getInstance().getTime());
+        Date dueDate;
+        Date today = Calendar.getInstance().getTime();
 
-        if (transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID) && transaction.getDue_date().equals(today)) {
-            if (withdraw(fromAccount, transaction.getTrans_amount())) {
-                deposit(toAccount, transaction.getTrans_amount());
-                transaction.setLast_paid(today);
-                // TODO insert regular transaction here
-            } else {
-                return false;
-            }
+        try {
+            dueDate = simpleDateFormat.parse(transaction.getDue_date());
+        } catch (ParseException e) {
+            return false;
         }
 
+        if (dueDate == null) {
+            return false;
+        }
 
+        NormalTransaction normalTransaction = new NormalTransaction(
+                Transaction.TYPE_PAYMENT,
+                transaction.getTrans_from_acc_number(),
+                transaction.getTrans_to_acc_number(),
+                transaction.getTrans_amount(),
+                transaction.getDue_date()
+        );
+        // Check project documentation in-dev-plans pending_payments.pdf for clarity
+        if (transaction.getTrans_recurrence() == PendingTransaction.RECURRENCE_NONE) {
 
+            if (dueDate.compareTo(today) <= 0 && transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID)) {
+                if (withdraw(fromAccount, transaction.getTrans_amount())) {
+                    deposit(toAccount, transaction.getTrans_amount());
+                    dataManager.insertTransaction(normalTransaction);
+                    dataManager.deletePendingTransaction(transaction);
+                } else {
+                    return false;
+                }
+            }
+
+        } else if ( // if the transaction recurrence is weekly/monthly
+                transaction.getTrans_recurrence() == PendingTransaction.RECURRENCE_WEEKLY ||
+                transaction.getTrans_recurrence() == PendingTransaction.RECURRENCE_MONTHLY
+        ) {
+
+            final int noOfDays =
+                    transaction.getTrans_recurrence() == PendingTransaction.RECURRENCE_WEEKLY ? 7 : 30;
+
+            if (dueDate.compareTo(today) <= 0) {
+                Date date = (Date) dueDate.clone();
+                if (transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID)) {
+                    do {
+                        if (withdraw(fromAccount, transaction.getTrans_amount())) {
+                            deposit(toAccount, transaction.getTrans_amount());
+                            normalTransaction.setTrans_date(simpleDateFormat.format(date));
+                            addWeek(date, noOfDays);
+                            dataManager.insertTransaction(normalTransaction);
+                        } else {
+                            return false;
+                        }
+                    } while (date.compareTo(today) <= 0);
+
+                } else {
+                    addWeek(date, noOfDays);
+                    while (date.compareTo(today) <= 0) {
+
+                        if (withdraw(fromAccount, transaction.getTrans_amount())) {
+                            deposit(toAccount, transaction.getTrans_amount());
+                            normalTransaction.setTrans_date(simpleDateFormat.format(date));
+                            addWeek(date, noOfDays);
+                            dataManager.insertTransaction(normalTransaction);
+                        } else {
+                            return false;
+                        }
+
+                    }
+                }
+            }
+        }
         return true;
+    }
+
+    private void addWeek(@NonNull Date date, int days) {
+        Calendar calendar = (Calendar) Calendar.getInstance().clone();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        date.setTime(calendar.getTimeInMillis());
     }
 
     public int getBank_id() {

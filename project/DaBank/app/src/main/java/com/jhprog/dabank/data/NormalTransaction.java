@@ -29,4 +29,7 @@ public final class NormalTransaction extends Transaction {
         return trans_date;
     }
 
+    public void setTrans_date(String trans_date) {
+        this.trans_date = trans_date;
+    }
 }

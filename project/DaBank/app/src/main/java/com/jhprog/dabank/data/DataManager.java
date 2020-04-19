@@ -753,4 +753,8 @@ public class DataManager {
 
     }
 
+    public void deletePendingTransaction(@NonNull PendingTransaction transaction) {
+
+    }
+
 }
