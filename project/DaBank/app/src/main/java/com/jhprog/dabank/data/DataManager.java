@@ -9,6 +9,7 @@
 package com.jhprog.dabank.data;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,6 +33,8 @@ public class DataManager {
     private SQLiteDBHelper dbHelper;
     private SQLiteDatabase database;
 
+    private final String ADMIN_USERNAME = "1337";
+
     private DataManager() {
         dbHelper = new SQLiteDBHelper(DaBank.getAppContext());
         database = dbHelper.getWritableDatabase();
@@ -48,16 +51,6 @@ public class DataManager {
     private static final class DatabaseContract {
         // Disables the ability to instantiate this class
         private DatabaseContract() {}
-
-        // Inner class that defines the user table contents
-        public static class TransactionTable implements BaseColumns {
-            public static final String table_name = "transact";
-            public static final String trans_type  = "trans_type";
-            public static final String trans_from_acc_id  = "trans_from_acc_id";
-            public static final String trans_to_acc_id  = "trans_to_acc_id";
-            public static final String trans_date = "trans_date";
-            public static final String trans_amount = "trans_amount";
-        }
 
         public static class BankTable implements BaseColumns {
             public static final String table_name = "bank";
@@ -94,12 +87,21 @@ public class DataManager {
 
         public static class PendingTransactionTable implements BaseColumns {
             public static final String table_name = "pending_transaction";
-            public static final String pending_transaction_from_acc_id = "pending_transaction_from_acc_id";
-            public static final String pending_transaction_to_acc_id = "pending_transaction_to_acc_id";
+            public static final String pending_transaction_from_acc_number = "pending_transaction_from_acc_number";
+            public static final String pending_transaction_to_acc_number = "pending_transaction_to_acc_number";
             public static final String pending_transaction_recurrence = "pending_transaction_recurrence";
             public static final String pending_transaction_amount = "pending_transaction_amount";
             public static final String pending_transaction_last_paid = "pending_transaction_last_paid";
             public static final String pending_transaction_due_date = "pending_transaction_due_date";
+        }
+
+        public static class TransactionTable implements BaseColumns {
+            public static final String table_name = "transact";
+            public static final String trans_type  = "trans_type";
+            public static final String trans_from_acc_number  = "trans_from_acc_number";
+            public static final String trans_to_acc_number  = "trans_to_acc_number";
+            public static final String trans_date = "trans_date";
+            public static final String trans_amount = "trans_amount";
         }
 
     }
@@ -126,8 +128,8 @@ public class DataManager {
                     DatabaseContract.TransactionTable.table_name +
                     " (" + DatabaseContract.TransactionTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DatabaseContract.TransactionTable.trans_type + " INTEGER NOT NULL,"+
-                    DatabaseContract.TransactionTable.trans_from_acc_id + " VARCHAR(30) NOT NULL,"+
-                    DatabaseContract.TransactionTable.trans_to_acc_id + " VARCHAR(30) NOT NULL,"+
+                    DatabaseContract.TransactionTable.trans_from_acc_number + " VARCHAR(20) NOT NULL,"+
+                    DatabaseContract.TransactionTable.trans_to_acc_number + " VARCHAR(20) NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_amount + " DOUBLE(12,2) NOT NULL," +
                     DatabaseContract.TransactionTable.trans_date + " DATE NOT NULL);";
 
@@ -195,8 +197,8 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.PendingTransactionTable.table_name + " (" +
                     DatabaseContract.PendingTransactionTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_id + " INTEGER NOT NULL, " +
-                    DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_id + " INTEGER NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + " VARCHAR(20) NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + " VARCHAR(20) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + " INTEGER NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_amount + " DOUBLE(12,2) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_due_date + " DATE NOT NULL, " +
@@ -206,6 +208,7 @@ public class DataManager {
 
             insertAdmins(db);
             insertTestUsers(db);
+            insertAccountsForTestUsers(db);
 
         }
 
@@ -248,7 +251,7 @@ public class DataManager {
                             "'" + password.getHash() + "'," +
                             "'" + password.getSalt() + "'," +
                             "'none'," +
-                            "'1337'," +
+                            "'" + ADMIN_USERNAME + "'," +
                             "'none');";
                     db.execSQL(INSERT_TRANSACT);
                 }
@@ -266,9 +269,10 @@ public class DataManager {
             );
             if (cursor != null) {
                 PasswordHandler passwordHandler = PasswordHandler.getInstance();
+                String INSERT_USER;
                 while (cursor.moveToNext()) {
                     Password password = passwordHandler.newPassword("password");
-                    String INSERT_TRANSACT = "INSERT INTO " + DatabaseContract.CustomerTable.table_name + "(" +
+                    INSERT_USER = "INSERT INTO " + DatabaseContract.CustomerTable.table_name + "(" +
                             DatabaseContract.CustomerTable.cust_bank_id + "," +
                             DatabaseContract.CustomerTable.cust_address + "," +
                             DatabaseContract.CustomerTable.cust_name + "," +
@@ -279,16 +283,70 @@ public class DataManager {
                             DatabaseContract.CustomerTable.cust_zipcode + ") VALUES (" +
                             cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID)) + "," +
                             "'none'," +
-                            "'Johnson Johnson'," +
+                            "'Test User'," +
                             "'" + password.getHash() + "'," +
                             "'" + password.getSalt() + "'," +
                             "'none'," +
                             "'username'," +
                             "'none');";
-                    db.execSQL(INSERT_TRANSACT);
+                    db.execSQL(INSERT_USER);
                 }
                 cursor.close();
             }
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void insertAccountsForTestUsers(SQLiteDatabase db) {
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery(
+                "SELECT " + DatabaseContract.CustomerTable._ID + "," +
+                        DatabaseContract.CustomerTable.cust_user + "," +
+                        DatabaseContract.CustomerTable.cust_bank_id + " FROM " +
+                        DatabaseContract.CustomerTable.table_name + ";",
+        null
+            );
+
+            if (cursor != null) {
+                String INSERT_ACCOUNT;
+                int i = 0;
+                while (cursor.moveToNext()) {
+                    // Don't add accounts to admins
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_user)).equals(ADMIN_USERNAME)) {
+                        continue;
+                    }
+                    // Generate unique account numbers for test users
+                    String ACCOUNT_NUMBER =
+                        String.format("%s%04d", "FI001111000011", ++i);
+
+                    CurrentAccount account = new CurrentAccount(
+                            cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
+                            cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
+                            5000,
+                            500,
+                            ACCOUNT_NUMBER
+                    );
+
+                    INSERT_ACCOUNT = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
+                            DatabaseContract.AccountTable.acc_type + "," +
+                            DatabaseContract.AccountTable.acc_cust_id + "," +
+                            DatabaseContract.AccountTable.acc_bank_id + "," +
+                            DatabaseContract.AccountTable.acc_number + "," +
+                            DatabaseContract.AccountTable.acc_balance + "," +
+                            DatabaseContract.AccountTable.acc_creditlimit +
+                            ") VALUES (" +
+                            Account.TYPE_CURRENT + "," +
+                            account.getAcc_cust_id() + "," +
+                            account.getAcc_bank_id() + "," +
+                            "'" + account.getAcc_number() + "'," +
+                            account.getAcc_balance() + "," +
+                            account.getAcc_creditlimit() + ");";;
+
+                    db.execSQL(INSERT_ACCOUNT);
+                }
+                cursor.close();
+            }
+
         }
     }
 
@@ -322,7 +380,37 @@ public class DataManager {
             database = dbHelper.getWritableDatabase();
         }
 
+        String INSERT_TRANSACTION = "";
 
+        if (transaction instanceof NormalTransaction) {
+            INSERT_TRANSACTION = "INSERT INTO " + DatabaseContract.TransactionTable.table_name + "(" +
+                DatabaseContract.TransactionTable.trans_from_acc_number + "," +
+                DatabaseContract.TransactionTable.trans_to_acc_number + "," +
+                DatabaseContract.TransactionTable.trans_type + "," +
+                DatabaseContract.TransactionTable.trans_amount + "," +
+                DatabaseContract.TransactionTable.trans_date + ") VALUES (" +
+                transaction.getTrans_from_acc_number() + "," +
+                transaction.getTrans_to_acc_number() + "," +
+                transaction.getTrans_type() + "," +
+                transaction.getTrans_amount() + "," +
+                "'" + ((NormalTransaction) transaction).getTrans_date() + "');";
+        } else if (transaction instanceof PendingTransaction) { // Pending can only be of type PAYMENT
+            INSERT_TRANSACTION = "INSERT INTO " + DatabaseContract.PendingTransactionTable.table_name + "(" +
+                "'" + DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + "'," +
+                "'" + DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + "'," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_amount + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_last_paid + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_due_date + "," + ") VALUES (" +
+                transaction.getTrans_from_acc_number() + "," +
+                transaction.getTrans_to_acc_number() + "," +
+                transaction.getTrans_amount() + "," +
+                ((PendingTransaction) transaction).getTrans_recurrence() + "," +
+                "'" + ((PendingTransaction) transaction).getLast_paid() + "'," +
+                "'" + ((PendingTransaction) transaction).getDue_date() + "');";
+        }
+
+        database.execSQL(INSERT_TRANSACTION);
     }
 
     public Customer getCustomerByID(int id) {

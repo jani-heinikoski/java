@@ -8,7 +8,12 @@
 package com.jhprog.dabank.data;
 
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Bank {
 
@@ -23,23 +28,25 @@ public class Bank {
         this.bank_bic = bank_bic;
     }
 
-    public boolean handleTransaction(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
+    public boolean handleTransaction(@NonNull Transaction transaction, @NonNull Account fromAccount, Account toAccount) {
         dataManager = DataManager.getInstance();
 
         switch (transaction.getTrans_type()) {
             case Transaction.TYPE_PAYMENT:
                 // Only payments can be pending
                 if (transaction instanceof NormalTransaction) {
-                    if(normalPayment(transaction, fromAccount, toAccount)) {
+                    if(normalPayment((NormalTransaction) transaction, fromAccount, toAccount)) {
                         dataManager.insertTransaction(transaction);
                         updateAccounts(fromAccount, toAccount);
+                        return true;
                     } else {
                         return false;
                     }
                 } else if (transaction instanceof PendingTransaction) {
-                    if(pendingPayment(transaction, fromAccount, toAccount)) {
+                    if(pendingPayment((PendingTransaction) transaction, fromAccount, toAccount)) {
                         dataManager.insertTransaction(transaction);
                         updateAccounts(fromAccount, toAccount);
+                        return true;
                     } else {
                         return false;
                     }
@@ -51,15 +58,15 @@ public class Bank {
                 if (transfer(fromAccount, toAccount, transaction.getTrans_amount())) {
                     dataManager.insertTransaction(transaction);
                     updateAccounts(fromAccount, toAccount);
+                    return true;
                 } else {
                     return false;
                 }
-                break;
 
             case Transaction.TYPE_DEPOSIT:
                 deposit(toAccount, transaction.getTrans_amount());
                 updateAccounts(toAccount);
-                break;
+                return true;
 
             case Transaction.TYPE_WITHDRAW:
                 if (withdraw(fromAccount, transaction.getTrans_amount())) {
@@ -72,14 +79,14 @@ public class Bank {
         return false;
     }
 
-    // Use this if to- & fromAccount are unknown (gets both from db with account id's)
+    // Use this if to- & fromAccount are unknown (gets both from db with account numbers)
     public boolean handleTransaction(@NonNull Transaction transaction) {
         DataManager dataManager = DataManager.getInstance();
 
-        Account fromAcc = dataManager.getAccountByID(transaction.getTrans_from_acc_id());
-        Account toAcc = dataManager.getAccountByID(transaction.getTrans_to_acc_id());
+        Account fromAcc = dataManager.getAccountByAccountNumber(transaction.getTrans_from_acc_number());
+        Account toAcc = dataManager.getAccountByAccountNumber(transaction.getTrans_to_acc_number());
 
-        if (fromAcc != null && toAcc != null) {
+        if (fromAcc != null) {
             return handleTransaction(transaction, fromAcc, toAcc);
         } else {
             return false;
@@ -92,62 +99,63 @@ public class Bank {
             dataManager = DataManager.getInstance();
         }
         for (Account acc : accounts) {
-            dataManager.updateAccount(acc);
+            if (acc != null) {
+                dataManager.updateAccount(acc);
+            }
         }
     }
 
-    private boolean withdraw(Account from, double amount) {
+    private boolean withdraw(Account from, double amount) {// TODO implement withdrawing from FixedTermAccount
         if (from instanceof CurrentAccount) {
             return ((CurrentAccount) from).withdraw(amount);
         } else if (from instanceof SavingsAccount) {
-            // TODO implement savingsaccount withdraw
+            return ((SavingsAccount) from).withdraw(amount);
+        } else {
+            return false;
+        }
+    }
+
+    private void deposit(Account where, double amount) {
+        if (where != null) {
+            where.deposit(amount);
+        }
+    }
+
+    private boolean transfer(@NonNull Account fromAccount, @NonNull Account toAccount, double amount) {
+        if (withdraw(fromAccount, amount)) {
+            deposit(toAccount, amount);
             return true;
         } else {
             return false;
         }
     }
 
-    private void deposit(@NonNull Account where, double amount) {
-        where.deposit(amount);
-    }
-
-    private boolean transfer(@NonNull Account fromAccount, @NonNull Account toAccount, double amount) {
-        if (fromAccount instanceof CurrentAccount) {
-            if (fromAccount.getAcc_number().equals(toAccount.getAcc_number())) {
-                return false;
-            }
-            if (((CurrentAccount) fromAccount).withdraw(amount)) {
-                toAccount.deposit(amount);
-                return true;
-            } else {
-                return false;
-            }
+    private boolean normalPayment(@NonNull NormalTransaction transaction, @NonNull Account fromAccount, Account toAccount) {
+        if (withdraw(fromAccount, transaction.getTrans_amount())) {
+            deposit(toAccount, transaction.getTrans_amount());
+            return true;
         } else {
             return false;
         }
     }
 
-    private boolean normalPayment(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
-        if (fromAccount instanceof CurrentAccount) {
-            if (((CurrentAccount) fromAccount).withdraw(transaction.getTrans_amount())) {
-                toAccount.deposit(transaction.getTrans_amount());
+    private boolean pendingPayment(@NonNull PendingTransaction transaction, @NonNull Account fromAccount, Account toAccount) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        String today = simpleDateFormat.format(Calendar.getInstance().getTime());
+
+        if (transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID) && transaction.getDue_date().equals(today)) {
+            if (withdraw(fromAccount, transaction.getTrans_amount())) {
+                deposit(toAccount, transaction.getTrans_amount());
+                transaction.setLast_paid(today);
+                // TODO insert regular transaction here
             } else {
                 return false;
             }
-        } else if (fromAccount instanceof SavingsAccount) {
-            if (((SavingsAccount) fromAccount).withdraw(transaction.getTrans_amount())) {
-                toAccount.deposit(transaction.getTrans_amount());
-            } else {
-                return false;
-            }
-        } else {
-            return false;
         }
+
+
+
         return true;
-    }
-
-    private boolean pendingPayment(@NonNull Transaction transaction, @NonNull Account fromAccount, @NonNull Account toAccount) {
-        return false;
     }
 
     public int getBank_id() {

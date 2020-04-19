@@ -11,8 +11,8 @@ public abstract class Transaction {
 
     private int trans_id;
     private int trans_type;
-    private int trans_from_acc_id;
-    private int trans_to_acc_id;
+    private String trans_from_acc_number;
+    private String trans_to_acc_number;
     private double trans_amount;
 
     public static final int TYPE_PAYMENT = 1;
@@ -20,25 +20,25 @@ public abstract class Transaction {
     public static final int TYPE_WITHDRAW = 3;
     public static final int TYPE_TRANSFER = 4;
 
-    public Transaction(int trans_id, int trans_type, int trans_from_acc_id, int trans_to_acc_id, double trans_amount) {
+    public Transaction(int trans_id, int trans_type, String trans_from_acc_number, String trans_to_acc_number, double trans_amount) {
         this.trans_id = trans_id;
         this.trans_type = trans_type;
-        this.trans_from_acc_id = trans_from_acc_id;
-        this.trans_to_acc_id = trans_to_acc_id;
+        this.trans_from_acc_number = trans_from_acc_number;
+        this.trans_to_acc_number = trans_to_acc_number;
         this.trans_amount = trans_amount;
     }
 
-    public Transaction(int trans_type, int trans_from_acc_id, int trans_to_acc_id, double trans_amount) {
+    public Transaction(int trans_type, String trans_from_acc_number, String trans_to_acc_number, double trans_amount) {
         this.trans_type = trans_type;
-        this.trans_from_acc_id = trans_from_acc_id;
-        this.trans_to_acc_id = trans_to_acc_id;
+        this.trans_from_acc_number = trans_from_acc_number;
+        this.trans_to_acc_number = trans_to_acc_number;
         this.trans_amount = trans_amount;
     }
 
     public Transaction(int trans_type, Account fromAccount, Account toAccount, double trans_amount) {
         this.trans_type = trans_type;
-        this.trans_from_acc_id = fromAccount.getAcc_id();
-        this.trans_to_acc_id = toAccount.getAcc_id();
+        this.trans_from_acc_number = fromAccount.getAcc_number();
+        this.trans_to_acc_number = toAccount.getAcc_number();
         this.trans_amount = trans_amount;
     }
 
@@ -50,12 +50,12 @@ public abstract class Transaction {
         return trans_type;
     }
 
-    public int getTrans_from_acc_id() {
-        return trans_from_acc_id;
+    public String getTrans_from_acc_number() {
+        return trans_from_acc_number;
     }
 
-    public int getTrans_to_acc_id() {
-        return trans_to_acc_id;
+    public String getTrans_to_acc_number() {
+        return trans_to_acc_number;
     }
 
     public double getTrans_amount() {

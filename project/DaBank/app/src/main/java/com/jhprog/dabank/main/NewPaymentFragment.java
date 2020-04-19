@@ -180,13 +180,25 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             );
         } else {
             // Due date now
-            transaction = new NormalTransaction(
-                    Transaction.TYPE_PAYMENT,
-                    selectedAccount,
-                    receivingAccount,
-                    amount,
-                    today
-            );
+            if (recurrence != PendingTransaction.RECURRENCE_NONE) {
+                transaction = new PendingTransaction(
+                        Transaction.TYPE_PAYMENT,
+                        selectedAccount,
+                        receivingAccount,
+                        amount,
+                        recurrence,
+                        PendingTransaction.NEVER_PAID,
+                        today
+                );
+            } else {
+                transaction = new NormalTransaction(
+                        Transaction.TYPE_PAYMENT,
+                        selectedAccount,
+                        receivingAccount,
+                        amount,
+                        today
+                );
+            }
         }
         return viewModel.getBank().handleTransaction(transaction, selectedAccount, receivingAccount);
     }
@@ -200,8 +212,6 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
         if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
             Toast.makeText(getActivity(), "Payee acc non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
-        } else {
-            // TODO motherfucker what, check if account exists and possibly put da mahafaka into a attribbi
         }
         // Payee's name check
         tempString = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
@@ -220,7 +230,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
         }
         // Money amount check
         tempString = binding.fragmentNewPaymentEdittextAmount.getText().toString().trim(); // TODO check this regex
-        if (tempString.isEmpty() || !tempString.matches("^[0-9]{1,12}$|\\.[0-9]{1,2}$") || tempString.matches("[A-Z]|[a-z]")) {
+        if (tempString.isEmpty() || tempString.matches("[A-Z]|[a-z]")) {
             Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
             valid = false;
         } else {
