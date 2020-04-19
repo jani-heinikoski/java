@@ -140,7 +140,7 @@ public class Bank {
     }
 
     private boolean pendingPayment(@NonNull PendingTransaction transaction, @NonNull Account fromAccount, Account toAccount) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = simpleDateFormat.format(Calendar.getInstance().getTime());
 
         if (transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID) && transaction.getDue_date().equals(today)) {

@@ -15,14 +15,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.jhprog.dabank.utility.DaBank;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 

@@ -158,7 +158,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
 
     private boolean sendTransaction() {
         Transaction transaction;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String due_date = simpleDateFormat.format(new Date(binding.fragmentNewPaymentCalendarviewDueDate.getDate()));
         String today = simpleDateFormat.format(Calendar.getInstance().getTime());
 
