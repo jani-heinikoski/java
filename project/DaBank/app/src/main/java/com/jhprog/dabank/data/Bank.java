@@ -228,24 +228,16 @@ public class Bank {
     }
 
     public void checkPendingTransactions() {
-        ArrayList<PendingTransaction> pendingTransactions = new ArrayList<>();
-        pendingTransactions.add(new PendingTransaction(
-                Transaction.TYPE_PAYMENT,
-                "FI0011110000110002",
-                "FI0011110000110001",
-                500,
-                PendingTransaction.RECURRENCE_WEEKLY,
-                PendingTransaction.NEVER_PAID,
-                "2020-04-08"
-        ));
+        ArrayList<PendingTransaction> pendingTransactions = dataManager.getPendingTransactions();
 
-        for (PendingTransaction pendingTransaction : pendingTransactions) {
-            Account fromAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_from_acc_number());
-            Account toAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_to_acc_number());
-            pendingPayment(pendingTransaction, fromAccount, toAccount);
-            updateAccounts(fromAccount, toAccount);
+        if (pendingTransactions != null && pendingTransactions.size() > 0) {
+            for (PendingTransaction pendingTransaction : pendingTransactions) {
+                Account fromAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_from_acc_number());
+                Account toAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_to_acc_number());
+                pendingPayment(pendingTransaction, fromAccount, toAccount);
+                updateAccounts(fromAccount, toAccount);
+            }
         }
-
 
     }
 
