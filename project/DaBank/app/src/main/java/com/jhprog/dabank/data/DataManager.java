@@ -756,15 +756,41 @@ public class DataManager {
 
         String DELETE_PENDING_TR =
                 "DELETE FROM " + DatabaseContract.PendingTransactionTable.table_name +
-                " WHERE " + DatabaseContract.PendingTransactionTable._ID + "=" + transaction.getTrans_id();
+                        " WHERE " + DatabaseContract.PendingTransactionTable._ID + "=" + transaction.getTrans_id();
 
-<<<<<<< HEAD
-    public ArrayList<PendingTransaction> getPendingTransactions() {
-        return null;
-        // TODO: 22/04/2020 this pt2
-=======
         database.execSQL(DELETE_PENDING_TR);
->>>>>>> 5f65831f0dc1692b1f99069a00faefefc62e6a42
+    }
+
+    public ArrayList<PendingTransaction> getPendingTransactions() {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        ArrayList<PendingTransaction> pendingTransactions = null;
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.PendingTransactionTable.table_name + ";",
+                null
+        );
+
+        if (cursor != null) {
+            pendingTransactions = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                pendingTransactions.add(new PendingTransaction(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable._ID)),
+                        Transaction.TYPE_PAYMENT,
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_amount)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_recurrence)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_last_paid)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_due_date))
+                ));
+            }
+            cursor.close();
+        }
+
+        return pendingTransactions;
     }
 
 }
