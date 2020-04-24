@@ -112,7 +112,6 @@ public class LoginFragment extends Fragment {
                     startActivity(intent);
                 } else {
                     binding.fragmentLoginTextviewInvalidCredentials.setVisibility(View.VISIBLE);
-                    System.out.println("LOGGER: customer was " + (customer == null));
                 }
             }
         });

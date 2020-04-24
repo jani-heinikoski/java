@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,6 @@ import com.jhprog.dabank.utility.AnimationProvider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class NewPaymentFragment extends Fragment { // TODO might want to organize this clusterfuck
@@ -46,6 +46,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     private Account selectedAccount;
     private MainViewModel viewModel;
     private ArrayList<String> recurrenceTypes;
+    private String dueDate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,6 +137,14 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
         binding.fragmentNewPaymentCalendarviewDueDate.setMinDate(
                 Calendar.getInstance().getTime().getTime()
         );
+
+        binding.fragmentNewPaymentCalendarviewDueDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                dueDate = String.format("%d-%d-%d", year, (month + 1), dayOfMonth);
+            }
+        });
     }
 
     private void initButtons() {
@@ -159,7 +168,6 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     private boolean sendTransaction() {
         Transaction transaction;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String due_date = simpleDateFormat.format(new Date(binding.fragmentNewPaymentCalendarviewDueDate.getDate()));
         String today = simpleDateFormat.format(Calendar.getInstance().getTime());
 
         Account receivingAccount = DataManager.getInstance().getAccountByAccountNumber(
@@ -176,7 +184,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                 amount,
                 recurrence,
                 PendingTransaction.NEVER_PAID,
-                due_date
+                dueDate
             );
         } else {
             // Due date now
@@ -204,19 +212,19 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     }
 
 
-    private boolean validateFormData() {
+    private boolean validateFormData() { // Validate all form fields
         String tempString = "";
         boolean valid = true;
         // Payee's account number check
         tempString = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim().toUpperCase();
         if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
-            Toast.makeText(getActivity(), "Payee acc non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewPaymentEdittextPayeeAccount.setError("Non-valid");
             valid = false;
         }
         // Payee's name check
         tempString = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
         if (tempString.isEmpty() || tempString.matches("[0-9]")) {
-            Toast.makeText(getActivity(), "Payee name non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewPaymentEdittextPayeeName.setError("Non-valid");
             valid = false;
         }
         // Reference number check
@@ -225,26 +233,22 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                 || tempString.matches("[A-Za-z]")
                 || (!tempString.isEmpty() && !binding.fragmentNewPaymentEdittextMessage.getText().toString().trim().isEmpty()))
         {
-            Toast.makeText(getActivity(), "Ref non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewPaymentEdittextReference.setError("Non-valid");
             valid = false;
         }
         // Money amount check
-        tempString = binding.fragmentNewPaymentEdittextAmount.getText().toString().trim(); // TODO check this regex
+        tempString = binding.fragmentNewPaymentEdittextAmount.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("[A-Z]|[a-z]")) {
-            Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewPaymentEdittextAmount.setError("Non-valid");
             valid = false;
         } else {
             try {
                 Double.parseDouble(tempString);
             } catch (Exception e) {
                 valid = false;
-                Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
+                binding.fragmentNewPaymentEdittextAmount.setError("Non-valid");
                 e.printStackTrace();
             }
-        }
-
-        if (binding.fragmentNewPaymentSpinnerPayer.getSelectedItem() == null) {
-            valid = false;
         }
         // Check if payer account has been selected from the spinner
         if (selectedAccount == null) {

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,6 +29,7 @@ public class Bank {
         this.bank_id = bank_id;
         this.bank_name = bank_name;
         this.bank_bic = bank_bic;
+        dataManager = DataManager.getInstance();
     }
 
     public boolean handleTransaction(@NonNull Transaction transaction, @NonNull Account fromAccount, Account toAccount) {
@@ -145,7 +147,7 @@ public class Bank {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date dueDate;
         Date today = Calendar.getInstance().getTime();
-
+        // TODO -->timemanageriin
         try {
             dueDate = simpleDateFormat.parse(transaction.getDue_date());
         } catch (ParseException e) {
@@ -218,11 +220,33 @@ public class Bank {
         return true;
     }
 
-    private void addTimeToDate(@NonNull Date date, int days) {
+    private void addTimeToDate(@NonNull Date date, int days) { // pass date by ref
         Calendar calendar = (Calendar) Calendar.getInstance().clone();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, days);
         date.setTime(calendar.getTimeInMillis());
+    }
+
+    public void checkPendingTransactions() {
+        ArrayList<PendingTransaction> pendingTransactions = new ArrayList<>();
+        pendingTransactions.add(new PendingTransaction(
+                Transaction.TYPE_PAYMENT,
+                "FI0011110000110002",
+                "FI0011110000110001",
+                500,
+                PendingTransaction.RECURRENCE_WEEKLY,
+                PendingTransaction.NEVER_PAID,
+                "2020-04-08"
+        ));
+
+        for (PendingTransaction pendingTransaction : pendingTransactions) {
+            Account fromAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_from_acc_number());
+            Account toAccount = dataManager.getAccountByAccountNumber(pendingTransaction.getTrans_to_acc_number());
+            pendingPayment(pendingTransaction, fromAccount, toAccount);
+            updateAccounts(fromAccount, toAccount);
+        }
+
+
     }
 
     public int getBank_id() {

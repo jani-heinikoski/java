@@ -387,8 +387,8 @@ public class DataManager {
                 DatabaseContract.TransactionTable.trans_type + "," +
                 DatabaseContract.TransactionTable.trans_amount + "," +
                 DatabaseContract.TransactionTable.trans_date + ") VALUES (" +
-                transaction.getTrans_from_acc_number() + "," +
-                transaction.getTrans_to_acc_number() + "," +
+                "'" + transaction.getTrans_from_acc_number() + "'," +
+                "'" + transaction.getTrans_to_acc_number() + "'," +
                 transaction.getTrans_type() + "," +
                 transaction.getTrans_amount() + "," +
                 "'" + ((NormalTransaction) transaction).getTrans_date() + "');";
@@ -442,10 +442,6 @@ public class DataManager {
         }
 
         return retval;
-    }
-
-    public Customer getCustomerByID(String id) {
-        return getCustomerByID(Integer.parseInt(id));
     }
 
     public Bank getBankByName(@NonNull String bankName) {
@@ -513,10 +509,6 @@ public class DataManager {
 
     public boolean accountExists(@NonNull String accountNumber) {
         return getAccountByAccountNumber(accountNumber) != null;
-    }
-
-    public Account getAccountByID(int accountID) {
-        return null;
     }
 
     public Account getAccountByAccountNumber(@NonNull String accountNumber) {
@@ -727,7 +719,7 @@ public class DataManager {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
-
+        System.out.println("LOGGER: UPDATING ACC" + account.getAcc_number());
         String UPDATE_ACCOUNT;
 
         if (account instanceof CurrentAccount) {
@@ -755,6 +747,9 @@ public class DataManager {
 
     public void deletePendingTransaction(@NonNull PendingTransaction transaction) {
 
+    public ArrayList<PendingTransaction> getPendingTransactions() {
+        return null;
+        // TODO: 22/04/2020 this pt2
     }
 
 }
