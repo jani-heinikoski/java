@@ -25,6 +25,7 @@ import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.CurrentAccount;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
+import com.jhprog.dabank.data.SavingsAccount;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
 
 import java.util.ArrayList;
@@ -156,7 +157,7 @@ public class AddAccountFragment extends Fragment {
                 System.out.println("LOGGER: " + accountType);
                 Account account;
 
-                switch (accountType) { // TODO rest of the account types
+                switch (accountType) { // TODO calendar for the fixed-term account!
                     case Account.TYPE_CURRENT:
                         if (chosenCustomerID != 0) {
                             account = new CurrentAccount(
@@ -170,6 +171,18 @@ public class AddAccountFragment extends Fragment {
                         }
                         break;
 
+                    case Account.TYPE_SAVING:
+                        if (chosenCustomerID != 0) {
+                            account = new SavingsAccount(
+                                    AdminActivity.getB_id(),
+                                    chosenCustomerID,
+                                    Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                                    10,
+                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
+                            );
+                            DataManager.getInstance().insertAccount(account);
+                        }
+                        break;
                     default:
                         return;
                 }
@@ -184,34 +197,41 @@ public class AddAccountFragment extends Fragment {
         // Account number check
         tempString = binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim();
         if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
-            Toast.makeText(getActivity(), "Account number non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentAddAccountEdittextAccountNumber.setError("Value invalid");
             valid = false;
         } else {
             if (DataManager.getInstance().accountExists(tempString)) {
                 valid = false;
-                Toast.makeText(getActivity(), "Account number exists!", Toast.LENGTH_SHORT).show();
+                binding.fragmentAddAccountEdittextAccountNumber.setError("Acc. num. already exists!");
             }
         }
         // Money amount check
         tempString = binding.fragmentAddAccountEdittextAmount.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("[A-Z][a-z]")) {
-            Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
+            binding.fragmentAddAccountEdittextAmount.setError("Amount invalid");
             valid = false;
         } else {
             try {
                 Double.parseDouble(tempString);
             } catch (Exception e) {
                 valid = false;
-                Toast.makeText(getActivity(), "Amount non-valid", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                binding.fragmentAddAccountEdittextAmount.setError("Amount invalid");
             }
         }
         // Credit amount check
         if (binding.fragmentAddAccountSwitchIsCredit.isChecked()) {
             tempString = binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim();
-
-            // TODO BOI!
-
+            if (tempString.isEmpty() || tempString.matches("[A-Z][a-z]")) {
+                valid = false;
+                binding.fragmentAddAccountEdittextCreditAmount.setError("Amount invalid");
+            } else {
+                try {
+                    Double.parseDouble(tempString);
+                } catch (Exception e) {
+                    valid = false;
+                    binding.fragmentAddAccountEdittextCreditAmount.setError("Amount invalid");
+                }
+            }
         }
 
         return valid;

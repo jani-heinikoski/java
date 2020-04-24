@@ -37,7 +37,6 @@ public class LoginFragment extends Fragment {
     private LoginViewModel viewModel;
     private Bank bank;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +95,7 @@ public class LoginFragment extends Fragment {
                     viewModel.getBank().checkPendingTransactions();
                     Intent intent;
                     // See if user is admin
-                    if (customer.getCust_user().equals("1337")) { // TODO: 24.4.2020 Admin username needs to be changed 
+                    if (customer.getCust_user().equals("1337")) { // TODO: 24.4.2020 Admin username needs to be changed
                         intent = new Intent(getActivity(), AdminActivity.class);
                         intent.putExtra("b_id", bank.getBank_id());
                         intent.putExtra("cust_id", customer.getCust_id());

@@ -53,7 +53,7 @@ public final class PendingTransaction extends Transaction {
 
     public void setLast_paid(@NonNull String last_paid) {
         this.last_paid = last_paid;
-    }
+    } // TODO: 24.4.2020 Possibly useless method 
 
     public String getDue_date() {
         return due_date;
