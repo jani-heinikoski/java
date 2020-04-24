@@ -754,7 +754,18 @@ public class DataManager {
     }
 
     public void deletePendingTransaction(@NonNull PendingTransaction transaction) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
 
+        if (transaction.getTrans_id() <= 0)
+            return;
+
+        String DELETE_PENDING_TR =
+                "DELETE FROM " + DatabaseContract.PendingTransactionTable.table_name +
+                " WHERE " + DatabaseContract.PendingTransactionTable._ID + "=" + transaction.getTrans_id();
+
+        database.execSQL(DELETE_PENDING_TR);
     }
 
 }
