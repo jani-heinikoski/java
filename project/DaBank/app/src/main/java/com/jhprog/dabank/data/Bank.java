@@ -227,7 +227,7 @@ public class Bank {
         date.setTime(calendar.getTimeInMillis());
     }
 
-    public void checkPendingTransactions() {
+    public void checkPendingTransactions() { // Handles pending transactions when user logs in (successfully) to a bank
         ArrayList<PendingTransaction> pendingTransactions = dataManager.getPendingTransactions();
 
         if (pendingTransactions != null && pendingTransactions.size() > 0) {
