@@ -758,8 +758,9 @@ public class DataManager {
             database = dbHelper.getWritableDatabase();
         }
 
-        if (transaction.getTrans_id() <= 0)
+        if (transaction.getTrans_id() <= 0) {
             return;
+        }
 
         String DELETE_PENDING_TR =
                 "DELETE FROM " + DatabaseContract.PendingTransactionTable.table_name +
