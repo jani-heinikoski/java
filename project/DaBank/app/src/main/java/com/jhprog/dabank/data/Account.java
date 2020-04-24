@@ -41,6 +41,8 @@ public abstract class Account {
         this.acc_number = acc_number;
     }
 
+    // TODO: 24.4.2020 Add abstract function withdraw 
+
     public void deposit(double amount) {
         this.acc_balance += amount;
     }
