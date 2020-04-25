@@ -1,6 +1,8 @@
 package com.jhprog.dabank.admin;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +40,17 @@ public class NewCustomerFragment extends Fragment {
 
     private void initButtons() {
         binding.fragmentNewCustomerButtonNewCustomer.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast") // Toast is shown in try statement's finally block
             @Override
             public void onClick(View v) {
                 binding.fragmentNewCustomerButtonNewCustomer.startAnimation(AnimationProvider.getOnClickAnimation());
                 if (!validateFormData()) {
                     Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    Toast toast = Toast.makeText(getActivity(),"Inserting customer!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
 
                 Customer customer = new Customer(
@@ -57,8 +64,18 @@ public class NewCustomerFragment extends Fragment {
                 );
 
                 DataManager dataManager = DataManager.getInstance();
-                dataManager.insertCustomer(customer);
-
+                Toast toast = null;
+                try {
+                    dataManager.insertCustomer(customer);
+                    toast = Toast.makeText(getActivity(),"Insertion succeeded!", Toast.LENGTH_SHORT);
+                } catch (Exception e) {
+                    toast = Toast.makeText(getActivity(),"Insertion failed!", Toast.LENGTH_SHORT);
+                } finally {
+                    if (toast != null) {
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+                }
             }
         });
     }
@@ -74,18 +91,19 @@ public class NewCustomerFragment extends Fragment {
         tempString = binding.fragmentNewCustomerEdittextName.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("['\".]")) {
             valid = false;
-            Toast.makeText(getActivity(), "Enter name for customer", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewCustomerEdittextName.setError("Name invalid!");
         }
         // Username
         tempString = binding.fragmentNewCustomerEdittextUser.getText().toString().trim();
         if (tempString.isEmpty() || tempString.length() < 4 || tempString.matches("['\".]")) {
             valid = false;
-            Toast.makeText(getActivity(), "Username must be >=4 characters", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewCustomerEdittextUser.setError("Must be >=4 characters");
         }
         // Password check
         tempString = binding.fragmentNewCustomerEdittextPassword.getText().toString().trim();
         if (tempString.matches("\\s+") || tempString.matches("['\".]")) {
             valid = false;
+            binding.fragmentNewCustomerEdittextPassword.setError("Invalid password");
         } else {
             for (char c : tempString.toCharArray()) {
                 if (Character.isDigit(c)) {
@@ -100,25 +118,25 @@ public class NewCustomerFragment extends Fragment {
             }
             if (!(number && lowerCase && upperCase && specialChar)) {
                 valid = false;
-                Toast.makeText(getActivity(), "Invalid password!", Toast.LENGTH_SHORT).show();
+                binding.fragmentNewCustomerEdittextPassword.setError("Invalid password");
             }
         }
         // Address check
         tempString = binding.fragmentNewCustomerEdittextAddress.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("['\".]")) {
             valid = false;
-            Toast.makeText(getActivity(), "Empty address!", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewCustomerEdittextAddress.setError("Invalid address");
         }
         // Zipcode check
         tempString = binding.fragmentNewCustomerEdittextZipcode.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("\\s+" ) || tempString.matches("['\".]")) {
             valid = false;
-            Toast.makeText(getActivity(), "Invalid zipcode!", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewCustomerEdittextZipcode.setError("Invalid zipcode");
         } else {
             for (char c : tempString.toCharArray()) {
                 if (!Character.isDigit(c)) {
                     valid = false;
-                    Toast.makeText(getActivity(), "Invalid zipcode!", Toast.LENGTH_SHORT).show();
+                    binding.fragmentNewCustomerEdittextZipcode.setError("Invalid zipcode");
                     break;
                 }
             }
@@ -127,12 +145,12 @@ public class NewCustomerFragment extends Fragment {
         tempString = binding.fragmentNewCustomerEdittextPhone.getText().toString().trim();
         if (tempString.isEmpty() || tempString.length() < 6 || tempString.matches("['\".]")) {
             valid = false;
-            Toast.makeText(getActivity(), "Invalid phone number!", Toast.LENGTH_SHORT).show();
+            binding.fragmentNewCustomerEdittextPhone.setError("Invalid phone number");
         } else {
             for (char c : tempString.toCharArray()) {
                 if (!(Character.isDigit(c) || c == '+')) {
                     valid = false;
-                    Toast.makeText(getActivity(), "Invalid phone number!", Toast.LENGTH_SHORT).show();
+                    binding.fragmentNewCustomerEdittextPhone.setError("Invalid phone number");
                     break;
                 }
             }
