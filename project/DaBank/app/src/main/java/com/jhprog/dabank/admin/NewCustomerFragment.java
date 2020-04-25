@@ -63,7 +63,7 @@ public class NewCustomerFragment extends Fragment {
         });
     }
 
-    private boolean validateFormData() { // TODO escape ' characters! MyPassword1! 1999
+    private boolean validateFormData() {
         String tempString = "";
         boolean valid = true;
         boolean lowerCase = false;
@@ -72,19 +72,19 @@ public class NewCustomerFragment extends Fragment {
         boolean specialChar = false;
         // Name
         tempString = binding.fragmentNewCustomerEdittextName.getText().toString().trim();
-        if (tempString.isEmpty()) {
+        if (tempString.isEmpty() || tempString.matches("['\".]")) {
             valid = false;
             Toast.makeText(getActivity(), "Enter name for customer", Toast.LENGTH_SHORT).show();
         }
         // Username
         tempString = binding.fragmentNewCustomerEdittextUser.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.length() < 4) {
+        if (tempString.isEmpty() || tempString.length() < 4 || tempString.matches("['\".]")) {
             valid = false;
             Toast.makeText(getActivity(), "Username must be >=4 characters", Toast.LENGTH_SHORT).show();
         }
         // Password check
         tempString = binding.fragmentNewCustomerEdittextPassword.getText().toString().trim();
-        if (tempString.matches("\\s+")) {
+        if (tempString.matches("\\s+") || tempString.matches("['\".]")) {
             valid = false;
         } else {
             for (char c : tempString.toCharArray()) {
@@ -105,13 +105,13 @@ public class NewCustomerFragment extends Fragment {
         }
         // Address check
         tempString = binding.fragmentNewCustomerEdittextAddress.getText().toString().trim();
-        if (tempString.isEmpty()) {
+        if (tempString.isEmpty() || tempString.matches("['\".]")) {
             valid = false;
             Toast.makeText(getActivity(), "Empty address!", Toast.LENGTH_SHORT).show();
         }
         // Zipcode check
         tempString = binding.fragmentNewCustomerEdittextZipcode.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.matches("\\s+")) {
+        if (tempString.isEmpty() || tempString.matches("\\s+" ) || tempString.matches("['\".]")) {
             valid = false;
             Toast.makeText(getActivity(), "Invalid zipcode!", Toast.LENGTH_SHORT).show();
         } else {
@@ -125,7 +125,7 @@ public class NewCustomerFragment extends Fragment {
         }
         // Phone number check
         tempString = binding.fragmentNewCustomerEdittextPhone.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.length() < 6) {
+        if (tempString.isEmpty() || tempString.length() < 6 || tempString.matches("['\".]")) {
             valid = false;
             Toast.makeText(getActivity(), "Invalid phone number!", Toast.LENGTH_SHORT).show();
         } else {
