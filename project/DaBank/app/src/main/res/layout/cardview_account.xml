@@ -33,7 +33,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:text="FI52 4325 4667 8775 55"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="italic" />
 
@@ -46,7 +46,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
             android:text="Balance: 2350.60€"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="italic" />
 
@@ -59,7 +59,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
             android:text="Credit limit: 400.00€"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="italic"
             android:visibility="gone" />
@@ -73,7 +73,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
             android:text="Withdraws left this year: 4"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="italic"
             android:visibility="gone" />

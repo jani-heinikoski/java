@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
             @Override
             public void onClick(View v) {
                 binding.loginActivityExitButton.startAnimation(onClickAnimation);
+                onBackPressed();
             }
         });
     }

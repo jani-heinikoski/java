@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentOwner {
             @Override
             public void onClick(View v) {
                 binding.mainActivityExitButton.startAnimation(onClickAnimation);
+                onBackPressed();
             }
         });
     }

@@ -624,12 +624,14 @@ public class DataManager {
             INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
                     DatabaseContract.AccountTable.acc_type + "," +
                     DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
                     DatabaseContract.AccountTable.acc_withdrawlimit +
                     ") VALUES (" +
                     Account.TYPE_SAVING + "," +
                     account.getAcc_cust_id() + "," +
+                    account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
                     ((SavingsAccount) account).getAcc_withdrawlimit() + ");";
@@ -637,12 +639,14 @@ public class DataManager {
             INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
                     DatabaseContract.AccountTable.acc_type + "," +
                     DatabaseContract.AccountTable.acc_cust_id + "," +
+                    DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
                     DatabaseContract.AccountTable.acc_duedate +
                     ") VALUES (" +
                     Account.TYPE_FIXED_TERM + "," +
                     account.getAcc_cust_id() + "," +
+                    account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
                     "'" + ((FixedTermAccount) account).getAcc_due_date() + "');";
@@ -715,11 +719,10 @@ public class DataManager {
     }
 
     public void updateAccount(@NonNull Account account) {
-
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
-        System.out.println("LOGGER: UPDATING ACC" + account.getAcc_number());
+
         String UPDATE_ACCOUNT;
 
         if (account instanceof CurrentAccount) {
@@ -793,4 +796,19 @@ public class DataManager {
         return pendingTransactions;
     }
 
+    public void updatePendingTransaction(@NonNull PendingTransaction transaction) { // Updates the last paid field from pending tr
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String UPDATE_PENDING = "UPDATE " + DatabaseContract.PendingTransactionTable.table_name +
+                " SET " + DatabaseContract.PendingTransactionTable.pending_transaction_last_paid +
+                "='" + transaction.getLast_paid() + "';";
+
+        database.execSQL(UPDATE_PENDING);
+    }
+
 }
+// TODO: 25.4.2020 pendings dont account for credit limit
+// TODO: 25.4.2020 cant add fixed-term account 
+// TODO: 25.4.2020 pendings dont work properly when continuing last paids 

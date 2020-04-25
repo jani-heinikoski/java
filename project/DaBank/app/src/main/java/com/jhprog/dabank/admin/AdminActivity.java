@@ -22,6 +22,7 @@ import android.view.View;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityAdminBinding;
 import com.jhprog.dabank.IFragmentOwner;
+import com.jhprog.dabank.utility.AnimationProvider;
 
 public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
 
@@ -50,15 +51,16 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         binding.adminActivityButtonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.adminActivityButtonExit.startAnimation(AnimationProvider.getOnClickAnimation());
                 onBackPressed();
             }
         });
     }
 
-    private void initViewModel(int b_id, int cust_id) {
+    private void initViewModel(int b_id, int customer_id) {
         viewModel = new ViewModelProvider(this).get(AdminViewModel.class);
         viewModel.setBank_id(b_id);
-        viewModel.setCustomer_id(cust_id);
+        viewModel.setCustomer_id(customer_id);
     }
 
     private void initFragments() {
@@ -80,8 +82,4 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }

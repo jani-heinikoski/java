@@ -165,7 +165,6 @@ public class Bank {
             if (dueDate.compareTo(today) <= 0 && transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID)) {
                 if (withdraw(fromAccount, transaction.getTrans_amount())) {
                     deposit(toAccount, transaction.getTrans_amount());
-                    transaction.setLast_paid(timeManager.dateToString(dueDate));
                     dataManager.insertTransaction(normalTransaction);
                     dataManager.deletePendingTransaction(transaction);
                 } else {
@@ -188,6 +187,7 @@ public class Bank {
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
                             transaction.setLast_paid(timeManager.dateToString(date));
+                            dataManager.updatePendingTransaction(transaction);
                             normalTransaction.setTrans_date(timeManager.dateToString(date));
                             timeManager.addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
@@ -197,19 +197,23 @@ public class Bank {
                     } while (date.compareTo(today) <= 0);
 
                 } else {
+                    try {
+                        date = timeManager.stringToDate(transaction.getLast_paid());
+                    } catch (ParseException e) {
+                        return false;
+                    }
                     timeManager.addTimeToDate(date, noOfDays);
                     while (date.compareTo(today) <= 0) {
-
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
                             transaction.setLast_paid(timeManager.dateToString(date));
+                            dataManager.updatePendingTransaction(transaction);
                             normalTransaction.setTrans_date(timeManager.dateToString(date));
                             timeManager.addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
                         } else {
                             return false;
                         }
-
                     }
                 }
             }
