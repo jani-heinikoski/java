@@ -75,7 +75,7 @@
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="26sp" />
 
 
 </RelativeLayout>

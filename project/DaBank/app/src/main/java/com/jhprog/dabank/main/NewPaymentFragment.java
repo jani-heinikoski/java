@@ -189,6 +189,9 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
         Account receivingAccount = DataManager.getInstance().getAccountByAccountNumber(
                 binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim()
         );
+
+        String receivingAccountNumber = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim();
+
         double amount = Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString().trim());
 
         int compareDueDateAndToday;
@@ -203,8 +206,8 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             // Due date in the future (after today)
             transaction = new PendingTransaction(
                 Transaction.TYPE_PAYMENT,
-                selectedAccount,
-                receivingAccount,
+                selectedAccount.getAcc_number(),
+                receivingAccountNumber,
                 amount,
                 recurrence,
                 PendingTransaction.NEVER_PAID,
@@ -215,8 +218,8 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             if (recurrence != PendingTransaction.RECURRENCE_NONE) {
                 transaction = new PendingTransaction(
                         Transaction.TYPE_PAYMENT,
-                        selectedAccount,
-                        receivingAccount,
+                        selectedAccount.getAcc_number(),
+                        receivingAccountNumber,
                         amount,
                         recurrence,
                         PendingTransaction.NEVER_PAID,
@@ -225,13 +228,14 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             } else {
                 transaction = new NormalTransaction(
                         Transaction.TYPE_PAYMENT,
-                        selectedAccount,
-                        receivingAccount,
+                        selectedAccount.getAcc_number(),
+                        receivingAccountNumber,
                         amount,
                         today
                 );
             }
         }
+
         return viewModel.getBank().handleTransaction(transaction, selectedAccount, receivingAccount);
     }
 

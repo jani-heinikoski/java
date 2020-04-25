@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.data.FixedTermAccount;
 import com.jhprog.dabank.data.SavingsAccount;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
+import com.jhprog.dabank.utility.AnimationProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,8 +47,8 @@ public class AddAccountFragment extends Fragment {
     private int chosenCustomerID;
     private int accountType;
     private final String[] accountTypes = {"Current Account", "Savings Account", "Fixed-term Account"};
-    private String dueDate;
     private AdminViewModel viewModel;
+    private AddAccountFragment addAccountFragment = this;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class AddAccountFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initSpinners();
         viewModel = new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
+        hideCalendar();
     }
 
     private void initSpinners() {
@@ -111,7 +114,7 @@ public class AddAccountFragment extends Fragment {
                         hideCalendar();
                         accountType = Account.TYPE_SAVING;
                     } else if (selected.equals(accountTypes[2])) {
-                        showCalendar();
+                        addAccountFragment.showCalendar();
                         accountType = Account.TYPE_FIXED_TERM;
                     }
                 } else {
@@ -127,15 +130,11 @@ public class AddAccountFragment extends Fragment {
     }
 
     private void showCalendar() {
-        if (binding.fragmentAddAccountCalendarviewDueDate.getVisibility() != View.VISIBLE) {
-            binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.VISIBLE);
-        }
+        binding.fragmentAddAccountDatepickerDueDate.setVisibility(View.VISIBLE);
     }
 
     private void hideCalendar() {
-        if (binding.fragmentAddAccountCalendarviewDueDate.getVisibility() != View.GONE) {
-            binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.GONE);
-        }
+        binding.fragmentAddAccountDatepickerDueDate.setVisibility(View.GONE);
     }
 
     private void initSwitches() {
@@ -153,20 +152,10 @@ public class AddAccountFragment extends Fragment {
     }
 
     private void initCalendarViews() {
-        // DueDate cal. only shown when fixed-term acc. is made
-        binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.GONE);
         // DueDate must be in the future
-        binding.fragmentAddAccountCalendarviewDueDate.setMinDate(
+        binding.fragmentAddAccountDatepickerDueDate.setMinDate(
                 Calendar.getInstance().getTime().getTime()
         );
-        // Calendarview's getDate function doesn't return the selected date, so this listener is mandatory
-        binding.fragmentAddAccountCalendarviewDueDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                dueDate = String.format("%d-%d-%d", year, (month + 1), dayOfMonth);
-            }
-        });
     }
 
     private void initButtons() {
@@ -189,6 +178,7 @@ public class AddAccountFragment extends Fragment {
         });
 
         binding.fragmentAddAccountButtonAddAccount.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if (!validateForm()) {
@@ -233,7 +223,7 @@ public class AddAccountFragment extends Fragment {
                                 chosenCustomerID,
                                 Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
                                 binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
-                                dueDate
+                                getDueDate()
                             );
                             DataManager.getInstance().insertAccount(account);
                         }
@@ -242,6 +232,15 @@ public class AddAccountFragment extends Fragment {
 
             }
         });
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String getDueDate() {
+        int year, month, day;
+        year = binding.fragmentAddAccountDatepickerDueDate.getYear();
+        month = binding.fragmentAddAccountDatepickerDueDate.getMonth() + 1;
+        day = binding.fragmentAddAccountDatepickerDueDate.getDayOfMonth();
+        return String.format("%d-%02d-%d", year, month, day);
     }
 
     private boolean validateForm() {

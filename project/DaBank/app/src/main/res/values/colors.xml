@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#9e47ff</color>
     <color name="colorBackground">#DADADA</color>
-    <color name="colorPrimaryText">@color/colorPrimaryDark</color>
+    <color name="colorPrimaryText">#FF424242</color>
     <color name="colorSecondaryText">#EEE6FF</color>
+    <!-- <color name="colorSecondary">#FF424242</color>
+    <color name="colorSecondaryLight">#5A5A5A</color>  -->
+    <color name="colorSecondary">@color/colorAccent</color>
+    <color name="colorSecondaryLight">#B878FF</color>
 </resources>

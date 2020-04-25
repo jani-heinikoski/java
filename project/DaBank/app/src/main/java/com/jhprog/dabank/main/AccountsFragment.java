@@ -18,11 +18,13 @@ import com.jhprog.dabank.databinding.FragmentAccountsBinding;
 
 import java.util.Objects;
 
-public final class AccountsFragment extends Fragment implements AccountRecyclerAdapter.OnCardClickListener {
+public final class AccountsFragment extends Fragment
+        implements AccountRecyclerAdapter.OnCardClickListener, AccountRecyclerAdapter.OnSettingsClickListener {
 
     private MainViewModel viewModel;
     private FragmentAccountsBinding binding;
     private IFragmentOwner fragmentOwner;
+    private AccountRecyclerAdapter accountRecyclerAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,13 +58,25 @@ public final class AccountsFragment extends Fragment implements AccountRecyclerA
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.fragmentAccountsRecyclerView.setLayoutManager(layoutManager);
         // specify an adapter and add it to the recyclerview
-        AccountRecyclerAdapter accountRecyclerAdapter = new AccountRecyclerAdapter(viewModel.getAccounts(), this);
+        accountRecyclerAdapter = new AccountRecyclerAdapter(viewModel.getAccounts(), this, this);
         binding.fragmentAccountsRecyclerView.setAdapter(accountRecyclerAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        accountRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onCardClick(int position) {
         viewModel.setClickedAccount(viewModel.getAccounts().get(position));
         fragmentOwner.changeFragment(new TransactionsFragment(), true);
+    }
+
+    @Override
+    public void onSettingsClick(int position) {
+        viewModel.setClickedAccount(viewModel.getAccounts().get(position));
+        fragmentOwner.changeFragment(new AccountSettingsFragment(), true);
     }
 }

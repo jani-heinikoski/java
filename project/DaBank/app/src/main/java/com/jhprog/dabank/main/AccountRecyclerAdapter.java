@@ -3,6 +3,7 @@ package com.jhprog.dabank.main;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,12 +21,14 @@ import java.util.Locale;
 public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRecyclerAdapter.CardViewHolder> {
 
     private ArrayList<Account> accounts;
-    private OnCardClickListener listener;
+    private OnCardClickListener onCardClickListener;
+    private OnSettingsClickListener onSettingsClickListener;
 
     // Provide a reference to the views for each data item
-    public final class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public final class CardViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewType, textViewBalance, textViewAccountNumber, textViewCreditLimit, textViewWithdrawLimit;
+        TextView textViewType, textViewBalance, textViewAccountNumber, textViewCreditLimit, textViewWithdrawLimit, textViewDueDate;
+        Button btnAccountSettings;
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -34,22 +37,35 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
             textViewAccountNumber = (TextView) itemView.findViewById(R.id.cardview_account_number);
             textViewCreditLimit = (TextView) itemView.findViewById(R.id.cardview_account_credit_limit);
             textViewWithdrawLimit = (TextView) itemView.findViewById(R.id.cardview_account_withdraw_limit);
+            textViewDueDate = (TextView) itemView.findViewById(R.id.cardview_account_due_date);
+            btnAccountSettings = (Button) itemView.findViewById(R.id.cardview_account_settings);
 
-            itemView.setOnClickListener(this);
-        }
+            btnAccountSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onSettingsClickListener.onSettingsClick(pos);
+                    }
+                }
+            });
 
-        @Override
-        public void onClick(View v) {
-            int pos = getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                listener.onCardClick(getAdapterPosition());
-            }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onCardClickListener.onCardClick(getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 
-    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts, OnCardClickListener listener) {
+    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts, @NonNull OnCardClickListener onCardClickListener, @NonNull OnSettingsClickListener onSettingsClickListener) {
         this.accounts = accounts;
-        this.listener = listener;
+        this.onCardClickListener = onCardClickListener;
+        this.onSettingsClickListener = onSettingsClickListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -90,6 +106,10 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
                 );
             } else if (acc instanceof FixedTermAccount) {
                 holder.textViewType.setText(R.string.fixed_term_account_as_string);
+                holder.textViewDueDate.setVisibility(View.VISIBLE);
+                holder.textViewDueDate.setText(
+                        String.format(Locale.getDefault(), "Due date: %s", ((FixedTermAccount) acc).getAcc_due_date())
+                );
             }
         }
     }
@@ -106,6 +126,10 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
 
     public interface OnCardClickListener {
         void onCardClick(int position);
+    }
+
+    public interface OnSettingsClickListener {
+        void onSettingsClick(int position);
     }
 
 }

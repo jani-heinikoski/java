@@ -811,4 +811,4 @@ public class DataManager {
 }
 // TODO: 25.4.2020 pendings dont account for credit limit
 // TODO: 25.4.2020 cant add fixed-term account 
-// TODO: 25.4.2020 pendings dont work properly when continuing last paids 
+// TODO: 25.4.2020 pendings dont work properly when continuing last paids

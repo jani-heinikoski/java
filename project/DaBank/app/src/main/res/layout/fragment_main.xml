@@ -14,7 +14,7 @@
         android:text="@string/fragment_main_button_new_payment_text"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="26sp" />
 
     <Button
         android:id="@+id/fragment_main_button_new_transfer"
@@ -28,7 +28,7 @@
         android:text="@string/fragment_main_button_new_transfer_text"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="26sp" />
 
     <Button
         android:id="@+id/fragment_main_button_accounts"
@@ -42,7 +42,7 @@
         android:text="@string/fragment_main_button_accounts_text"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="26sp" />
 
     <Button
         android:id="@+id/fragment_main_button_simulations"
@@ -56,7 +56,7 @@
         android:text="@string/fragment_main_button_simulations_text"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="26sp" />
 
 
 </RelativeLayout>

@@ -16,7 +16,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_payee_account"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <EditText
@@ -44,7 +44,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_payee_name"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <EditText
@@ -71,7 +71,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="Reference number"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <EditText
@@ -98,7 +98,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_message_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <EditText
@@ -125,7 +125,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_date_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <CalendarView
@@ -146,7 +146,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_amount_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <EditText
@@ -174,7 +174,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_payer_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <Spinner
@@ -195,7 +195,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/fragment_new_payment_recurrence_text"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp" />
 
         <Spinner
@@ -219,7 +219,7 @@
             android:text="Continue"
             android:textSize="24sp"
             android:textAllCaps="false"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/colorSecondaryText" />
 
     </RelativeLayout>
 
