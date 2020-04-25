@@ -189,11 +189,22 @@
                 android:textSize="18sp"
                 android:visibility="invisible" />
 
+            <CalendarView
+                android:id="@+id/fragment_add_account_calendarview_due_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_add_account_switch_is_credit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/fragment_add_account_button_add_account"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/fragment_add_account_is_credit_header"
+                android:layout_below="@id/fragment_add_account_calendarview_due_date"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_selector"

@@ -7,12 +7,14 @@
  * */
 package com.jhprog.dabank.admin;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.jhprog.dabank.data.SavingsAccount;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class AddAccountFragment extends Fragment {
@@ -40,6 +43,7 @@ public class AddAccountFragment extends Fragment {
     private ArrayAdapter<String> accountTypeArrayAdapter;
     private int accountType;
     private final String[] accountTypes = {"Current Account", "Savings Account", "Fixed-term Account"};
+    private String dueDate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class AddAccountFragment extends Fragment {
         binding = FragmentAddAccountBinding.inflate(inflater, container, false);
         initButtons();
         initSwitches();
+        initCalendarViews();
         return binding.getRoot();
     }
 
@@ -96,10 +101,13 @@ public class AddAccountFragment extends Fragment {
                 String selected = accountTypeArrayAdapter.getItem(position);
                 if (selected != null) {
                     if (selected.equals(accountTypes[0])) {
+                        hideCalendar();
                         accountType = Account.TYPE_CURRENT;
                     } else if (selected.equals(accountTypes[1])) {
+                        hideCalendar();
                         accountType = Account.TYPE_SAVING;
                     } else if (selected.equals(accountTypes[2])) {
+                        showCalendar();
                         accountType = Account.TYPE_FIXED_TERM;
                     }
                 } else {
@@ -114,6 +122,18 @@ public class AddAccountFragment extends Fragment {
         });
     }
 
+    private void showCalendar() {
+        if (binding.fragmentAddAccountCalendarviewDueDate.getVisibility() != View.VISIBLE) {
+            binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideCalendar() {
+        if (binding.fragmentAddAccountCalendarviewDueDate.getVisibility() != View.GONE) {
+            binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.GONE);
+        }
+    }
+
     private void initSwitches() {
         binding.fragmentAddAccountSwitchIsCredit.setChecked(false);
         binding.fragmentAddAccountSwitchIsCredit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -124,6 +144,23 @@ public class AddAccountFragment extends Fragment {
                 } else {
                     binding.fragmentAddAccountEdittextCreditAmount.setVisibility(View.INVISIBLE);
                 }
+            }
+        });
+    }
+
+    private void initCalendarViews() {
+        // DueDate cal. only shown when fixed-term acc. is made
+        binding.fragmentAddAccountCalendarviewDueDate.setVisibility(View.GONE);
+        // DueDate must be in the future
+        binding.fragmentAddAccountCalendarviewDueDate.setMinDate(
+                Calendar.getInstance().getTime().getTime()
+        );
+        // Calendarview's getDate function doesn't return the selected date, so this listener is mandatory
+        binding.fragmentAddAccountCalendarviewDueDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                dueDate = String.format("%d-%d-%d", year, (month + 1), dayOfMonth);
             }
         });
     }
