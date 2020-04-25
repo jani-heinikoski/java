@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,10 +25,8 @@ import com.jhprog.dabank.main.IFragmentOwner;
 public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
 
     private ActivityAdminBinding binding;
-    // TODO Replace with AdminViewModel
-    private static int b_id;
-    private static int cust_id;
     private FragmentManager fragmentManager;
+    private AdminViewModel viewModel;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -36,11 +35,19 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         // Disables screen rotation (locked to portrait mode)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent = getIntent();
-        b_id = intent.getIntExtra("b_id", 1);
-        cust_id = intent.getIntExtra("cust_id", 1);
+        initViewModel(
+                intent.getIntExtra("b_id", 1),
+                intent.getIntExtra("cust_id", 1)
+        );
         initFragments();
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+    }
+
+    private void initViewModel(int b_id, int cust_id) {
+        viewModel = new ViewModelProvider(this).get(AdminViewModel.class);
+        viewModel.setBank_id(b_id);
+        viewModel.setCustomer_id(cust_id);
     }
 
     private void initFragments() {
@@ -62,10 +69,4 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         fragmentTransaction.commit();
     }
 
-    public static int getB_id() {
-        return b_id;
-    }
-    public static int getCust_id() {
-        return cust_id;
-    }
 }

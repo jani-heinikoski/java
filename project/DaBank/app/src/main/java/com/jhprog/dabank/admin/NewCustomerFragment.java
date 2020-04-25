@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
@@ -19,6 +20,7 @@ import com.jhprog.dabank.utility.AnimationProvider;
 public class NewCustomerFragment extends Fragment {
 
     private FragmentNewCustomerBinding binding;
+    private AdminViewModel viewModel;
 
     @Nullable
     @Override
@@ -26,6 +28,12 @@ public class NewCustomerFragment extends Fragment {
         binding = FragmentNewCustomerBinding.inflate(inflater, container, false);
         initButtons();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
     }
 
     private void initButtons() {
@@ -39,7 +47,7 @@ public class NewCustomerFragment extends Fragment {
                 }
 
                 Customer customer = new Customer(
-                        AdminActivity.getB_id(),
+                        viewModel.getBank_id(),
                         binding.fragmentNewCustomerEdittextUser.getText().toString().trim(),
                         PasswordHandler.getInstance().newPassword(binding.fragmentNewCustomerEdittextPassword.getText().toString().trim()),
                         binding.fragmentNewCustomerEdittextName.getText().toString().trim(),

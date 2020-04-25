@@ -5,6 +5,15 @@ import androidx.lifecycle.ViewModel;
 public class AdminViewModel extends ViewModel {
 
     private int bank_id;
+    private int customer_id;
+
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
 
     public int getBank_id() {
         return bank_id;

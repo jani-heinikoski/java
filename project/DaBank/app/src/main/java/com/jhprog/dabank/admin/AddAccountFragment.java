@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
@@ -39,12 +40,13 @@ public class AddAccountFragment extends Fragment {
     
     private FragmentAddAccountBinding binding;
     private ArrayList<Customer> customers;
-    private int chosenCustomerID;
     private ArrayAdapter<Customer> customerArrayAdapter;
     private ArrayAdapter<String> accountTypeArrayAdapter;
+    private int chosenCustomerID;
     private int accountType;
     private final String[] accountTypes = {"Current Account", "Savings Account", "Fixed-term Account"};
     private String dueDate;
+    private AdminViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class AddAccountFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initSpinners();
+        viewModel = new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
     }
 
     private void initSpinners() {
@@ -175,7 +178,7 @@ public class AddAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Give a name to search for", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    ArrayList<Customer> temp = DataManager.getInstance().getCustomersByName(AdminActivity.getB_id(), cust_name);
+                    ArrayList<Customer> temp = DataManager.getInstance().getCustomersByName(viewModel.getBank_id(), cust_name);
                     customers.clear();
                     if (temp != null) {
                         customers.addAll(temp);
@@ -192,14 +195,14 @@ public class AddAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Invalid form data", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                System.out.println("LOGGER: " + accountType);
+
                 Account account;
 
                 switch (accountType) {
                     case Account.TYPE_CURRENT:
                         if (chosenCustomerID != 0) {
                             account = new CurrentAccount(
-                                    AdminActivity.getB_id(),
+                                    viewModel.getBank_id(),
                                     chosenCustomerID,
                                     Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
                                     binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0,
@@ -212,7 +215,7 @@ public class AddAccountFragment extends Fragment {
                     case Account.TYPE_SAVING:
                         if (chosenCustomerID != 0) {
                             account = new SavingsAccount(
-                                    AdminActivity.getB_id(),
+                                    viewModel.getBank_id(),
                                     chosenCustomerID,
                                     Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
                                     10,
@@ -226,7 +229,7 @@ public class AddAccountFragment extends Fragment {
                         if (chosenCustomerID != 0) {
                             account = new FixedTermAccount(
                                 Account.TYPE_FIXED_TERM,
-                                AdminActivity.getB_id(),
+                                viewModel.getBank_id(),
                                 chosenCustomerID,
                                 Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
                                 binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
