@@ -10,6 +10,7 @@
 package com.jhprog.dabank.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,12 +21,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 
-public class LoginActivity extends AppCompatActivity implements IBankChosenListener {
+public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
 
     private LoginViewModel loginViewModel;
     private Animation onClickAnimation;
@@ -79,12 +81,13 @@ public class LoginActivity extends AppCompatActivity implements IBankChosenListe
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onChoose() {
-        // Replace choose bank fragment with login fragment and save the transaction to back stack.
+    @Override // Fragments use this callback to switch to a new fragment
+    public void changeFragment(Fragment newFragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.login_activity_fragment_container, new LoginFragment());
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.main_activity_fragment_container, newFragment);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.commit();
     }
 

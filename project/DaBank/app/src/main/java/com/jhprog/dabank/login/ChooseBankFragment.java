@@ -17,13 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentChooseBankBinding;
 
 public class ChooseBankFragment extends Fragment {
 
     private FragmentChooseBankBinding binding;
-    private IBankChosenListener onChooseBankListener;
+    private IFragmentOwner fragmentOwner;
     private LoginViewModel viewModel;
     private DataManager dataManager;
 
@@ -32,8 +33,8 @@ public class ChooseBankFragment extends Fragment {
         super.onAttach(context);
         // See if context (LoginActivity in this case) has implemented IBankChosenCallback,
         // throws ClassCastException if it hasn't.
-        if (context instanceof IBankChosenListener) {
-            onChooseBankListener = (IBankChosenListener) context;
+        if (context instanceof IFragmentOwner) {
+            fragmentOwner = (IFragmentOwner) context;
         } else {
             throw new ClassCastException(context.toString() +
                     " must implement LoginViewModel.IBankChosenCallback!");
@@ -64,12 +65,11 @@ public class ChooseBankFragment extends Fragment {
 
     private void initButtons() {
         // DaBank onClickListener
-        // TODO Refactor code below to utilize database
         binding.chooseBankFragmentImageButtonDabank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.setBank(dataManager.getBankByName("DaBank"));
-                onChooseBankListener.onChoose();
+                fragmentOwner.changeFragment(new LoginFragment(), true);
             }
         });
         // Star Bank onClickListener
@@ -77,7 +77,7 @@ public class ChooseBankFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.setBank(dataManager.getBankByName("Star Bank"));
-                onChooseBankListener.onChoose();
+                fragmentOwner.changeFragment(new LoginFragment(), true);
             }
         });
         // Flash Bank onClickListener
@@ -85,7 +85,7 @@ public class ChooseBankFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.setBank(dataManager.getBankByName("Flash Bank"));
-                onChooseBankListener.onChoose();
+                fragmentOwner.changeFragment(new LoginFragment(), true);
             }
         });
         // Sun Bank onClickListener
@@ -93,7 +93,7 @@ public class ChooseBankFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.setBank(dataManager.getBankByName("Sun Bank"));
-                onChooseBankListener.onChoose();
+                fragmentOwner.changeFragment(new LoginFragment(), true);
             }
         });
     }
@@ -101,6 +101,6 @@ public class ChooseBankFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onChooseBankListener = null;
+        fragmentOwner = null;
     }
 }

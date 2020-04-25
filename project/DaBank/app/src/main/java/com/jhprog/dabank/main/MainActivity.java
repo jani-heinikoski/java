@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.DataManager;

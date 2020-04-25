@@ -1,4 +1,4 @@
-package com.jhprog.dabank.main;
+package com.jhprog.dabank;
 
 import androidx.fragment.app.Fragment;
 

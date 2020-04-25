@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.jhprog.dabank.databinding.FragmentNavigationBinding;
-import com.jhprog.dabank.main.IFragmentOwner;
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.utility.AnimationProvider;
 
 public class NavigationFragment extends Fragment {

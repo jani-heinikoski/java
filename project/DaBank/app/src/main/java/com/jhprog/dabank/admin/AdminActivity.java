@@ -20,7 +20,7 @@ import android.os.Bundle;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityAdminBinding;
-import com.jhprog.dabank.main.IFragmentOwner;
+import com.jhprog.dabank.IFragmentOwner;
 
 public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.databinding.FragmentTransactionsBinding;
 
