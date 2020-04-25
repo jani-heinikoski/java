@@ -17,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityAdminBinding;
@@ -41,7 +42,17 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         );
         initFragments();
         binding = ActivityAdminBinding.inflate(getLayoutInflater());
+        initButtons();
         setContentView(binding.getRoot());
+    }
+
+    private void initButtons() {
+        binding.adminActivityButtonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void initViewModel(int b_id, int cust_id) {
@@ -69,4 +80,8 @@ public class AdminActivity extends AppCompatActivity implements IFragmentOwner {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

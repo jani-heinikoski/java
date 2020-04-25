@@ -137,17 +137,21 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     }
 
     private void initCalendars() {
+        TimeManager timeManager = TimeManager.getInstance();
+
         binding.fragmentNewPaymentCalendarviewDueDate.setMinDate(
-                Calendar.getInstance().getTime().getTime()
+                timeManager.todayDate().getTime()
         );
 
         binding.fragmentNewPaymentCalendarviewDueDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                dueDate = String.format("%d-%d-%d", year, (month + 1), dayOfMonth);
+                dueDate = String.format("%d-%02d-%d", year, (month + 1), dayOfMonth);
             }
         });
+
+        dueDate = timeManager.todayString();
     }
 
     private void initButtons() {
@@ -169,6 +173,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                     toast.show();
                 } else {
                     clearFormData();
+                    payerAdapter.notifyDataSetChanged();
                     Toast toast = Toast.makeText(getActivity(),"Payment succeeded!", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();

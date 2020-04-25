@@ -13,7 +13,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/fragment_accounts_textview_header_text"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="20sp" />
 
     <ImageView

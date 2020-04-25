@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#9e47ff</color>
     <color name="colorBackground">#DADADA</color>
+    <color name="colorPrimaryText">@color/colorPrimaryDark</color>
+    <color name="colorSecondaryText">#EEE6FF</color>
 </resources>
