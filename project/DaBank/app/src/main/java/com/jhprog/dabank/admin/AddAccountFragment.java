@@ -27,6 +27,7 @@ import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.CurrentAccount;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
+import com.jhprog.dabank.data.FixedTermAccount;
 import com.jhprog.dabank.data.SavingsAccount;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
 
@@ -194,7 +195,7 @@ public class AddAccountFragment extends Fragment {
                 System.out.println("LOGGER: " + accountType);
                 Account account;
 
-                switch (accountType) { // TODO calendar for the fixed-term account!
+                switch (accountType) {
                     case Account.TYPE_CURRENT:
                         if (chosenCustomerID != 0) {
                             account = new CurrentAccount(
@@ -220,8 +221,20 @@ public class AddAccountFragment extends Fragment {
                             DataManager.getInstance().insertAccount(account);
                         }
                         break;
-                    default:
-                        return;
+
+                    case Account.TYPE_FIXED_TERM:
+                        if (chosenCustomerID != 0) {
+                            account = new FixedTermAccount(
+                                Account.TYPE_FIXED_TERM,
+                                AdminActivity.getB_id(),
+                                chosenCustomerID,
+                                Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                                binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
+                                dueDate
+                            );
+                            DataManager.getInstance().insertAccount(account);
+                        }
+                        break;
                 }
 
             }
