@@ -394,14 +394,14 @@ public class DataManager {
                 "'" + ((NormalTransaction) transaction).getTrans_date() + "');";
         } else if (transaction instanceof PendingTransaction) { // Pending can only be of type PAYMENT
             INSERT_TRANSACTION = "INSERT INTO " + DatabaseContract.PendingTransactionTable.table_name + "(" +
-                "'" + DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + "'," +
-                "'" + DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + "'," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_amount + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_last_paid + "," +
-                DatabaseContract.PendingTransactionTable.pending_transaction_due_date + "," + ") VALUES (" +
-                transaction.getTrans_from_acc_number() + "," +
-                transaction.getTrans_to_acc_number() + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_due_date + ") VALUES (" +
+                "'" + transaction.getTrans_from_acc_number() + "'," +
+                "'" + transaction.getTrans_to_acc_number() + "'," +
                 transaction.getTrans_amount() + "," +
                 ((PendingTransaction) transaction).getTrans_recurrence() + "," +
                 "'" + ((PendingTransaction) transaction).getLast_paid() + "'," +

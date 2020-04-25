@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
     @Override // Fragments use this callback to switch to a new fragment
     public void changeFragment(Fragment newFragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_fragment_container, newFragment);
+        fragmentTransaction.replace(R.id.login_activity_fragment_container, newFragment);
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }

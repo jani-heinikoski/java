@@ -8,14 +8,12 @@
 package com.jhprog.dabank.data;
 
 
-import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
 
+import com.jhprog.dabank.utility.TimeManager;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Bank {
@@ -144,17 +142,13 @@ public class Bank {
     }
 
     private boolean pendingPayment(@NonNull PendingTransaction transaction, @NonNull Account fromAccount, Account toAccount) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        TimeManager timeManager = TimeManager.getInstance();
         Date dueDate;
-        Date today = Calendar.getInstance().getTime();
-        // TODO -->timemanageriin
-        try {
-            dueDate = simpleDateFormat.parse(transaction.getDue_date());
-        } catch (ParseException e) {
-            return false;
-        }
+        Date today = timeManager.todayDate();
 
-        if (dueDate == null) {
+        try {
+            dueDate = timeManager.stringToDate(transaction.getDue_date());
+        } catch (ParseException e) {
             return false;
         }
 
@@ -171,6 +165,7 @@ public class Bank {
             if (dueDate.compareTo(today) <= 0 && transaction.getLast_paid().equals(PendingTransaction.NEVER_PAID)) {
                 if (withdraw(fromAccount, transaction.getTrans_amount())) {
                     deposit(toAccount, transaction.getTrans_amount());
+                    transaction.setLast_paid(timeManager.dateToString(dueDate));
                     dataManager.insertTransaction(normalTransaction);
                     dataManager.deletePendingTransaction(transaction);
                 } else {
@@ -192,8 +187,9 @@ public class Bank {
                     do {
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
-                            normalTransaction.setTrans_date(simpleDateFormat.format(date));
-                            addTimeToDate(date, noOfDays);
+                            transaction.setLast_paid(timeManager.dateToString(date));
+                            normalTransaction.setTrans_date(timeManager.dateToString(date));
+                            timeManager.addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
                         } else {
                             return false;
@@ -201,13 +197,14 @@ public class Bank {
                     } while (date.compareTo(today) <= 0);
 
                 } else {
-                    addTimeToDate(date, noOfDays);
+                    timeManager.addTimeToDate(date, noOfDays);
                     while (date.compareTo(today) <= 0) {
 
                         if (withdraw(fromAccount, transaction.getTrans_amount())) {
                             deposit(toAccount, transaction.getTrans_amount());
-                            normalTransaction.setTrans_date(simpleDateFormat.format(date));
-                            addTimeToDate(date, noOfDays);
+                            transaction.setLast_paid(timeManager.dateToString(date));
+                            normalTransaction.setTrans_date(timeManager.dateToString(date));
+                            timeManager.addTimeToDate(date, noOfDays);
                             dataManager.insertTransaction(normalTransaction);
                         } else {
                             return false;
@@ -218,13 +215,6 @@ public class Bank {
             }
         }
         return true;
-    }
-
-    private void addTimeToDate(@NonNull Date date, int days) { // pass date by ref
-        Calendar calendar = (Calendar) Calendar.getInstance().clone();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_YEAR, days);
-        date.setTime(calendar.getTimeInMillis());
     }
 
     public void checkPendingTransactions() { // Handles pending transactions when user logs in (successfully) to a bank

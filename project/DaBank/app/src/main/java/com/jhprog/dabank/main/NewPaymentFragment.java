@@ -30,7 +30,9 @@ import com.jhprog.dabank.data.PendingTransaction;
 import com.jhprog.dabank.data.Transaction;
 import com.jhprog.dabank.databinding.FragmentNewPaymentBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
+import com.jhprog.dabank.utility.TimeManager;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -167,16 +169,23 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
 
     private boolean sendTransaction() {
         Transaction transaction;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(Calendar.getInstance().getTime());
-
+        TimeManager timeManager = TimeManager.getInstance();
+        String today = timeManager.todayString();
         Account receivingAccount = DataManager.getInstance().getAccountByAccountNumber(
-                binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim());
-        double amount =
-                Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString().trim());
+                binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim()
+        );
+        double amount = Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString().trim());
 
-        if (binding.fragmentNewPaymentCalendarviewDueDate.getDate() > Calendar.getInstance().getTimeInMillis()) {
-            // Due date in the future
+        int compareDueDateAndToday;
+
+        try {
+            compareDueDateAndToday = timeManager.compareDates(dueDate, today);
+        } catch (ParseException ex) {
+            return false;
+        }
+
+        if (compareDueDateAndToday == TimeManager.AFTER) {
+            // Due date in the future (after today)
             transaction = new PendingTransaction(
                 Transaction.TYPE_PAYMENT,
                 selectedAccount,
@@ -187,7 +196,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                 dueDate
             );
         } else {
-            // Due date now
+            // Due date now or before
             if (recurrence != PendingTransaction.RECURRENCE_NONE) {
                 transaction = new PendingTransaction(
                         Transaction.TYPE_PAYMENT,
