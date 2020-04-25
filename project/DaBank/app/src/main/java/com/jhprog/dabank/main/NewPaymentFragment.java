@@ -9,6 +9,7 @@ package com.jhprog.dabank.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,12 +157,21 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                 binding.fragmentNewPaymentButtonContinue.startAnimation(AnimationProvider.getOnClickAnimation());
 
                 if (!validateFormData()) {
-                    Toast.makeText(getActivity(), "Form data invalid!", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getActivity(),"Form data invalid!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     return;
                 }
 
                 if (!sendTransaction()) {
-                    Toast.makeText(getActivity(), "Payment failed!", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(getActivity(),"Payment failed!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                } else {
+                    clearFormData();
+                    Toast toast = Toast.makeText(getActivity(),"Payment succeeded!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
             }
         });
@@ -218,6 +228,13 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             }
         }
         return viewModel.getBank().handleTransaction(transaction, selectedAccount, receivingAccount);
+    }
+
+    private void clearFormData() {
+        binding.fragmentNewPaymentEdittextPayeeAccount.setText("");
+        binding.fragmentNewPaymentEdittextPayeeName.setText("");
+        binding.fragmentNewPaymentEdittextReference.setText("");
+        binding.fragmentNewPaymentEdittextAmount.setText("");
     }
 
 
