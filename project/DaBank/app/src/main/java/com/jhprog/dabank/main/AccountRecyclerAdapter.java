@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jhprog.dabank.ICardClickListener;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.CurrentAccount;
@@ -21,8 +22,8 @@ import java.util.Locale;
 public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRecyclerAdapter.CardViewHolder> {
 
     private ArrayList<Account> accounts;
-    private OnCardClickListener onCardClickListener;
-    private OnSettingsClickListener onSettingsClickListener;
+    private ICardClickListener onCardClickListener;
+    private ISettingsClickListener onSettingsClickListener;
 
     // Provide a reference to the views for each data item
     public final class CardViewHolder extends RecyclerView.ViewHolder {
@@ -55,14 +56,14 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
-                        onCardClickListener.onCardClick(getAdapterPosition());
+                        onCardClickListener.onCardClick(pos);
                     }
                 }
             });
         }
     }
 
-    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts, @NonNull OnCardClickListener onCardClickListener, @NonNull OnSettingsClickListener onSettingsClickListener) {
+    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts, @NonNull ICardClickListener onCardClickListener, @NonNull ISettingsClickListener onSettingsClickListener) {
         this.accounts = accounts;
         this.onCardClickListener = onCardClickListener;
         this.onSettingsClickListener = onSettingsClickListener;
@@ -124,11 +125,7 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
         }
     }
 
-    public interface OnCardClickListener {
-        void onCardClick(int position);
-    }
-
-    public interface OnSettingsClickListener {
+    public interface ISettingsClickListener {
         void onSettingsClick(int position);
     }
 

@@ -62,3 +62,5 @@ public abstract class Transaction {
         return trans_amount;
     }
 }
+
+// TODO: 28.4.2020 remove daily recurrency 

@@ -47,7 +47,7 @@ public final class TransactionsFragment extends Fragment {
         viewModel.getClickedAccount().observe(getViewLifecycleOwner(), new Observer<Account>() {
             @Override
             public void onChanged(Account account) {
-                binding.fragmentTransactionsTextviewAccountClicked.setText(account.getAcc_number());
+
             }
         });
     }

@@ -80,3 +80,5 @@ public final class AccountsFragment extends Fragment
         fragmentOwner.changeFragment(new AccountSettingsFragment(), true);
     }
 }
+
+// TODO: 28.4.2020 IOnCardClick --> root of proj. 
