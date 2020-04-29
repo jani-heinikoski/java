@@ -53,7 +53,7 @@ public class NewPaymentFragment extends Fragment {
 
     /* FORM DATA */
     private String payeeAccountNumber, payeeName, message, dueDate;
-    private Integer referenceNumber, recurrence;
+    private int referenceNumber, recurrence;
     private double amount;
     private Account payerAccount;
 
@@ -256,7 +256,7 @@ public class NewPaymentFragment extends Fragment {
             valid = false;
         }
         // Payee's name check
-        payeeName = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
+        payeeName = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim();
         if (payeeName.isEmpty() || payeeName.matches("[0-9]")) {
             binding.fragmentNewPaymentEdittextPayeeName.setError("Non-valid");
             valid = false;
@@ -271,11 +271,14 @@ public class NewPaymentFragment extends Fragment {
             referenceNumber = Transaction.REF_NUM_NULL;
             valid = false;
         } else {
-            try {
-                referenceNumber = Integer.parseInt(tempString);
-            } catch (NumberFormatException e) {
-                binding.fragmentNewPaymentEdittextReference.setError("Must be an integer");
-                valid = false;
+            if (!tempString.isEmpty()) {
+                try {
+                    referenceNumber = Integer.parseInt(tempString);
+                } catch (Exception e) {
+                    binding.fragmentNewPaymentEdittextReference.setError("Must be an integer");
+                    referenceNumber = Transaction.REF_NUM_NULL;
+                    valid = false;
+                }
             }
         }
         // Money amount check
@@ -305,11 +308,7 @@ public class NewPaymentFragment extends Fragment {
             valid = false;
             Toast.makeText(getActivity(), "Please select an account", Toast.LENGTH_SHORT).show();
         }
-        // Check if recurrence has been selected from the spinner
-        if (recurrence == null) {
-            valid = false;
-            Toast.makeText(getActivity(), "Please select recurrence", Toast.LENGTH_SHORT).show();
-        }
+
         return valid;
     }
 

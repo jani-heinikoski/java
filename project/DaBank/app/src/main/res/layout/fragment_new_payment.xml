@@ -57,7 +57,7 @@
             android:background="@drawable/custom_edittext"
             android:gravity="start"
             android:inputType="text"
-            android:maxLength="15"
+            android:maxLength="30"
             android:maxLines="1"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"

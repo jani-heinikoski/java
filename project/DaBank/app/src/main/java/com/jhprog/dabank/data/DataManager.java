@@ -430,7 +430,7 @@ public class DataManager {
                 DatabaseContract.PendingTransactionTable.pending_transaction_due_date + ") VALUES (" +
                 "'" + transaction.getTrans_from_acc_number() + "'," +
                 "'" + transaction.getTrans_to_acc_number() + "'," +
-                transaction.getTrans_ref_number() +
+                transaction.getTrans_ref_number() + "," +
                 "'" + transaction.getTrans_message() + "'," +
                 "'" + transaction.getTrans_payee_name() + "'," +
                 "'" + transaction.getTrans_bank_bic() + "'," +
