@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.animation.Animation;
 
 import com.jhprog.dabank.IFragmentOwner;
-import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.databinding.ActivityLoginBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
@@ -33,7 +32,6 @@ public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
     private Animation onClickAnimation;
     private ActivityLoginBinding binding;
     private FragmentManager fragmentManager;
-    private DataManager dataManager;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -50,8 +48,6 @@ public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
         onClickAnimation = AnimationProvider.getOnClickAnimation();
         initButtons();
         initFragments();
-        // Initialize the DataManager Singleton in order to authenticate user login
-        dataManager = DataManager.getInstance();
     }
 
     // Initializes all buttons in LoginActivity
