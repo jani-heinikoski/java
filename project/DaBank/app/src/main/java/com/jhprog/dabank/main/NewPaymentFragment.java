@@ -39,27 +39,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class NewPaymentFragment extends Fragment { // TODO might want to organize this clusterfuck
+public class NewPaymentFragment extends Fragment {
+
+    private TimeManager timeManager = TimeManager.getInstance();
 
     private FragmentNewPaymentBinding binding;
     private ArrayAdapter<Account> payerAdapter;
     private ArrayAdapter<String> recurrenceAdapter;
     private ArrayList<Account> accounts;
-    private int recurrence;
-    private Account selectedAccount;
     private MainViewModel viewModel;
-    private ArrayList<String> recurrenceTypes;
-    private String dueDate;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        recurrenceTypes = new ArrayList<>();
-        recurrenceTypes.add("None");
-        recurrenceTypes.add("Daily");
-        recurrenceTypes.add("Weekly");
-        recurrenceTypes.add("Monthly");
-    }
+    private final String[] recurrenceTypes = {"None", "Weekly", "Monthly"};
+
+    /* FORM DATA */
+    private String payeeAccountNumber, payeeName, message, dueDate;
+    private Integer referenceNumber, recurrence;
+    private double amount;
+    private Account payerAccount;
 
     @Nullable
     @Override
@@ -78,42 +74,40 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     }
 
     private void initSpinners() {
-        accounts = viewModel.getAccounts();
+        accounts = viewModel.getAccounts(); // MainViewModel loads accounts if needed.
+        // ArrayAdapter for the payer account spinner.
         payerAdapter = new ArrayAdapter<>(
                 Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.layout.fragment_new_payment_spinner_item,
                 accounts);
         payerAdapter.setDropDownViewResource(R.layout.fragment_new_payment_spinner_dropdown_item);
         binding.fragmentNewPaymentSpinnerPayer.setAdapter(payerAdapter);
-
+        // ArrayAdapter for recurrence spinner
         recurrenceAdapter = new ArrayAdapter<>(
                 Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.layout.fragment_new_payment_spinner_item,
                 recurrenceTypes);
         recurrenceAdapter.setDropDownViewResource(R.layout.fragment_new_payment_spinner_dropdown_item);
         binding.fragmentNewPaymentSpinnerRecurrence.setAdapter(recurrenceAdapter);
-
+        // Listener for the payer account spinner
         binding.fragmentNewPaymentSpinnerPayer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedAccount = payerAdapter.getItem(position);
+                payerAccount = payerAdapter.getItem(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedAccount = null;
+                payerAccount = null;
             }
         });
-
+        // Listener for the recurrence spinner
         binding.fragmentNewPaymentSpinnerRecurrence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String s = recurrenceAdapter.getItem(position);
                 if (s != null && !s.equals("") && !s.equals("None")) {
                     switch (s) {
-                        case "Daily":
-                            recurrence = PendingTransaction.RECURRENCE_DAILY;
-                            break;
                         case "Weekly":
                             recurrence = PendingTransaction.RECURRENCE_WEEKLY;
                             break;
@@ -137,12 +131,11 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
     }
 
     private void initCalendars() {
-        TimeManager timeManager = TimeManager.getInstance();
-
+        // Set minimum date to today (dueDate can't be in the past)
         binding.fragmentNewPaymentCalendarviewDueDate.setMinDate(
                 timeManager.todayDate().getTime()
         );
-
+        // Listener for the dueDate CalendarView
         binding.fragmentNewPaymentCalendarviewDueDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @SuppressLint("DefaultLocale")
             @Override
@@ -151,7 +144,7 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             }
         });
 
-        dueDate = timeManager.todayString();
+        dueDate = timeManager.todayString(); // TODO: 29.4.2020 check if this is even needed
     }
 
     private void initButtons() {
@@ -159,67 +152,68 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             @Override
             public void onClick(View v) {
                 binding.fragmentNewPaymentButtonContinue.startAnimation(AnimationProvider.getOnClickAnimation());
-
-                if (!validateFormData()) {
-                    Toast toast = Toast.makeText(getActivity(),"Form data invalid!", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                    return;
-                }
-
-                if (!sendTransaction()) {
-                    Toast toast = Toast.makeText(getActivity(),"Payment failed!", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                } else {
+                // Send a transaction from the form data to the bank to handle
+                if (sendTransaction()) {
                     clearFormData();
-                    payerAdapter.notifyDataSetChanged();
                     Toast toast = Toast.makeText(getActivity(),"Payment succeeded!", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getActivity(),"Payment failed!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
+                payerAdapter.notifyDataSetChanged();
             }
         });
     }
 
     private boolean sendTransaction() {
+        // Check if the form data is valid
+        if (!validateFormData()) {
+            Toast toast = Toast.makeText(getActivity(),"Form data invalid!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return false;
+        }
+        // Variable declarations
         Transaction transaction;
-        TimeManager timeManager = TimeManager.getInstance();
         String today = timeManager.todayString();
-        Account receivingAccount = DataManager.getInstance().getAccountByAccountNumber(
-                binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim()
-        );
-
-        String receivingAccountNumber = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim();
-
-        double amount = Double.parseDouble(binding.fragmentNewPaymentEdittextAmount.getText().toString().trim());
-
         int compareDueDateAndToday;
-
+        // Compare the selected due date to today
         try {
             compareDueDateAndToday = timeManager.compareDates(dueDate, today);
         } catch (ParseException ex) {
             return false;
         }
-
+        // Due date in the future (after today)
         if (compareDueDateAndToday == TimeManager.AFTER) {
-            // Due date in the future (after today)
             transaction = new PendingTransaction(
                 Transaction.TYPE_PAYMENT,
-                selectedAccount.getAcc_number(),
-                receivingAccountNumber,
+                referenceNumber,
+                payerAccount.getAcc_number(),
+                payeeAccountNumber,
+                payeeName,
+                message,
+                viewModel.getBank().getBank_bic(),
                 amount,
                 recurrence,
                 PendingTransaction.NEVER_PAID,
                 dueDate
             );
-        } else {
-            // Due date now or before
+        }
+        // Due date now or before
+        else {
+            // If transaction recurs
             if (recurrence != PendingTransaction.RECURRENCE_NONE) {
                 transaction = new PendingTransaction(
                         Transaction.TYPE_PAYMENT,
-                        selectedAccount.getAcc_number(),
-                        receivingAccountNumber,
+                        referenceNumber,
+                        payerAccount.getAcc_number(),
+                        payeeAccountNumber,
+                        payeeName,
+                        message,
+                        viewModel.getBank().getBank_bic(),
                         amount,
                         recurrence,
                         PendingTransaction.NEVER_PAID,
@@ -228,15 +222,21 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             } else {
                 transaction = new NormalTransaction(
                         Transaction.TYPE_PAYMENT,
-                        selectedAccount.getAcc_number(),
-                        receivingAccountNumber,
+                        referenceNumber,
+                        payerAccount.getAcc_number(),
+                        payeeAccountNumber,
+                        payeeName,
+                        message,
+                        viewModel.getBank().getBank_bic(),
                         amount,
                         today
                 );
             }
         }
-
-        return viewModel.getBank().handleTransaction(transaction, selectedAccount, receivingAccount);
+        // ReceivingAccount can be null
+        return viewModel.getBank().handleTransaction(transaction, payerAccount, DataManager.getInstance().getAccountByAccountNumber(
+                binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim()
+        ));
     }
 
     private void clearFormData() {
@@ -246,19 +246,18 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
         binding.fragmentNewPaymentEdittextAmount.setText("");
     }
 
-
     private boolean validateFormData() { // Validate all form fields
         String tempString = "";
         boolean valid = true;
         // Payee's account number check
-        tempString = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim().toUpperCase();
-        if (tempString.length() != 18 || !tempString.matches("^[A-Z]{2}[0-9]{16}$")) {
+        payeeAccountNumber = binding.fragmentNewPaymentEdittextPayeeAccount.getText().toString().trim().toUpperCase();
+        if (payeeAccountNumber.length() != 18 || !payeeAccountNumber.matches("^[A-Z]{2}[0-9]{16}$")) {
             binding.fragmentNewPaymentEdittextPayeeAccount.setError("Non-valid");
             valid = false;
         }
         // Payee's name check
-        tempString = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
-        if (tempString.isEmpty() || tempString.matches("[0-9]")) {
+        payeeName = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim().replaceAll("\\s+", "");
+        if (payeeName.isEmpty() || payeeName.matches("[0-9]")) {
             binding.fragmentNewPaymentEdittextPayeeName.setError("Non-valid");
             valid = false;
         }
@@ -269,7 +268,15 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
                 || (!tempString.isEmpty() && !binding.fragmentNewPaymentEdittextMessage.getText().toString().trim().isEmpty()))
         {
             binding.fragmentNewPaymentEdittextReference.setError("Non-valid");
+            referenceNumber = Transaction.REF_NUM_NULL;
             valid = false;
+        } else {
+            try {
+                referenceNumber = Integer.parseInt(tempString);
+            } catch (NumberFormatException e) {
+                binding.fragmentNewPaymentEdittextReference.setError("Must be an integer");
+                valid = false;
+            }
         }
         // Money amount check
         tempString = binding.fragmentNewPaymentEdittextAmount.getText().toString().trim();
@@ -278,19 +285,31 @@ public class NewPaymentFragment extends Fragment { // TODO might want to organiz
             valid = false;
         } else {
             try {
-                Double.parseDouble(tempString);
+                amount = Double.parseDouble(tempString);
             } catch (Exception e) {
                 valid = false;
                 binding.fragmentNewPaymentEdittextAmount.setError("Non-valid");
-                e.printStackTrace();
             }
         }
+        // Message check
+        message = binding.fragmentNewPaymentEdittextMessage.getText().toString().trim();
+        if (message.matches("['\";]")) {
+            valid = false;
+            message = Transaction.MESSAGE_NULL;
+            binding.fragmentNewPaymentEdittextMessage.setError("Can't contain ' \" ;");
+        } else if (message.isEmpty()) {
+            message = Transaction.MESSAGE_NULL;
+        }
         // Check if payer account has been selected from the spinner
-        if (selectedAccount == null) {
+        if (payerAccount == null) {
             valid = false;
             Toast.makeText(getActivity(), "Please select an account", Toast.LENGTH_SHORT).show();
         }
-
+        // Check if recurrence has been selected from the spinner
+        if (recurrence == null) {
+            valid = false;
+            Toast.makeText(getActivity(), "Please select recurrence", Toast.LENGTH_SHORT).show();
+        }
         return valid;
     }
 

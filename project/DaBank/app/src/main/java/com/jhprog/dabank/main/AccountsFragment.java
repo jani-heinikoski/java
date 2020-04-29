@@ -13,13 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jhprog.dabank.ICardClickListener;
 import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.databinding.FragmentAccountsBinding;
 
 import java.util.Objects;
 
 public final class AccountsFragment extends Fragment
-        implements AccountRecyclerAdapter.OnCardClickListener, AccountRecyclerAdapter.OnSettingsClickListener {
+        implements ICardClickListener, AccountRecyclerAdapter.ISettingsClickListener {
 
     private MainViewModel viewModel;
     private FragmentAccountsBinding binding;

@@ -85,6 +85,10 @@ public class DataManager {
 
         public static class PendingTransactionTable implements BaseColumns {
             public static final String table_name = "pending_transaction";
+            public static final String pending_transaction_payee_name = "pending_transaction_payee_name";
+            public static final String pending_transaction_ref_number = "pending_transaction_ref_number";
+            public static final String pending_transaction_message = "pending_transaction_message";
+            public static final String pending_transaction_bank_bic = "pending_transaction_bank_bic";
             public static final String pending_transaction_from_acc_number = "pending_transaction_from_acc_number";
             public static final String pending_transaction_to_acc_number = "pending_transaction_to_acc_number";
             public static final String pending_transaction_recurrence = "pending_transaction_recurrence";
@@ -95,6 +99,10 @@ public class DataManager {
 
         public static class TransactionTable implements BaseColumns {
             public static final String table_name = "transact";
+            public static final String trans_payee_name = "trans_payee_name";
+            public static final String trans_ref_number = "trans_ref_number";
+            public static final String trans_message = "trans_message";
+            public static final String trans_bank_bic = "trans_bank_bic";
             public static final String trans_type  = "trans_type";
             public static final String trans_from_acc_number  = "trans_from_acc_number";
             public static final String trans_to_acc_number  = "trans_to_acc_number";
@@ -126,6 +134,10 @@ public class DataManager {
                     DatabaseContract.TransactionTable.table_name +
                     " (" + DatabaseContract.TransactionTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DatabaseContract.TransactionTable.trans_type + " INTEGER NOT NULL,"+
+                    DatabaseContract.TransactionTable.trans_payee_name + " VARCHAR(30) NOT NULL,"+
+                    DatabaseContract.TransactionTable.trans_ref_number + " INTEGER,"+
+                    DatabaseContract.TransactionTable.trans_message + " VARCHAR(200),"+
+                    DatabaseContract.TransactionTable.trans_bank_bic + " VARCHAR(30) NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_from_acc_number + " VARCHAR(20) NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_to_acc_number + " VARCHAR(20) NOT NULL,"+
                     DatabaseContract.TransactionTable.trans_amount + " DOUBLE(12,2) NOT NULL," +
@@ -198,6 +210,10 @@ public class DataManager {
                     DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + " VARCHAR(20) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + " VARCHAR(20) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + " INTEGER NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_payee_name + " VARCHAR(30) NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_ref_number + " INTEGER, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_message + " VARCHAR(200) NOT NULL, " +
+                    DatabaseContract.PendingTransactionTable.pending_transaction_bank_bic + " VARCHAR(30) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_amount + " DOUBLE(12,2) NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_due_date + " DATE NOT NULL, " +
                     DatabaseContract.PendingTransactionTable.pending_transaction_last_paid + " DATE NOT NULL);";
@@ -373,7 +389,7 @@ public class DataManager {
     }
 
     public void insertTransaction(Transaction transaction) {
-        // TODO transactions
+
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
@@ -384,11 +400,19 @@ public class DataManager {
             INSERT_TRANSACTION = "INSERT INTO " + DatabaseContract.TransactionTable.table_name + "(" +
                 DatabaseContract.TransactionTable.trans_from_acc_number + "," +
                 DatabaseContract.TransactionTable.trans_to_acc_number + "," +
+                DatabaseContract.TransactionTable.trans_ref_number + "," +
+                DatabaseContract.TransactionTable.trans_message + "," +
+                DatabaseContract.TransactionTable.trans_payee_name + "," +
+                DatabaseContract.TransactionTable.trans_bank_bic + "," +
                 DatabaseContract.TransactionTable.trans_type + "," +
                 DatabaseContract.TransactionTable.trans_amount + "," +
                 DatabaseContract.TransactionTable.trans_date + ") VALUES (" +
                 "'" + transaction.getTrans_from_acc_number() + "'," +
                 "'" + transaction.getTrans_to_acc_number() + "'," +
+                transaction.getTrans_ref_number() + "," +
+                "'" + transaction.getTrans_message() + "'," +
+                "'" + transaction.getTrans_payee_name() + "'," +
+                "'" + transaction.getTrans_bank_bic() + "'," +
                 transaction.getTrans_type() + "," +
                 transaction.getTrans_amount() + "," +
                 "'" + ((NormalTransaction) transaction).getTrans_date() + "');";
@@ -396,12 +420,20 @@ public class DataManager {
             INSERT_TRANSACTION = "INSERT INTO " + DatabaseContract.PendingTransactionTable.table_name + "(" +
                 DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_ref_number + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_message + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_payee_name + "," +
+                DatabaseContract.PendingTransactionTable.pending_transaction_bank_bic + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_amount + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_recurrence + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_last_paid + "," +
                 DatabaseContract.PendingTransactionTable.pending_transaction_due_date + ") VALUES (" +
                 "'" + transaction.getTrans_from_acc_number() + "'," +
                 "'" + transaction.getTrans_to_acc_number() + "'," +
+                transaction.getTrans_ref_number() +
+                "'" + transaction.getTrans_message() + "'," +
+                "'" + transaction.getTrans_payee_name() + "'," +
+                "'" + transaction.getTrans_bank_bic() + "'," +
                 transaction.getTrans_amount() + "," +
                 ((PendingTransaction) transaction).getTrans_recurrence() + "," +
                 "'" + ((PendingTransaction) transaction).getLast_paid() + "'," +
@@ -782,8 +814,12 @@ public class DataManager {
                 pendingTransactions.add(new PendingTransaction(
                         cursor.getInt(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable._ID)),
                         Transaction.TYPE_PAYMENT,
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_ref_number)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_to_acc_number)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_payee_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_message)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_bank_bic)),
                         cursor.getDouble(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_amount)),
                         cursor.getInt(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_recurrence)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.PendingTransactionTable.pending_transaction_last_paid)),
@@ -809,6 +845,3 @@ public class DataManager {
     }
 
 }
-// TODO: 25.4.2020 pendings dont account for credit limit
-// TODO: 25.4.2020 cant add fixed-term account 
-// TODO: 25.4.2020 pendings dont work properly when continuing last paids

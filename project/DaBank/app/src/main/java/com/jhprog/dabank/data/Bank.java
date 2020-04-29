@@ -154,8 +154,12 @@ public class Bank {
 
         NormalTransaction normalTransaction = new NormalTransaction(
                 Transaction.TYPE_PAYMENT,
+                transaction.getTrans_ref_number(),
                 transaction.getTrans_from_acc_number(),
                 transaction.getTrans_to_acc_number(),
+                transaction.getTrans_payee_name(),
+                transaction.getTrans_message(),
+                transaction.getTrans_bank_bic(),
                 transaction.getTrans_amount(),
                 transaction.getDue_date()
         );
