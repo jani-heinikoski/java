@@ -262,13 +262,13 @@ public class NewPaymentFragment extends Fragment {
             valid = false;
         }
         // Reference number check
+        referenceNumber = Transaction.REF_NUM_NULL;
         tempString = binding.fragmentNewPaymentEdittextReference.getText().toString().trim();
         if ((tempString.isEmpty() && binding.fragmentNewPaymentEdittextMessage.getText().toString().trim().isEmpty())
                 || tempString.matches("[A-Za-z]")
                 || (!tempString.isEmpty() && !binding.fragmentNewPaymentEdittextMessage.getText().toString().trim().isEmpty()))
         {
             binding.fragmentNewPaymentEdittextReference.setError("Non-valid");
-            referenceNumber = Transaction.REF_NUM_NULL;
             valid = false;
         } else {
             if (!tempString.isEmpty()) {

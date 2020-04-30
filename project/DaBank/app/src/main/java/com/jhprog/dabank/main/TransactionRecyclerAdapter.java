@@ -6,13 +6,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jhprog.dabank.ICardClickListener;
 import com.jhprog.dabank.R;
+import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.NormalTransaction;
+import com.jhprog.dabank.data.Transaction;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -51,17 +54,16 @@ public final class TransactionRecyclerAdapter extends RecyclerView.Adapter<Trans
                                       @NonNull ICardClickListener onCardClickListener,
                                       int redTextColor,
                                       int greenTextColor,
-                                      final LiveData<String> accountNumber) {
+                                      final LiveData<Account> clickedAccount,
+                                      final LifecycleOwner lifecycleOwner) {
         this.transactions = transactions;
         this.onCardClickListener = onCardClickListener;
         this.redTextColor = redTextColor;
         this.greenTextColor = greenTextColor;
-        accountNumber.observeForever(new Observer<String>() {
+        clickedAccount.observe(lifecycleOwner, new Observer<Account>() {
             @Override
-            public void onChanged(String s) {
-                if (accNumber != null) {
-                    accNumber = s;
-                }
+            public void onChanged(Account account) {
+                accNumber = account.getAcc_number();
             }
         });
     }
@@ -77,44 +79,38 @@ public final class TransactionRecyclerAdapter extends RecyclerView.Adapter<Trans
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
 
         if (position != RecyclerView.NO_POSITION) {
-            // todo remove test below
-            holder.textViewDate.setText(
-                    String.format("%s/%s", transactions.get(position).getTrans_date().split("/")[0],
-                            transactions.get(position).getTrans_date().split("/")[1])
-            );
-            /*
-            String otherAccName, amount;
-            double transAmount;
-            NormalTransaction tr = transactions.get(position);
-            // Set date textview
-            holder.textViewDate.setText(tr.getTrans_date());
-            // Set other account's name (if name > 16 replace with 13 first chars and ...)
-            otherAccName = tr.getTrans_to_acc_number();
-
-            if (otherAccName.length() > 16) {
-                otherAccName = otherAccName.substring(0, 12) + "...";
-            }
-
-            holder.textViewOtherAccountName.setText(otherAccName);
-            // Set transaction amount, if gotten money set green text else red
-            transAmount = tr.getTrans_amount();
-
-            if (transAmount > 0) {
-                holder.textViewAmount.setTextColor(greenTextColor);
-                amount = String.format(
-                        Locale.getDefault(),
-                        "+%.2f", transAmount
+            NormalTransaction transaction = transactions.get(position);
+            if (transaction != null) {
+                char firstChar;
+                // Set date
+                holder.textViewDate.setText(
+                        transaction.getTrans_date().substring(5)
                 );
-            } else {
-                holder.textViewAmount.setTextColor(redTextColor);
-                amount = String.format(
+                // Transaction is income if the accountNumber matches transaction.to_acc_number
+                // except for withdraws.
+                if (transaction.getTrans_type() == Transaction.TYPE_WITHDRAW) {
+                    holder.textViewAmount.setTextColor(redTextColor);
+                    firstChar = '-';
+                } else {
+                    if (transaction.getTrans_to_acc_number().equals(accNumber)) {
+                        holder.textViewAmount.setTextColor(greenTextColor);
+                        firstChar = '+';
+                    } else {
+                        holder.textViewAmount.setTextColor(redTextColor);
+                        firstChar = '-';
+                    }
+                }
+
+                String amountAsString = String.format(
                         Locale.getDefault(),
-                        "-%.2f", transAmount
+                        "%c%.2f€",
+                        firstChar,
+                        transaction.getTrans_amount()
                 );
+
+                holder.textViewAmount.setText(amountAsString);
+                holder.textViewOtherAccountName.setText(transaction.getTrans_payee_name());
             }
-            // TODO: 28.4.2020 this logic is faulty as fuck
-            holder.textViewAmount.setText(amount);
-             */
         }
     }
 

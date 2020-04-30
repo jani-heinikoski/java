@@ -844,4 +844,41 @@ public class DataManager {
         database.execSQL(UPDATE_PENDING);
     }
 
+    public ArrayList<NormalTransaction> getNormalTransactionsByAccNumber(String accountNumber) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        ArrayList<NormalTransaction> transactions = null;
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.TransactionTable.table_name + " WHERE " +
+                DatabaseContract.TransactionTable.trans_to_acc_number + "='" + accountNumber + "' OR " +
+                DatabaseContract.TransactionTable.trans_from_acc_number + "='" + accountNumber + "' ORDER BY " +
+                DatabaseContract.TransactionTable.trans_date + " DESC;",
+                null
+        );
+
+        if (cursor != null)  {
+            transactions = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                transactions.add(new NormalTransaction(
+                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.TransactionTable._ID)),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_type)),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_ref_number)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_from_acc_number)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_to_acc_number)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_payee_name)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_message)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_bank_bic)),
+                    cursor.getDouble(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_amount)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TransactionTable.trans_date))
+                ));
+
+            }
+            cursor.close();
+        }
+
+        return transactions;
+    }
+
 }
