@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/fragment_my_transfer_textview_from_account_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/fragment_my_transfer_textview_from_account_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/fragment_my_transfer_spinner_from_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_my_transfer_textview_from_account_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_spinner"
+        android:minHeight="32dp" />
+
+    <TextView
+        android:id="@+id/fragment_my_transfer_textview_to_account_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_my_transfer_spinner_from_account"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/fragment_my_transfer_textview_to_account_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/fragment_my_transfer_spinner_to_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_my_transfer_textview_to_account_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_spinner"
+        android:minHeight="32dp" />
+
+    <TextView
+        android:id="@+id/fragment_my_transfer_textview_amount_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_my_transfer_spinner_to_account"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_new_payment_amount_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_my_transfer_edittext_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_my_transfer_textview_amount_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="numberDecimal"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/fragment_my_transfer_button_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/fragment_my_transfer_edittext_amount"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="28dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/fragment_my_transfer_button_transfer_text"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSecondaryText" />
+
+</RelativeLayout>

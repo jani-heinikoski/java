@@ -43,4 +43,8 @@
 
     <string name="fragment_accounts_textview_header_text">Choose an account to inspect its transactions</string>
 
+    <string name="fragment_my_transfer_textview_from_account_header_text">Account to withdraw from</string>
+    <string name="fragment_my_transfer_textview_to_account_header_text">Account to deposit to</string>
+    <string name="fragment_my_transfer_button_transfer_text">Transfer</string>
+
 </resources>

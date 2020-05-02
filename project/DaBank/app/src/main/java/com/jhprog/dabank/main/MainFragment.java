@@ -65,6 +65,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentMainButtonNewTransfer.startAnimation(onClickAnimation);
+                fragmentOwner.changeFragment(new MyTransferFragment(), true);
             }
         });
 
