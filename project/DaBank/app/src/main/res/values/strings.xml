@@ -57,4 +57,7 @@
     <string name="fragment_transaction_detail_transaction_type_text">Transaction type:</string>
     <string name="fragment_transaction_detail_message_text">Message:</string>
 
+    <string name="fragment_profile_name_header_text">Name</string>
+    <string name="fragment_profile_address_header_text">Address</string>
+
 </resources>

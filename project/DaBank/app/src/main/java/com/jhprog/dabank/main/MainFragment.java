@@ -88,7 +88,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentMainButtonProfile.startAnimation(onClickAnimation);
-                // TODO: 04/05/2020 change to profile settings
+                fragmentOwner.changeFragment(new ProfileFragment(), true);
             }
         });
 
