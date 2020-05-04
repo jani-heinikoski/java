@@ -771,10 +771,13 @@ public class DataManager {
         } else if (account instanceof FixedTermAccount) {
             UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
                 " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
-                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance();
+                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() +
+                " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
         } else {
             return;
         }
+
+        System.out.println("LOGGER: " + UPDATE_ACCOUNT);
 
         database.execSQL(UPDATE_ACCOUNT);
 
