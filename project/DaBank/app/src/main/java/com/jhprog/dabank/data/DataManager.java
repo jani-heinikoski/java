@@ -881,4 +881,31 @@ public class DataManager {
         return transactions;
     }
 
+    public Bank getBankByID(int id) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.BankTable.table_name +
+                " WHERE " + DatabaseContract.BankTable._ID + "=" + id,
+                null
+        );
+
+        Bank bank = null;
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                bank = new Bank(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankTable._ID)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_name)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankTable.bank_bic))
+                );
+            }
+            cursor.close();
+        }
+
+        return bank;
+    }
+
 }

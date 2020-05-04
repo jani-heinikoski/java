@@ -72,33 +72,22 @@ public final class MyTransferFragment extends Fragment {
         binding.fragmentMyTransferSpinnerFromAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (selectedFromAccount == null) {
-                    selectedFromAccount = fromAccountsAdapter.getItem(position);
-                    toAccountsAdapter.remove(selectedFromAccount);
-                    toAccountsAdapter.notifyDataSetChanged();
-                } else {
+                if (selectedFromAccount != null) {
                     toAccountsAdapter.add(selectedFromAccount);
-                    selectedFromAccount = fromAccountsAdapter.getItem(position);
-                    toAccountsAdapter.remove(selectedFromAccount);
                     toAccountsAdapter.notifyDataSetChanged();
+                }
+                selectedFromAccount = fromAccountsAdapter.getItem(position);
+                toAccountsAdapter.remove(selectedFromAccount);
+                toAccountsAdapter.notifyDataSetChanged();
+                Object obj = binding.fragmentMyTransferSpinnerToAccount.getSelectedItem();
+                if (obj instanceof Account) {
+                    selectedToAccount = (Account) obj;
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedFromAccount = null;
-            }
-        });
-
-        binding.fragmentMyTransferSpinnerToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedToAccount = toAccountsAdapter.getItem(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                selectedToAccount = null;
             }
         });
 

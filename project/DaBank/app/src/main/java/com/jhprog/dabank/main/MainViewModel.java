@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date (last update): 04.05.2020
+ * Version: alpha
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.main;
 
 import androidx.annotation.NonNull;
@@ -9,6 +16,8 @@ import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
+import com.jhprog.dabank.data.NormalTransaction;
+
 
 import java.util.ArrayList;
 
@@ -18,6 +27,7 @@ public class MainViewModel extends ViewModel {
     private Bank bank = null;
     private Customer customer = null;
     private MutableLiveData<Account> clickedAccount = new MutableLiveData<>();
+    private MutableLiveData<NormalTransaction> clickedTransaction = new MutableLiveData<>();
 
     private void loadAccounts() {
         DataManager dataManager = DataManager.getInstance();
@@ -55,5 +65,13 @@ public class MainViewModel extends ViewModel {
 
     public void setClickedAccount(@NonNull Account clickedAccount) {
         this.clickedAccount.setValue(clickedAccount);
+    }
+
+    public LiveData<NormalTransaction> getClickedTransaction() {
+        return clickedTransaction;
+    }
+
+    public void setClickedTransaction(@NonNull NormalTransaction clickedTransaction) {
+        this.clickedTransaction.setValue(clickedTransaction);
     }
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
         android:id="@+id/fragment_main_button_new_payment"
@@ -57,6 +59,31 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="26sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragment_main_button_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fragment_main_button_profile_header"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:elevation="8dp"
+        app:fabSize="normal"
+        app:maxImageSize="56dp"
+        app:srcCompat="@drawable/ic_profile_circle"
+        app:useCompatPadding="false" />
+
+    <TextView
+        android:id="@+id/fragment_main_button_profile_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:text="@string/fragment_main_button_profile_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp"
+        android:textStyle="italic" />
 
 
 </RelativeLayout>

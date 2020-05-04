@@ -84,5 +84,13 @@ public class MainFragment extends Fragment {
             }
         });
 
+        binding.fragmentMainButtonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentMainButtonProfile.startAnimation(onClickAnimation);
+                // TODO: 04/05/2020 change to profile settings 
+            }
+        });
+
     }
 }

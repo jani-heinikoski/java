@@ -52,13 +52,6 @@ public class LoginActivity extends AppCompatActivity implements IFragmentOwner {
 
     // Initializes all buttons in LoginActivity
     private void initButtons() {
-        binding.loginActivityExpandBanksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.loginActivityExpandBanksButton.startAnimation(onClickAnimation);
-            }
-        });
-
         binding.loginActivityExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -37,34 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/login_activity_header_linlay"
-        android:layout_alignBottom="@+id/login_activity_expand_banks_button"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="60dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/login_activity_expand_banks_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/login_activity_expand_banks_button_text"
-        android:layout_centerInParent="true"
-        android:layout_margin="4dp"
-        android:elevation="8dp"
-        app:fabSize="normal"
-        app:maxImageSize="56dp"
-        app:srcCompat="@drawable/ic_add_circle"
-        app:useCompatPadding="false" />
-
-    <TextView
-        android:id="@+id/login_activity_expand_banks_button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:text="@string/login_activity_expand_banks_button_text"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:layout_marginTop="?attr/actionBarSize" />
 
 
 </RelativeLayout>

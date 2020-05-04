@@ -6,7 +6,6 @@
     <string name="fixed_term_account_as_string">Fixed-term Account</string>
 
     <string name="login_activity_header_text">Login page</string>
-    <string name="login_activity_expand_banks_button_text">More banks</string>
 
     <string name="fragment_login_header_text"><u>Login to bank: </u></string>
     <string name="fragment_login_invalid_credentials_text">Invalid credentials!</string>
@@ -15,6 +14,7 @@
     <string name="fragment_main_button_new_transfer_text">My Transfer</string>
     <string name="fragment_main_button_accounts_text">Accounts</string>
     <string name="fragment_main_button_simulations_text">Simulations</string>
+    <string name="fragment_main_button_profile_text">Profile</string>
 
     <string name="fragment_new_payment_payee_account">Payee\'s account</string>
     <string name="fragment_new_payment_payee_name">Payee\'s name</string>
@@ -46,5 +46,15 @@
     <string name="fragment_my_transfer_textview_from_account_header_text">Account to withdraw from</string>
     <string name="fragment_my_transfer_textview_to_account_header_text">Account to deposit to</string>
     <string name="fragment_my_transfer_button_transfer_text">Transfer</string>
+
+    <string name="fragment_transaction_detail_from_account_number_text">From account:</string>
+    <string name="fragment_transaction_detail_from_bank_bic_text">From bank BIC:</string>
+    <string name="fragment_transaction_detail_to_account_number_text">To account:</string>
+    <string name="fragment_transaction_detail_to_bank_bic_text">To bank BIC:</string>
+    <string name="fragment_transaction_detail_amount_text">Amount:</string>
+    <string name="fragment_transaction_detail_date_text">Date:</string>
+    <string name="fragment_transaction_detail_reference_number_text">Reference no.:</string>
+    <string name="fragment_transaction_detail_transaction_type_text">Transaction type:</string>
+    <string name="fragment_transaction_detail_message_text">Message:</string>
 
 </resources>
