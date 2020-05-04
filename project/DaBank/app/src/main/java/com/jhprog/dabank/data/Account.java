@@ -67,6 +67,8 @@ public abstract class Account {
 
     public abstract int getType();
 
+    public abstract boolean withdraw(double amount);
+
     @NonNull
     @Override
     public String toString() {

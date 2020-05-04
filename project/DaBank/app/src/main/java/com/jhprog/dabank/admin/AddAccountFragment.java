@@ -9,6 +9,7 @@ package com.jhprog.dabank.admin;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -229,7 +230,14 @@ public class AddAccountFragment extends Fragment {
                         }
                         break;
                 }
-
+                Toast toast;
+                if (DataManager.getInstance().accountExists(binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim())) {
+                    toast = Toast.makeText(getActivity(),"Account added!", Toast.LENGTH_SHORT);
+                } else {
+                    toast = Toast.makeText(getActivity(),"Failed to add account!", Toast.LENGTH_SHORT);
+                }
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
     }

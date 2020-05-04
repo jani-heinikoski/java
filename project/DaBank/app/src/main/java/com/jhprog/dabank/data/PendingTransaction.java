@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 public final class PendingTransaction extends Transaction {
 
     public static final int RECURRENCE_NONE = 0;
-    public static final int RECURRENCE_DAILY = 1;
     public static final int RECURRENCE_WEEKLY = 2;
     public static final int RECURRENCE_MONTHLY = 3;
 
