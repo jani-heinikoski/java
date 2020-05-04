@@ -8,6 +8,11 @@
 package com.jhprog.dabank.data;
 
 
+import com.jhprog.dabank.utility.TimeManager;
+
+import java.text.ParseException;
+import java.util.Date;
+
 public final class FixedTermAccount extends Account {
 
     private String acc_due_date;
@@ -29,5 +34,29 @@ public final class FixedTermAccount extends Account {
 
     public String getAcc_due_date() {
         return acc_due_date;
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        TimeManager timeManager = TimeManager.getInstance();
+        Date today = timeManager.todayDate();
+        Date dueDate = null;
+        try {
+            dueDate = timeManager.stringToDate(acc_due_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (timeManager.compareDates(today, dueDate) == TimeManager.BEFORE) {
+            return false;
+        } else {
+            if (acc_balance >= amount) {
+                acc_balance -= amount;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }
