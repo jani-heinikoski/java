@@ -777,8 +777,6 @@ public class DataManager {
             return;
         }
 
-        System.out.println("LOGGER: " + UPDATE_ACCOUNT);
-
         database.execSQL(UPDATE_ACCOUNT);
 
     }
