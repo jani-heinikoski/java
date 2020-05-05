@@ -997,6 +997,52 @@ public class DataManager {
     }
 
     public void updateBankCard(@NonNull BankCard bankCard) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
 
+        String UPDATE_BANKCARD =
+                "UPDATE " + DatabaseContract.BankCardTable.table_name +
+                " SET " + DatabaseContract.BankCardTable.bcard_last_withdraw_date + "='" + bankCard.getLastWithdrawDate() + "', " +
+                DatabaseContract.BankCardTable.bcard_last_payment_date + "='" + bankCard.getLastPaymentDate() + "', " +
+                DatabaseContract.BankCardTable.bcard_withdrawn + "=" + bankCard.getWithdrawn() + ", " +
+                DatabaseContract.BankCardTable.bcard_paid + "=" + bankCard.getPaid() + ", " +
+                DatabaseContract.BankCardTable.bcard_frozen + "=" + bankCard.isFrozen() + " WHERE " +
+                DatabaseContract.BankCardTable._ID + "=" + bankCard.getId() + ";";
+
+        database.execSQL(UPDATE_BANKCARD);
+    }
+
+    public void insertBankCard(@NonNull BankCard bankCard) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String INSERT_QUERY =
+                "INSERT INTO " + DatabaseContract.BankCardTable.table_name + "(" +
+                DatabaseContract.BankCardTable.bcard_owner_acc_id + "," +
+                DatabaseContract.BankCardTable.bcard_type + "," +
+                DatabaseContract.BankCardTable.bcard_withdraw_limit + "," +
+                DatabaseContract.BankCardTable.bcard_payment_limit + "," +
+                DatabaseContract.BankCardTable.bcard_last_withdraw_date + "," +
+                DatabaseContract.BankCardTable.bcard_last_payment_date + "," +
+                DatabaseContract.BankCardTable.bcard_frozen + "," +
+                DatabaseContract.BankCardTable.bcard_country_limit + "," +
+                DatabaseContract.BankCardTable.bcard_withdrawn + "," +
+                DatabaseContract.BankCardTable.bcard_paid +
+                ") VALUES (" +
+                bankCard.getOwnerAccountId() + "," +
+                bankCard.getType() + "," +
+                bankCard.getWithdrawLimit() + "," +
+                bankCard.getPaymentLimit() + "," +
+                "'" + bankCard.getLastWithdrawDate() + "'," +
+                "'" + bankCard.getLastPaymentDate() + "'," +
+                (bankCard.isFrozen() ? 1 : 0) + "," +
+                bankCard.getCountryLimit() + "," +
+                bankCard.getWithdrawn() + "," +
+                bankCard.getPaid() + ");";
+
+
+        database.execSQL(INSERT_QUERY);
     }
 }
