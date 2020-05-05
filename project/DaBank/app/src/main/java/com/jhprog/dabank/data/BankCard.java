@@ -7,7 +7,7 @@ import java.util.Date;
 public class BankCard {
     private int id, type, ownerAccountId, countryLimit;
     private double withdrawLimit, paymentLimit, withdrawn, paid;
-    private String lastWithdrawDate, lastPaymentDate;
+    private String lastWithdrawDate, lastPaymentDate, cardNumber;
     private boolean frozen;
 
     public static final int TYPE_DEBIT = 1;
@@ -18,7 +18,7 @@ public class BankCard {
     public static final int LIMIT_EUROPE = 3;
     public static final int LIMIT_WHOLE_WORLD = 4;
 
-    public BankCard(int id, int type, int ownerAccountId, int countryLimit, double withdrawLimit, double paymentLimit, double withdrawn, double paid, String lastWithdrawDate, String lastPaymentDate, boolean frozen) {
+    public BankCard(int id, int type, int ownerAccountId, int countryLimit, double withdrawLimit, double paymentLimit, double withdrawn, double paid, String lastWithdrawDate, String lastPaymentDate, String cardNumber, boolean frozen) {
         this.id = id;
         this.type = type;
         this.ownerAccountId = ownerAccountId;
@@ -29,10 +29,11 @@ public class BankCard {
         this.paid = paid;
         this.lastWithdrawDate = lastWithdrawDate;
         this.lastPaymentDate = lastPaymentDate;
+        this.cardNumber = cardNumber;
         this.frozen = frozen;
     }
 
-    public BankCard(int type, int ownerAccountId, int countryLimit, double withdrawLimit, double paymentLimit, double withdrawn, double paid, String lastWithdrawDate, String lastPaymentDate, boolean frozen) {
+    public BankCard(int type, int ownerAccountId, int countryLimit, double withdrawLimit, double paymentLimit, double withdrawn, double paid, String lastWithdrawDate, String lastPaymentDate, String cardNumber, boolean frozen) {
         this.type = type;
         this.ownerAccountId = ownerAccountId;
         this.countryLimit = countryLimit;
@@ -42,6 +43,7 @@ public class BankCard {
         this.paid = paid;
         this.lastWithdrawDate = lastWithdrawDate;
         this.lastPaymentDate = lastPaymentDate;
+        this.cardNumber = cardNumber;
         this.frozen = frozen;
     }
 
@@ -75,6 +77,10 @@ public class BankCard {
 
     public int getOwnerAccountId() {
         return ownerAccountId;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
     }
 
     public int getCountryLimit() {

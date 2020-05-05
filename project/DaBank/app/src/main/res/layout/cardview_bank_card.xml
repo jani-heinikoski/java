@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="8dp"
+    android:minHeight="75dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="75dp">
+
+        <TextView
+            android:id="@+id/cardview_bank_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:text="4980 7860 2784 56738"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:maxLength="30"/>
+
+        <TextView
+            android:id="@+id/cardview_bank_card_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="4dp"
+            android:text="+4800,00€"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

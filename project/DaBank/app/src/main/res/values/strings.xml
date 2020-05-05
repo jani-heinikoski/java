@@ -63,4 +63,6 @@
     <string name="fragment_profile_zipcode_header_text">Zipcode</string>
     <string name="fragment_profile_apply_changes_text">Apply Changes</string>
 
+    <string name="fragment_bank_cards_add_card_header_text">Add bank cards</string>
+
 </resources>

@@ -57,6 +57,7 @@ public class DataManager {
         }
         public static class BankCardTable implements BaseColumns {
             public static final String table_name = "bankcard";
+            public static final String bcard_number = "bcard_number";
             public static final String bcard_owner_acc_id  = "bcard_owner_acc_id";
             public static final String bcard_type  = "bcard_type";
             public static final String bcard_withdraw_limit = "bcard_withdraw_limit";
@@ -175,7 +176,8 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.BankCardTable.table_name +
                     " (" + DatabaseContract.BankCardTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.BankCardTable.bcard_owner_acc_id + "  INTEGER NOT NULL,"+
+                    DatabaseContract.BankCardTable.bcard_owner_acc_id + " VARCHAR(20) NOT NULL,"+
+                    DatabaseContract.BankCardTable.bcard_owner_acc_id + " INTEGER NOT NULL,"+
                     DatabaseContract.BankCardTable.bcard_type + " INTEGER NOT NULL,"+
                     DatabaseContract.BankCardTable.bcard_withdraw_limit + " DOUBLE(12,2) NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_payment_limit + " DOUBLE(12,2) NOT NULL," +
@@ -1021,6 +1023,7 @@ public class DataManager {
         String INSERT_QUERY =
                 "INSERT INTO " + DatabaseContract.BankCardTable.table_name + "(" +
                 DatabaseContract.BankCardTable.bcard_owner_acc_id + "," +
+                DatabaseContract.BankCardTable.bcard_number + "," +
                 DatabaseContract.BankCardTable.bcard_type + "," +
                 DatabaseContract.BankCardTable.bcard_withdraw_limit + "," +
                 DatabaseContract.BankCardTable.bcard_payment_limit + "," +
@@ -1032,6 +1035,7 @@ public class DataManager {
                 DatabaseContract.BankCardTable.bcard_paid +
                 ") VALUES (" +
                 bankCard.getOwnerAccountId() + "," +
+                "'" + bankCard.getCardNumber() + "'," +
                 bankCard.getType() + "," +
                 bankCard.getWithdrawLimit() + "," +
                 bankCard.getPaymentLimit() + "," +
@@ -1044,5 +1048,42 @@ public class DataManager {
 
 
         database.execSQL(INSERT_QUERY);
+    }
+
+    public ArrayList<BankCard> getBankCardsByOwner(int ownerAccountID) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        ArrayList<BankCard> bankCards = null;
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.BankCardTable.table_name +
+                " WHERE " + DatabaseContract.BankCardTable.bcard_owner_acc_id + "=" + ownerAccountID + ";",
+                null
+        );
+
+        if (cursor != null) {
+            bankCards = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                bankCards.add(new BankCard(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable._ID)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_type)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_owner_acc_id)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_country_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_withdraw_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_payment_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_withdrawn)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_paid)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_withdraw_date)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_payment_date)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_number)),
+                        (cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_country_limit)) == 1)
+                ));
+            }
+            cursor.close();
+        }
+
+        return bankCards;
     }
 }
