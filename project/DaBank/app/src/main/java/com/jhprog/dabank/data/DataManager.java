@@ -909,4 +909,19 @@ public class DataManager {
         return bank;
     }
 
+    public void updateCustomer(@NonNull Customer customer) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String UPDATE_CUSTOMER =
+                "UPDATE " + DatabaseContract.CustomerTable.table_name +
+                " SET " + DatabaseContract.CustomerTable.cust_name + "='" + customer.getCust_name() + "', " +
+                DatabaseContract.CustomerTable.cust_address + "='" + customer.getCust_address() + "', " +
+                DatabaseContract.CustomerTable.cust_phone + "='" + customer.getCust_phone() + "', " +
+                DatabaseContract.CustomerTable.cust_zipcode + "='" + customer.getCust_zipcode() + "' WHERE " +
+                DatabaseContract.CustomerTable._ID + "=" + customer.getCust_id() + ";";
+
+        database.execSQL(UPDATE_CUSTOMER);
+    }
 }

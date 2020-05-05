@@ -59,5 +59,8 @@
 
     <string name="fragment_profile_name_header_text">Name</string>
     <string name="fragment_profile_address_header_text">Address</string>
+    <string name="fragment_profile_phone_header_text">Phone number</string>
+    <string name="fragment_profile_zipcode_header_text">Zipcode</string>
+    <string name="fragment_profile_apply_changes_text">Apply Changes</string>
 
 </resources>

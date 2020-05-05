@@ -25,7 +25,7 @@
         android:background="@drawable/custom_edittext"
         android:gravity="start"
         android:inputType="text"
-        android:maxLength="18"
+        android:maxLength="30"
         android:maxLines="1"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
@@ -52,10 +52,79 @@
         android:background="@drawable/custom_edittext"
         android:gravity="start"
         android:inputType="text"
-        android:maxLength="18"
+        android:maxLength="30"
         android:maxLines="1"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/fragment_profile_textview_phone_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_profile_edittext_address"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_profile_phone_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_profile_edittext_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_profile_textview_phone_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="phone"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/fragment_profile_textview_zipcode_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_profile_edittext_phone"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_profile_zipcode_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_profile_edittext_zipcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_profile_textview_zipcode_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="phone"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/fragment_profile_button_apply_changes"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/fragment_profile_edittext_zipcode"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_selector"
+        android:elevation="8dp"
+        android:text="@string/fragment_profile_apply_changes_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="26sp" />
+
 
 </RelativeLayout>
