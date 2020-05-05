@@ -5,6 +5,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.BankCard;
@@ -33,6 +36,9 @@ public final class AddBankCardFragment extends Fragment {
     private MainViewModel viewModel;
     private Account ownerAccount;
 
+    private ArrayAdapter<String> countryLimitAdapter;
+    private final String[] countryChoices = {"Finland", "Nordic Countries", "Europe", "Whole World"};
+
     private double withdrawLimit, paymentLimit;
     private String cardNumber;
     private int countryLimit;
@@ -44,6 +50,44 @@ public final class AddBankCardFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        countryLimitAdapter = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(),
+                R.layout.fragment_new_payment_spinner_item,
+                countryChoices);
+        countryLimitAdapter.setDropDownViewResource(R.layout.fragment_new_payment_spinner_dropdown_item);
+        binding.fragmentAddBankCardSpinnerCountryLimit.setAdapter(countryLimitAdapter);
+
+        binding.fragmentAddBankCardSpinnerCountryLimit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String lim = countryLimitAdapter.getItem(position);
+                if (lim != null) {
+                    switch (lim) {
+                        case "Finland":
+                            countryLimit = BankCard.LIMIT_FINLAND;
+                            break;
+                        case "Nordic Countries":
+                            countryLimit = BankCard.LIMIT_NORDIC_COUNTRIES;
+                            break;
+                        case "Europe":
+                            countryLimit = BankCard.LIMIT_EUROPE;
+                            break;
+                        default:
+                            countryLimit = BankCard.LIMIT_WHOLE_WORLD;
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                countryLimit = BankCard.LIMIT_WHOLE_WORLD;
+            }
+        });
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -89,6 +133,8 @@ public final class AddBankCardFragment extends Fragment {
                 toast.show();
             }
         });
+
+
     }
 
     private boolean validateFormData() {
