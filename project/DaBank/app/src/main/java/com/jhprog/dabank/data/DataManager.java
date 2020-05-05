@@ -57,8 +57,14 @@ public class DataManager {
         }
         public static class BankCardTable implements BaseColumns {
             public static final String table_name = "bankcard";
-            public static final String bcard_acc_id  = "bcard_acc_id";
+            public static final String bcard_owner_acc_id  = "bcard_owner_acc_id";
             public static final String bcard_type  = "bcard_type";
+            public static final String bcard_withdraw_limit = "bcard_withdraw_limit";
+            public static final String bcard_payment_limit = "bcard_payment_limit";
+            public static final String bcard_last_withdraw_date = "bcard_last_withdraw_date";
+            public static final String bcard_last_payment_date = "bcard_last_payment_date";
+            public static final String bcard_frozen = "bcard_frozen";
+            public static final String bcard_country_limit = "bcard_country_limit";
         }
         public static class CustomerTable implements BaseColumns {
             public static final String cust_bank_id  = "cust_bank_id";
@@ -125,7 +131,6 @@ public class DataManager {
         @Override
         public void onOpen(SQLiteDatabase db) {
             super.onOpen(db);
-            // TODO validate the database here
         }
 
         @Override
@@ -168,8 +173,14 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.BankCardTable.table_name +
                     " (" + DatabaseContract.BankCardTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.BankCardTable.bcard_acc_id + "  INTEGER NOT NULL,"+
-                    DatabaseContract.BankCardTable.bcard_type + " INTEGER NOT NULL"+
+                    DatabaseContract.BankCardTable.bcard_owner_acc_id + "  INTEGER NOT NULL,"+
+                    DatabaseContract.BankCardTable.bcard_type + " INTEGER NOT NULL,"+
+                    DatabaseContract.BankCardTable.bcard_withdraw_limit + " DOUBLE(12,2) NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_payment_limit + " DOUBLE(12,2) NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_last_withdraw_date + " DATE NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_last_payment_date + " DATE NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_frozen + " BOOLEAN NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_country_limit + " INTEGER NOT NULL" +
                     ");";
 
             db.execSQL(SQL_QUERY);
