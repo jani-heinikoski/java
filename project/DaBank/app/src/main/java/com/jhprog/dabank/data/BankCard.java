@@ -18,6 +18,8 @@ public class BankCard {
     public static final int LIMIT_EUROPE = 3;
     public static final int LIMIT_WHOLE_WORLD = 4;
 
+    public static final String NEVER_USED = "never";
+
     public BankCard(int id, int type, int ownerAccountId, int countryLimit, double withdrawLimit, double paymentLimit, double withdrawn, double paid, String lastWithdrawDate, String lastPaymentDate, String cardNumber, boolean frozen) {
         this.id = id;
         this.type = type;
@@ -99,21 +101,23 @@ public class BankCard {
         TimeManager timeManager = TimeManager.getInstance();
         DataManager dataManager = DataManager.getInstance();
         Date today = timeManager.todayDate();
-        Date lastWithdrawn;
+        Date lastWithdrawn = null;
         Account ownerAccount = null;
         double limit;
 
-        try {
-            lastWithdrawn = timeManager.stringToDate(lastWithdrawDate);
-        } catch (Exception e) {
-            return false;
+        if (!lastWithdrawDate.equals(NEVER_USED)) {
+            try {
+                lastWithdrawn = timeManager.stringToDate(lastWithdrawDate);
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         if (countryLimit > this.countryLimit) {
             return false;
         }
 
-        if (timeManager.compareDates(lastWithdrawn, today) == TimeManager.SAME) {
+        if (!lastWithdrawDate.equals(NEVER_USED) && timeManager.compareDates(lastWithdrawn, today) == TimeManager.SAME) {
             limit = withdrawn + amount;
         } else {
             limit = amount;

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jhprog.dabank.data.BankCard;
+import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentBankCardsBinding;
 
 import java.util.ArrayList;
@@ -43,6 +44,10 @@ public final class BankCardsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Get reference to the MainViewModel in order to handle clickedAccount
         viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MainViewModel.class);
+        recyclerDataSet.clear();
+        recyclerDataSet.addAll(DataManager.getInstance().getBankCardsByOwner(
+                Objects.requireNonNull(viewModel.getClickedAccount().getValue()).getAcc_id())
+        );
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         binding.fragmentBankCardsRecyclerview.setHasFixedSize(true);
@@ -51,6 +56,6 @@ public final class BankCardsFragment extends Fragment {
         binding.fragmentBankCardsRecyclerview.setLayoutManager(layoutManager);
         // specify an adapter and add it to the recyclerview
         recyclerAdapter = new BankCardRecyclerAdapter(recyclerDataSet);
-        binding.fragmentBankCardsRecyclerview.setAdapter(null);
+        binding.fragmentBankCardsRecyclerview.setAdapter(recyclerAdapter);
     }
 }
