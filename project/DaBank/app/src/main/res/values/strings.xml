@@ -84,6 +84,9 @@
     <string name="fragment_atm_simulation_amount_text">Amount</string>
     <string name="fragment_atm_simulation_withdraw_text">Withdraw amount</string>
     <string name="fragment_atm_simulation_deposit_text">Deposit amount</string>
-    <string name="fragment_atm_simulation_country_limit_header_text">Country limit (only withdraw)</string>
+    <string name="fragment_atm_simulation_country_limit_header_text">Country limit (your location, only for withdraw)</string>
+
+    <string name="fragment_bank_card_payment_simulation_country_limit_header_text">Country (your location)</string>
+    <string name="fragment_bank_card_payment_simulation_pay_text">Pay</string>
 
 </resources>

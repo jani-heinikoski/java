@@ -52,7 +52,7 @@ public final class SimulationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentSimulationsButtonCardPayments.startAnimation(AnimationProvider.getOnClickAnimation());
-                // TODO: 06/05/2020 this
+                fragmentOwner.changeFragment(new BankCardPaymentSimulationFragment(), true);
             }
         });
 

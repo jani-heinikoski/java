@@ -131,6 +131,73 @@ public class BankCard {
         return paid;
     }
 
+    public boolean pay(double amount, int countryLimit, String payeeAccountNumber, String payeeName) {
+        if (frozen) {
+            return false;
+        }
+        TimeManager timeManager = TimeManager.getInstance();
+        DataManager dataManager = DataManager.getInstance();
+        Date today = timeManager.todayDate();
+        Date lastPaid = null;
+        Account ownerAccount = null;
+        double limit;
+
+        if (!lastPaymentDate.equals(NEVER_USED)) {
+            try {
+                lastPaid = timeManager.stringToDate(lastPaymentDate);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        if (countryLimit > this.countryLimit) {
+            return false;
+        }
+
+        if (!lastPaymentDate.equals(NEVER_USED) && timeManager.compareDates(lastPaid, today) == TimeManager.SAME) {
+            limit = withdrawn + amount;
+        } else {
+            limit = amount;
+        }
+
+        if (limit > withdrawLimit) {
+            return false;
+        } else {
+            ownerAccount = dataManager.getAccountByID(ownerAccountId);
+            if (ownerAccount != null) {
+                Bank bank = dataManager.getBankByID(ownerAccount.getAcc_bank_id());
+                Customer customer = dataManager.getCustomerByID(ownerAccount.getAcc_cust_id());
+
+                if (bank == null || customer == null) {
+                    return false;
+                }
+
+                if (bank.handleTransaction(
+                        new NormalTransaction(
+                                Transaction.TYPE_PAYMENT,
+                                Transaction.REF_NUM_NULL,
+                                ownerAccount.getAcc_number(),
+                                payeeAccountNumber,
+                                payeeName,
+                                Transaction.MESSAGE_NULL,
+                                bank.getBank_bic(),
+                                amount,
+                                timeManager.todayString()
+                        )
+                )) {
+                    paid += amount;
+                    this.lastPaymentDate = timeManager.todayString();
+                    dataManager.updateBankCard(this);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
     public boolean withdraw(double amount, int countryLimit) {
         if (frozen) {
             return false;
