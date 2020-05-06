@@ -152,6 +152,12 @@ public final class AddBankCardFragment extends Fragment {
                 }
             }
         }
+        if (valid) {
+            if (DataManager.getInstance().bankCardExists(cardNumber)) {
+                valid = false;
+                binding.fragmentAddBankCardEdittextCardNumber.setError("Card already exists!");
+            }
+        }
         // Withdraw limit check
         String tempString = binding.fragmentAddBankCardEdittextWithdrawLimit.getText().toString().trim();
         if (tempString.isEmpty() || tempString.matches("[A-Z]|[a-z]")) {

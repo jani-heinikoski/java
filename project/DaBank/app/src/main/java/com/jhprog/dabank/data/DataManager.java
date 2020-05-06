@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -1088,5 +1089,46 @@ public class DataManager {
         }
 
         return bankCards;
+    }
+
+    public BankCard getBankCardByNumber(String cardNumber) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        Cursor cursor = database.rawQuery(
+                "SELECT * FROM " + DatabaseContract.BankCardTable.table_name +
+                    " WHERE " + DatabaseContract.BankCardTable.bcard_number +
+                    "='" + cardNumber + "';",
+                null
+        );
+
+        BankCard bankCard = null;
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                bankCard = new BankCard(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable._ID)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_type)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_owner_acc_id)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_country_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_withdraw_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_payment_limit)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_withdrawn)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_paid)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_withdraw_date)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_payment_date)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_number)),
+                        (cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_frozen)) == 1)
+                );
+            }
+            cursor.close();
+        }
+
+        return bankCard;
+    }
+
+    public boolean bankCardExists(String cardNumber) {
+        return getBankCardByNumber(cardNumber) != null;
     }
 }
