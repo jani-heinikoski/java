@@ -62,7 +62,15 @@ public class TimeManager {
     }
 
     public Date todayDate() {
-        return Calendar.getInstance().getTime();
+        // This hacky-ish method doesn't account for time (which is the purpose)
+        Date today = null;
+        try {
+            today = stringToDate(todayString());
+        } catch (Exception ex) {
+            System.err.println("Failed to parse date");
+            System.exit(-1);
+        }
+        return today;
     }
 
     public void addTimeToDate(@NonNull Date date, int days) { // pass date by ref
