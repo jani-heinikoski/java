@@ -20,6 +20,7 @@ import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentBankCardSettingsBinding;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public final class BankCardSettingsFragment extends Fragment {
@@ -98,13 +99,12 @@ public final class BankCardSettingsFragment extends Fragment {
                 countryLimit = bankCard.getCountryLimit();
 
                 binding.fragmentBankCardSettingsSwitchFrozen.setChecked(bankCard.isFrozen());
-                System.out.println("LOGGER: bankcard:" + bankCard.isFrozen());
 
                 binding.fragmentBankCardSettingsEdittextWithdrawLimit.setText(
-                        String.valueOf(withdrawLimit)
+                        String.format(Locale.getDefault(), "%.2f", withdrawLimit)
                 );
                 binding.fragmentBankCardSettingsEdittextPaymentLimit.setText(
-                        String.valueOf(paymentLimit)
+                        String.format(Locale.getDefault(), "%.2f", paymentLimit)
                 );
 
                 switch (countryLimit) {
@@ -148,7 +148,7 @@ public final class BankCardSettingsFragment extends Fragment {
                 dataManager.updateBankCard(clickedBankCard);
                 viewModel.setClickedBankCard(clickedBankCard);
 
-                Toast toast = Toast.makeText(getActivity(),"Card updated!" + (clickedBankCard.isFrozen() ? 1 : 0), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(),"Card updated!", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
             }
