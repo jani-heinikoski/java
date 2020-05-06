@@ -47,6 +47,16 @@ public final class BankCardsFragment extends Fragment implements AccountRecycler
         recyclerDataSet = new ArrayList<>();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerDataSet.clear();
+        recyclerDataSet.addAll(DataManager.getInstance().getBankCardsByOwner(
+                Objects.requireNonNull(viewModel.getClickedAccount().getValue()).getAcc_id())
+        );
+        recyclerAdapter.notifyDataSetChanged();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,10 +76,6 @@ public final class BankCardsFragment extends Fragment implements AccountRecycler
         super.onActivityCreated(savedInstanceState);
         // Get reference to the MainViewModel in order to handle clickedAccount
         viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MainViewModel.class);
-        recyclerDataSet.clear();
-        recyclerDataSet.addAll(DataManager.getInstance().getBankCardsByOwner(
-                Objects.requireNonNull(viewModel.getClickedAccount().getValue()).getAcc_id())
-        );
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         binding.fragmentBankCardsRecyclerview.setHasFixedSize(true);

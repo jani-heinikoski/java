@@ -57,6 +57,38 @@ public class BankCard {
         return type;
     }
 
+    public void setCountryLimit(int countryLimit) {
+        this.countryLimit = countryLimit;
+    }
+
+    public void setWithdrawLimit(double withdrawLimit) {
+        this.withdrawLimit = withdrawLimit;
+    }
+
+    public void setPaymentLimit(double paymentLimit) {
+        this.paymentLimit = paymentLimit;
+    }
+
+    public void setWithdrawn(double withdrawn) {
+        this.withdrawn = withdrawn;
+    }
+
+    public void setPaid(double paid) {
+        this.paid = paid;
+    }
+
+    public void setLastWithdrawDate(String lastWithdrawDate) {
+        this.lastWithdrawDate = lastWithdrawDate;
+    }
+
+    public void setLastPaymentDate(String lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
+
     public double getWithdrawLimit() {
         return withdrawLimit;
     }

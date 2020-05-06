@@ -1009,7 +1009,10 @@ public class DataManager {
                 DatabaseContract.BankCardTable.bcard_last_payment_date + "='" + bankCard.getLastPaymentDate() + "', " +
                 DatabaseContract.BankCardTable.bcard_withdrawn + "=" + bankCard.getWithdrawn() + ", " +
                 DatabaseContract.BankCardTable.bcard_paid + "=" + bankCard.getPaid() + ", " +
-                DatabaseContract.BankCardTable.bcard_frozen + "=" + bankCard.isFrozen() + " WHERE " +
+                DatabaseContract.BankCardTable.bcard_country_limit + "=" + bankCard.getCountryLimit() + ", " +
+                DatabaseContract.BankCardTable.bcard_withdraw_limit + "=" + bankCard.getWithdrawLimit() + ", " +
+                DatabaseContract.BankCardTable.bcard_payment_limit + "=" + bankCard.getPaymentLimit() + ", " +
+                DatabaseContract.BankCardTable.bcard_frozen + "=" + (bankCard.isFrozen() ? 1 : 0) + " WHERE " +
                 DatabaseContract.BankCardTable._ID + "=" + bankCard.getId() + ";";
 
         database.execSQL(UPDATE_BANKCARD);
@@ -1078,7 +1081,7 @@ public class DataManager {
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_withdraw_date)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_last_payment_date)),
                         cursor.getString(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_number)),
-                        (cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_country_limit)) == 1)
+                        (cursor.getInt(cursor.getColumnIndex(DatabaseContract.BankCardTable.bcard_frozen)) == 1)
                 ));
             }
             cursor.close();
