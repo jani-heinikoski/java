@@ -16,7 +16,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
-import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentBankCardSettingsBinding;
