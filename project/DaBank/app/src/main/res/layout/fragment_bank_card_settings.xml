@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/fragment_bank_card_settings_textview_withdraw_limit_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_bank_card_settings_withdraw_limit_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_bank_card_settings_edittext_withdraw_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_bank_card_settings_textview_withdraw_limit_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="numberDecimal"
+        android:maxLength="14"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/fragment_bank_card_settings_textview_payment_limit_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_bank_card_settings_edittext_withdraw_limit"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_bank_card_settings_payment_limit_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_bank_card_settings_edittext_payment_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_bank_card_settings_textview_payment_limit_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="numberDecimal"
+        android:maxLength="14"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/fragment_bank_card_settings_textview_country_limit_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_bank_card_settings_edittext_payment_limit"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_add_bank_card_country_limit_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/fragment_bank_card_settings_spinner_country_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_bank_card_settings_textview_country_limit_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_spinner"
+        android:minHeight="32dp" />
+
+    <TextView
+        android:id="@+id/fragment_bank_card_settings_textview_frozen_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_bank_card_settings_spinner_country_limit"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_bank_card_settings_frozen_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/fragment_bank_card_settings_switch_frozen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_bank_card_settings_spinner_country_limit"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@id/fragment_bank_card_settings_textview_frozen_header" />
+
+    <Button
+        android:id="@+id/fragment_bank_card_settings_button_update_card"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/fragment_bank_card_settings_textview_frozen_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/fragment_bank_card_settings_update_card_text"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSecondaryText" />
+
+
+</RelativeLayout>

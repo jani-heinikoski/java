@@ -71,4 +71,10 @@
     <string name="fragment_add_bank_card_payment_limit_header_text">Payment limit</string>
     <string name="fragment_add_bank_card_add_card_text">Add Bankcard</string>
 
+    <string name="fragment_bank_card_settings_withdraw_limit_header_text">Withdraw limit</string>
+    <string name="fragment_bank_card_settings_payment_limit_header_text">Payment limit</string>
+    <string name="fragment_bank_card_settings_country_limit_header_text">Country limit</string>
+    <string name="fragment_bank_card_settings_frozen_header_text">Card frozen</string>
+    <string name="fragment_bank_card_settings_update_card_text">Update Information</string>
+
 </resources>

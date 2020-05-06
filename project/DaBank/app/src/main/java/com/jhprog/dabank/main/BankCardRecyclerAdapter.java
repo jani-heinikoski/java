@@ -19,6 +19,7 @@ import java.util.Locale;
 public final class BankCardRecyclerAdapter extends RecyclerView.Adapter<BankCardRecyclerAdapter.CardViewHolder> {
 
     private ArrayList<BankCard> dataSet;
+    private AccountRecyclerAdapter.IBankCardsClickListener cardsClickListener;
 
     public final class CardViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,12 +29,23 @@ public final class BankCardRecyclerAdapter extends RecyclerView.Adapter<BankCard
             super(itemView);
             textViewCardNumber = (TextView) itemView.findViewById(R.id.cardview_bank_card_number);
             textViewCardBalance = (TextView) itemView.findViewById(R.id.cardview_bank_card_balance);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        cardsClickListener.onBankCardsClick(pos);
+                    }
+                }
+            });
         }
 
     }
 
-    public BankCardRecyclerAdapter(@NonNull ArrayList<BankCard> dataSet) {
+    public BankCardRecyclerAdapter(@NonNull ArrayList<BankCard> dataSet, @NonNull AccountRecyclerAdapter.IBankCardsClickListener cardsClickListener) {
         this.dataSet = dataSet;
+        this.cardsClickListener = cardsClickListener;
     }
 
     @NonNull
@@ -64,6 +76,10 @@ public final class BankCardRecyclerAdapter extends RecyclerView.Adapter<BankCard
                             owner.getAcc_balance()
                     );
                 }
+                holder.textViewCardBalance.setText(balance);
+            } else {
+                String error = "Error";
+                holder.textViewCardBalance.setText(error);
             }
 
             holder.textViewCardNumber.setText(

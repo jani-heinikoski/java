@@ -20,7 +20,7 @@ import com.jhprog.dabank.databinding.FragmentAccountsBinding;
 import java.util.Objects;
 
 public final class AccountsFragment extends Fragment
-        implements ICardClickListener, AccountRecyclerAdapter.ISettingsClickListener {
+        implements ICardClickListener, AccountRecyclerAdapter.ISettingsClickListener, AccountRecyclerAdapter.IBankCardsClickListener {
 
     private MainViewModel viewModel;
     private FragmentAccountsBinding binding;
@@ -59,7 +59,7 @@ public final class AccountsFragment extends Fragment
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.fragmentAccountsRecyclerView.setLayoutManager(layoutManager);
         // specify an adapter and add it to the recyclerview
-        accountRecyclerAdapter = new AccountRecyclerAdapter(viewModel.getAccounts(), this, this);
+        accountRecyclerAdapter = new AccountRecyclerAdapter(viewModel.getAccounts(), this, this, this);
         binding.fragmentAccountsRecyclerView.setAdapter(accountRecyclerAdapter);
     }
 
@@ -79,5 +79,11 @@ public final class AccountsFragment extends Fragment
     public void onSettingsClick(int position) {
         viewModel.setClickedAccount(viewModel.getAccounts().get(position));
         fragmentOwner.changeFragment(new AccountSettingsFragment(), true);
+    }
+
+    @Override
+    public void onBankCardsClick(int position) {
+        viewModel.setClickedAccount(viewModel.getAccounts().get(position));
+        fragmentOwner.changeFragment(new BankCardsFragment(), true);
     }
 }

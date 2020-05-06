@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.Bank;
+import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.Customer;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.data.NormalTransaction;
@@ -28,6 +29,7 @@ public class MainViewModel extends ViewModel {
     private Customer customer = null;
     private MutableLiveData<Account> clickedAccount = new MutableLiveData<>();
     private MutableLiveData<NormalTransaction> clickedTransaction = new MutableLiveData<>();
+    private MutableLiveData<BankCard> clickedBankCard = new MutableLiveData<>();
 
     private void loadAccounts() {
         DataManager dataManager = DataManager.getInstance();
@@ -41,6 +43,14 @@ public class MainViewModel extends ViewModel {
             loadAccounts();
         }
         return accounts;
+    }
+
+    public LiveData<BankCard> getClickedBankCard() {
+        return clickedBankCard;
+    }
+
+    public void setClickedBankCard(@NonNull BankCard clickedBankCard) {
+        this.clickedBankCard.setValue(clickedBankCard);
     }
 
     public Bank getBank() {

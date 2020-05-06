@@ -1,5 +1,6 @@
 package com.jhprog.dabank.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +13,33 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jhprog.dabank.IFragmentOwner;
 import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.databinding.FragmentBankCardsBinding;
+import com.jhprog.dabank.utility.AnimationProvider;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class BankCardsFragment extends Fragment {
+public final class BankCardsFragment extends Fragment implements AccountRecyclerAdapter.IBankCardsClickListener {
 
     private MainViewModel viewModel;
     private FragmentBankCardsBinding binding;
     private BankCardRecyclerAdapter recyclerAdapter;
     private ArrayList<BankCard> recyclerDataSet;
+    private IFragmentOwner fragmentOwner;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof IFragmentOwner) {
+            fragmentOwner = (IFragmentOwner) context;
+        } else {
+            System.err.println("Host Activity must implement IFragmentOwner");
+            System.exit(-1);
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +51,13 @@ public final class BankCardsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBankCardsBinding.inflate(inflater, container, false);
+        binding.fragmentBankCardsAddCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentBankCardsAddCard.startAnimation(AnimationProvider.getOnClickAnimation());
+                fragmentOwner.changeFragment(new AddBankCardFragment(), true);
+            }
+        });
         return binding.getRoot();
     }
 
@@ -55,7 +77,13 @@ public final class BankCardsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.fragmentBankCardsRecyclerview.setLayoutManager(layoutManager);
         // specify an adapter and add it to the recyclerview
-        recyclerAdapter = new BankCardRecyclerAdapter(recyclerDataSet);
+        recyclerAdapter = new BankCardRecyclerAdapter(recyclerDataSet, this);
         binding.fragmentBankCardsRecyclerview.setAdapter(recyclerAdapter);
+    }
+
+    @Override
+    public void onBankCardsClick(int position) {
+        viewModel.setClickedBankCard(recyclerDataSet.get(position));
+        fragmentOwner.changeFragment(new BankCardSettingsFragment(), true);
     }
 }

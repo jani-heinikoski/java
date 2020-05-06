@@ -24,12 +24,13 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
     private ArrayList<Account> accounts;
     private ICardClickListener onCardClickListener;
     private ISettingsClickListener onSettingsClickListener;
+    private IBankCardsClickListener onBankCardClickListener;
 
     // Provide a reference to the views for each data item
     public final class CardViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewType, textViewBalance, textViewAccountNumber, textViewCreditLimit, textViewWithdrawLimit, textViewDueDate;
-        Button btnAccountSettings;
+        Button btnAccountSettings, btnAccountBankCards;
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,6 +41,17 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
             textViewWithdrawLimit = (TextView) itemView.findViewById(R.id.cardview_account_withdraw_limit);
             textViewDueDate = (TextView) itemView.findViewById(R.id.cardview_account_due_date);
             btnAccountSettings = (Button) itemView.findViewById(R.id.cardview_account_settings);
+            btnAccountBankCards = (Button) itemView.findViewById(R.id.cardview_account_bank_cards);
+
+            btnAccountBankCards.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onBankCardClickListener.onBankCardsClick(pos);
+                    }
+                }
+            });
 
             btnAccountSettings.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,10 +75,14 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
         }
     }
 
-    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts, @NonNull ICardClickListener onCardClickListener, @NonNull ISettingsClickListener onSettingsClickListener) {
+    public AccountRecyclerAdapter(@NonNull ArrayList<Account> accounts,
+                                  @NonNull ICardClickListener onCardClickListener,
+                                  @NonNull ISettingsClickListener onSettingsClickListener,
+                                  @NonNull IBankCardsClickListener onBankCardClickListener) {
         this.accounts = accounts;
         this.onCardClickListener = onCardClickListener;
         this.onSettingsClickListener = onSettingsClickListener;
+        this.onBankCardClickListener = onBankCardClickListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -127,6 +143,10 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
 
     public interface ISettingsClickListener {
         void onSettingsClick(int position);
+    }
+
+    public interface IBankCardsClickListener {
+        void onBankCardsClick(int position);
     }
 
 }

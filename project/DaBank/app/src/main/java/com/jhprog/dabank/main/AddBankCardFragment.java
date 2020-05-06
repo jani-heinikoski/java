@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
-import com.jhprog.dabank.data.Bank;
 import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.CurrentAccount;
 import com.jhprog.dabank.data.DataManager;

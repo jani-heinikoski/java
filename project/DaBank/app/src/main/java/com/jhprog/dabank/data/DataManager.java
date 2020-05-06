@@ -176,13 +176,13 @@ public class DataManager {
             SQL_QUERY = "CREATE TABLE " +
                     DatabaseContract.BankCardTable.table_name +
                     " (" + DatabaseContract.BankCardTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DatabaseContract.BankCardTable.bcard_owner_acc_id + " VARCHAR(20) NOT NULL,"+
                     DatabaseContract.BankCardTable.bcard_owner_acc_id + " INTEGER NOT NULL,"+
                     DatabaseContract.BankCardTable.bcard_type + " INTEGER NOT NULL,"+
                     DatabaseContract.BankCardTable.bcard_withdraw_limit + " DOUBLE(12,2) NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_payment_limit + " DOUBLE(12,2) NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_withdrawn + " DOUBLE(12,2) NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_paid + " DOUBLE(12,2) NOT NULL," +
+                    DatabaseContract.BankCardTable.bcard_number + " VARCHAR(16) NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_last_withdraw_date + " DATE NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_last_payment_date + " DATE NOT NULL," +
                     DatabaseContract.BankCardTable.bcard_frozen + " BOOLEAN NOT NULL," +

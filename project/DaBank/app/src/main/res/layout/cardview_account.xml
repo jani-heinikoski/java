@@ -104,6 +104,17 @@
             android:background="@drawable/ic_settings"
             android:elevation="4dp" />
 
+        <Button
+            android:id="@+id/cardview_account_bank_cards"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/cardview_account_settings"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/ic_credit_card"
+            android:elevation="4dp" />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
