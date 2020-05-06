@@ -138,6 +138,7 @@ public final class AtmSimulationFragment extends Fragment {
                     toast.show();
                 }
 
+                viewModel.loadAccounts();
             }
         });
 
@@ -160,6 +161,7 @@ public final class AtmSimulationFragment extends Fragment {
                     toast.show();
                 }
 
+                viewModel.loadAccounts();
             }
         });
 

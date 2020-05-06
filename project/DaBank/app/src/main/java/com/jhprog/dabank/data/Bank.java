@@ -66,13 +66,15 @@ public class Bank {
                 }
 
             case Transaction.TYPE_DEPOSIT:
-                deposit(toAccount, transaction.getTrans_amount());
-                updateAccounts(toAccount);
+                deposit(fromAccount, transaction.getTrans_amount());
+                dataManager.insertTransaction(transaction);
+                updateAccounts(fromAccount);
                 return true;
 
             case Transaction.TYPE_WITHDRAW:
                 if (withdraw(fromAccount, transaction.getTrans_amount())) {
                     updateAccounts(fromAccount);
+                    dataManager.insertTransaction(transaction);
                     return true;
                 } else {
                     return false;

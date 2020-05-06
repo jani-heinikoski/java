@@ -132,6 +132,9 @@ public class BankCard {
     }
 
     public boolean withdraw(double amount, int countryLimit) {
+        if (frozen) {
+            return false;
+        }
         TimeManager timeManager = TimeManager.getInstance();
         DataManager dataManager = DataManager.getInstance();
         Date today = timeManager.todayDate();
@@ -226,7 +229,7 @@ public class BankCard {
             } else {
                 return false;
             }
-            
+
         } else {
             return false;
         }

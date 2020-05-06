@@ -31,9 +31,10 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<NormalTransaction> clickedTransaction = new MutableLiveData<>();
     private MutableLiveData<BankCard> clickedBankCard = new MutableLiveData<>();
 
-    private void loadAccounts() {
+    public void loadAccounts() {
         DataManager dataManager = DataManager.getInstance();
         if (bank != null && customer != null) {
+            accounts.clear();
             accounts.addAll(dataManager.getCustomerAccounts(bank.getBank_id(), customer.getCust_id()));
         }
     }
