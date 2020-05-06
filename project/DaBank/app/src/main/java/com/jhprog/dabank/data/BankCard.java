@@ -1,8 +1,10 @@
 package com.jhprog.dabank.data;
 
+
 import com.jhprog.dabank.utility.TimeManager;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class BankCard {
     private int id, type, ownerAccountId, countryLimit;
@@ -193,5 +195,51 @@ public class BankCard {
                 return false;
             }
         }
+    }
+
+    public boolean deposit(double amount) {
+        DataManager dataManager = DataManager.getInstance();
+        TimeManager timeManager = TimeManager.getInstance();
+        Account ownerAccount = dataManager.getAccountByID(ownerAccountId);
+
+        if (ownerAccount != null) {
+
+            Bank bank = dataManager.getBankByID(ownerAccount.getAcc_bank_id());
+            Customer customer = dataManager.getCustomerByID(ownerAccount.getAcc_cust_id());
+
+            if (bank != null && customer != null) {
+                return bank.handleTransaction(
+                        new NormalTransaction(
+                                Transaction.TYPE_DEPOSIT,
+                                Transaction.REF_NUM_NULL,
+                                ownerAccount.getAcc_number(),
+                                ownerAccount.getAcc_number(),
+                                customer.getCust_name(),
+                                Transaction.MESSAGE_NULL,
+                                bank.getBank_bic(),
+                                amount,
+                                timeManager.todayString()
+                        ),
+                        ownerAccount,
+                        null
+                );
+            } else {
+                return false;
+            }
+            
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        String bcAsString =
+                String.format(
+                        Locale.getDefault(),
+                        "%s", cardNumber
+                );
+        return bcAsString;
     }
 }

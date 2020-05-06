@@ -77,4 +77,13 @@
     <string name="fragment_bank_card_settings_frozen_header_text">Card frozen</string>
     <string name="fragment_bank_card_settings_update_card_text">Update Information</string>
 
+    <string name="fragment_simulations_button_atm_text">ATM simulation</string>
+    <string name="fragment_simulations_button_payment_text">Card payment simulation</string>
+
+    <string name="fragment_atm_simulation_choose_bank_card_header_text">Choose a bankcard</string>
+    <string name="fragment_atm_simulation_amount_text">Amount</string>
+    <string name="fragment_atm_simulation_withdraw_text">Withdraw amount</string>
+    <string name="fragment_atm_simulation_deposit_text">Deposit amount</string>
+    <string name="fragment_atm_simulation_country_limit_header_text">Country limit (only withdraw)</string>
+
 </resources>

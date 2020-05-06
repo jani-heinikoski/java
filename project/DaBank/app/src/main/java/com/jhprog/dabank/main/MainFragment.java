@@ -81,6 +81,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.fragmentMainButtonSimulations.startAnimation(onClickAnimation);
+                fragmentOwner.changeFragment(new SimulationsFragment(), true);
             }
         });
 
