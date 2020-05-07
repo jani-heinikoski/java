@@ -91,6 +91,9 @@ public class DataManager {
             public static final String acc_creditlimit = "acc_creditlimit";
             public static final String acc_withdrawlimit  = "acc_withdrawlimit";
             public static final String acc_duedate  = "acc_duedate";
+            public static final String acc_name = "acc_name";
+            public static final String acc_last_withdraw_year = "acc_last_withdraw_year";
+            public static final String acc_frozen = "acc_frozen";
         }
 
         public static class PendingTransactionTable implements BaseColumns {
@@ -217,6 +220,9 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_balance+ " DOUBLE(12,2) NOT NULL,"+
                     DatabaseContract.AccountTable.acc_creditlimit + " DOUBLE(12,2),"+
                     DatabaseContract.AccountTable.acc_withdrawlimit + " INTEGER,"+
+                    DatabaseContract.AccountTable.acc_last_withdraw_year + " INTEGER,"+
+                    DatabaseContract.AccountTable.acc_name + " VARCHAR(50),"+
+                    DatabaseContract.AccountTable.acc_frozen + " BOOLEAN NOT NULL,"+
                     DatabaseContract.AccountTable.acc_duedate + "  DATETIME"+
                     ");";
 
@@ -355,8 +361,9 @@ public class DataManager {
                             cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable.cust_bank_id)),
                             cursor.getInt(cursor.getColumnIndex(DatabaseContract.CustomerTable._ID)),
                             5000,
-                            500,
-                            ACCOUNT_NUMBER
+                            ACCOUNT_NUMBER,
+                            false,
+                            500
                     );
 
                     INSERT_ACCOUNT = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
@@ -365,6 +372,7 @@ public class DataManager {
                             DatabaseContract.AccountTable.acc_bank_id + "," +
                             DatabaseContract.AccountTable.acc_number + "," +
                             DatabaseContract.AccountTable.acc_balance + "," +
+                            DatabaseContract.AccountTable.acc_frozen + "," +
                             DatabaseContract.AccountTable.acc_creditlimit +
                             ") VALUES (" +
                             Account.TYPE_CURRENT + "," +
@@ -372,6 +380,7 @@ public class DataManager {
                             account.getAcc_bank_id() + "," +
                             "'" + account.getAcc_number() + "'," +
                             account.getAcc_balance() + "," +
+                            (account.isAcc_frozen() ? 1 : 0) + "," +
                             account.getAcc_creditlimit() + ");";;
 
                     db.execSQL(INSERT_ACCOUNT);
@@ -567,6 +576,7 @@ public class DataManager {
         }
 
         Account account = null;
+        boolean hasName;
 
         Cursor cursor = database.rawQuery(
                 "SELECT * FROM " + DatabaseContract.AccountTable.table_name +
@@ -576,6 +586,7 @@ public class DataManager {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
+                hasName = !cursor.isNull(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name));
                 switch (cursor.getInt(cursor.getColumnIndex(
                         DatabaseContract.AccountTable.acc_type
                 ))) {
@@ -585,9 +596,13 @@ public class DataManager {
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
-                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                     case Account.TYPE_SAVING:
                         account = new SavingsAccount(
@@ -595,20 +610,28 @@ public class DataManager {
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_last_withdraw_year))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                     case Account.TYPE_FIXED_TERM:
                         account = new FixedTermAccount(
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                Account.TYPE_FIXED_TERM,
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_duedate))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                 }
             }
@@ -623,6 +646,7 @@ public class DataManager {
         }
 
         Account account = null;
+        boolean hasName;
 
         Cursor cursor = database.rawQuery(
                 "SELECT * FROM " + DatabaseContract.AccountTable.table_name +
@@ -632,6 +656,7 @@ public class DataManager {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
+                hasName = !cursor.isNull(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name));
                 switch (cursor.getInt(cursor.getColumnIndex(
                         DatabaseContract.AccountTable.acc_type
                 ))) {
@@ -641,9 +666,13 @@ public class DataManager {
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
-                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                     case Account.TYPE_SAVING:
                         account = new SavingsAccount(
@@ -651,20 +680,28 @@ public class DataManager {
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_last_withdraw_year))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                     case Account.TYPE_FIXED_TERM:
                         account = new FixedTermAccount(
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                Account.TYPE_FIXED_TERM,
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_duedate))
                         );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
                         break;
                 }
             }
@@ -718,6 +755,7 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_frozen + "," +
                     DatabaseContract.AccountTable.acc_creditlimit +
                     ") VALUES (" +
                     Account.TYPE_CURRENT + "," +
@@ -725,6 +763,7 @@ public class DataManager {
                     account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
+                    (account.isAcc_frozen() ? 1 : 0) + "," +
                     ((CurrentAccount) account).getAcc_creditlimit() + ");";
         } else if (account instanceof SavingsAccount) {
             INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
@@ -733,6 +772,7 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_frozen + "," +
                     DatabaseContract.AccountTable.acc_withdrawlimit +
                     ") VALUES (" +
                     Account.TYPE_SAVING + "," +
@@ -740,6 +780,7 @@ public class DataManager {
                     account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
+                    (account.isAcc_frozen() ? 1 : 0) + "," +
                     ((SavingsAccount) account).getAcc_withdrawlimit() + ");";
         } else if (account instanceof FixedTermAccount) {
             INSERT_QUERY = "INSERT INTO " + DatabaseContract.AccountTable.table_name + "(" +
@@ -748,6 +789,7 @@ public class DataManager {
                     DatabaseContract.AccountTable.acc_bank_id + "," +
                     DatabaseContract.AccountTable.acc_number + "," +
                     DatabaseContract.AccountTable.acc_balance + "," +
+                    DatabaseContract.AccountTable.acc_frozen + "," +
                     DatabaseContract.AccountTable.acc_duedate +
                     ") VALUES (" +
                     Account.TYPE_FIXED_TERM + "," +
@@ -755,6 +797,7 @@ public class DataManager {
                     account.getAcc_bank_id() + "," +
                     "'" + account.getAcc_number() + "'," +
                     account.getAcc_balance() + "," +
+                    (account.isAcc_frozen() ? 1 : 0) + "," +
                     "'" + ((FixedTermAccount) account).getAcc_due_date() + "');";
         }
 
@@ -778,43 +821,61 @@ public class DataManager {
         );
 
         ArrayList<Account> accounts = null;
+        Account account = null;
+        boolean hasName;
 
         if (cursor != null) {
 
             accounts = new ArrayList<>();
 
             while (cursor.moveToNext()) {
+                hasName = !cursor.isNull(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name));
                 switch (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_type))) {
                     case Account.TYPE_CURRENT:
-                        accounts.add(new CurrentAccount(
+                        account = new CurrentAccount(
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
-                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
-                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
-                        ));
-                        break;
-                    case Account.TYPE_SAVING:
-                        accounts.add(new SavingsAccount(
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
-                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
-                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number))
-                        ));
-                        break;
-                    case Account.TYPE_FIXED_TERM:
-                        accounts.add(new FixedTermAccount(
-                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
-                                Account.TYPE_FIXED_TERM,
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
                                 cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
                                 cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_creditlimit))
+                        );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
+                        accounts.add(account);
+                        break;
+                    case Account.TYPE_SAVING:
+                        account = new SavingsAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_withdrawlimit)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_last_withdraw_year))
+                        );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
+                        accounts.add(account);
+                        break;
+                    case Account.TYPE_FIXED_TERM:
+                        account = new FixedTermAccount(
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable._ID)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_bank_id)),
+                                cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_cust_id)),
+                                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_balance)),
+                                cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_number)),
+                                (cursor.getInt(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_frozen)) == 1),
                                 cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_duedate))
-                        ));
+                        );
+                        if (hasName) {
+                            account.setAcc_name(cursor.getString(cursor.getColumnIndex(DatabaseContract.AccountTable.acc_name)));
+                        }
+                        accounts.add(account);
                         break;
                 }
             }
@@ -832,21 +893,52 @@ public class DataManager {
         String UPDATE_ACCOUNT;
 
         if (account instanceof CurrentAccount) {
-            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
-                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
-                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + " WHERE " +
-                DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            if (account.getAcc_name() == null) {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + " WHERE " +
+                        DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            } else {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_name + "='" + account.getAcc_name() + "', " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + " WHERE " +
+                        DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            }
         } else if (account instanceof SavingsAccount) {
-            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
-                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
-                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + ", " +
-                DatabaseContract.AccountTable.acc_withdrawlimit + "=" + ((SavingsAccount) account).getAcc_withdrawlimit() +
-                " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            if (account.getAcc_name() == null) {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + ", " +
+                        DatabaseContract.AccountTable.acc_withdrawlimit + "=" + ((SavingsAccount) account).getAcc_withdrawlimit() +
+                        " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            } else {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_name + "='" + account.getAcc_name() + "', " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() + ", " +
+                        DatabaseContract.AccountTable.acc_withdrawlimit + "=" + ((SavingsAccount) account).getAcc_withdrawlimit() +
+                        " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            }
         } else if (account instanceof FixedTermAccount) {
-            UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
-                " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
-                DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() +
-                " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            if (account.getAcc_name() == null) {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() +
+                        " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            } else {
+                UPDATE_ACCOUNT = "UPDATE " + DatabaseContract.AccountTable.table_name +
+                        " SET " + DatabaseContract.AccountTable.acc_cust_id + "=" + account.getAcc_cust_id() + ", " +
+                        DatabaseContract.AccountTable.acc_frozen + "=" + (account.isAcc_frozen() ? 1 : 0) + ", " +
+                        DatabaseContract.AccountTable.acc_name + "='" + account.getAcc_name() + "', " +
+                        DatabaseContract.AccountTable.acc_balance + "=" + account.getAcc_balance() +
+                        " WHERE " + DatabaseContract.AccountTable._ID + "=" + account.getAcc_id() + ";";
+            }
         } else {
             return;
         }

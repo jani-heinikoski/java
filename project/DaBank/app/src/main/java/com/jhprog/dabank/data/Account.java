@@ -19,26 +19,32 @@ public abstract class Account {
     private int acc_cust_id;
     double acc_balance;
     private String acc_number;
+    private String acc_name;
+    private boolean acc_frozen;
 
     public static final int TYPE_CURRENT = 1;
     public static final int TYPE_SAVING = 2;
     public static final int TYPE_FIXED_TERM = 3;
 
-    public Account(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number) {
+    public Account(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, boolean acc_frozen) {
         this.acc_id = acc_id;
         this.acc_type = acc_type;
         this.acc_bank_id = acc_bank_id;
         this.acc_cust_id = acc_cust_id;
         this.acc_balance = acc_balance;
         this.acc_number = acc_number;
+        this.acc_frozen = acc_frozen;
+        acc_name = null;
     }
 
-    public Account(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number) {
+    public Account(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, boolean acc_frozen) {
         this.acc_type = acc_type;
         this.acc_bank_id = acc_bank_id;
         this.acc_cust_id = acc_cust_id;
         this.acc_balance = acc_balance;
         this.acc_number = acc_number;
+        this.acc_frozen = acc_frozen;
+        acc_name = null;
     }
 
     public void deposit(double amount) {
@@ -65,6 +71,22 @@ public abstract class Account {
         return acc_balance;
     }
 
+    public String getAcc_name() {
+        return acc_name;
+    }
+
+    public boolean isAcc_frozen() {
+        return acc_frozen;
+    }
+
+    public void setAcc_name(String acc_name) {
+        this.acc_name = acc_name;
+    }
+
+    public void setAcc_frozen(boolean acc_frozen) {
+        this.acc_frozen = acc_frozen;
+    }
+
     public abstract int getType();
 
     public abstract boolean withdraw(double amount);
@@ -75,19 +97,37 @@ public abstract class Account {
         String retVal = "";
         switch (acc_type) {
             case TYPE_CURRENT:
-                retVal = String.format(Locale.getDefault(),
-                        "%s %.2f",
-                        "Current account", acc_balance);
+                if (acc_name == null) {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            "Current account", acc_balance);
+                } else {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            acc_name, acc_balance);
+                }
                 break;
             case TYPE_SAVING:
-                retVal = String.format(Locale.getDefault(),
-                        "%s %.2f",
-                        "Saving account", acc_balance);
+                if (acc_name == null) {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            "Saving account", acc_balance);
+                } else {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            acc_name, acc_balance);
+                }
                 break;
             case TYPE_FIXED_TERM:
-                retVal = String.format(Locale.getDefault(),
-                        "%s %.2f",
-                        "Fixed-term account", acc_balance);
+                if (acc_name == null) {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            "Fixed-term account", acc_balance);
+                } else {
+                    retVal = String.format(Locale.getDefault(),
+                            "%s %.2f",
+                            acc_name, acc_balance);
+                }
                 break;
         }
         return retVal;

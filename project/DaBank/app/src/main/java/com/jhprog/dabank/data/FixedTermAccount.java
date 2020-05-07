@@ -17,13 +17,13 @@ public final class FixedTermAccount extends Account {
 
     private String acc_due_date;
 
-    public FixedTermAccount(int acc_id, int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, String acc_due_date) {
-        super(acc_id, acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
+    public FixedTermAccount(int acc_id, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, boolean acc_frozen, String acc_due_date) {
+        super(acc_id, Account.TYPE_FIXED_TERM, acc_bank_id, acc_cust_id, acc_balance, acc_number, acc_frozen);
         this.acc_due_date = acc_due_date;
     }
 
-    public FixedTermAccount(int acc_type, int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, String acc_due_date) {
-        super(acc_type, acc_bank_id, acc_cust_id, acc_balance, acc_number);
+    public FixedTermAccount(int acc_bank_id, int acc_cust_id, double acc_balance, String acc_number, boolean acc_frozen, String acc_due_date) {
+        super(Account.TYPE_FIXED_TERM, acc_bank_id, acc_cust_id, acc_balance, acc_number, acc_frozen);
         this.acc_due_date = acc_due_date;
     }
 
