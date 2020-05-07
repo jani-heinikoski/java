@@ -61,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
         binding.datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                date = String.format(Locale.getDefault(), "%d.%02d.%d", dayOfMonth, (monthOfYear + 1), year);
+                date = String.format(Locale.getDefault(), "%02d.%02d.%d", dayOfMonth, (monthOfYear + 1), year);
             }
         });
     }
