@@ -28,7 +28,7 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/custom_edittext"
             android:gravity="start"
-            android:hint="e.g. FI00 0000 0000 0000 00"
+            android:hint="e.g. FI0000000000000000"
             android:inputType="text"
             android:maxLength="18"
             android:maxLines="1"
