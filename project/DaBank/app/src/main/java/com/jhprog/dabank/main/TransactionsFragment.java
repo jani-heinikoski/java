@@ -60,18 +60,7 @@ public final class TransactionsFragment extends Fragment implements ICardClickLi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MainViewModel.class);
-        // Set the fragment header (account type)
-        switch (Objects.requireNonNull(viewModel.getClickedAccount().getValue()).getType()) {
-            case Account.TYPE_CURRENT:
-                binding.fragmentTransactionsTextviewAccountType.setText(R.string.current_account_as_string);
-                break;
-            case Account.TYPE_SAVING:
-                binding.fragmentTransactionsTextviewAccountType.setText(R.string.savings_account_as_string);
-                break;
-            case Account.TYPE_FIXED_TERM:
-                binding.fragmentTransactionsTextviewAccountType.setText(R.string.fixed_term_account_as_string);
-                break;
-        }
+        binding.fragmentTransactionsTextviewAccountType.setText(viewModel.getClickedAccount().getValue().toString());
         // Set the fragment's subheader (account number)
         binding.fragmentTransactionsTextviewAccountNumber.setText((CharSequence) viewModel.getClickedAccount().getValue().getAcc_number());
         // Use this setting to improve performance if you know that changes

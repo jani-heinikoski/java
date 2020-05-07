@@ -89,7 +89,9 @@ public abstract class Account {
 
     public abstract int getType();
 
-    public abstract boolean withdraw(double amount);
+    public boolean withdraw(double amount) {
+        return !acc_frozen;
+    }
 
     @NonNull
     @Override
@@ -99,33 +101,33 @@ public abstract class Account {
             case TYPE_CURRENT:
                 if (acc_name == null) {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             "Current account", acc_balance);
                 } else {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             acc_name, acc_balance);
                 }
                 break;
             case TYPE_SAVING:
                 if (acc_name == null) {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             "Saving account", acc_balance);
                 } else {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             acc_name, acc_balance);
                 }
                 break;
             case TYPE_FIXED_TERM:
                 if (acc_name == null) {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             "Fixed-term account", acc_balance);
                 } else {
                     retVal = String.format(Locale.getDefault(),
-                            "%s %.2f",
+                            "%s %.2f€",
                             acc_name, acc_balance);
                 }
                 break;

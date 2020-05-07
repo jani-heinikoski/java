@@ -101,10 +101,10 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
             Account acc = accounts.get(position);
             holder.textViewAccountNumber.setText(acc.getAcc_number());
             holder.textViewBalance.setText(
-                    String.format(Locale.getDefault(),"Balance: %.2f", acc.getAcc_balance()));
+                    String.format(Locale.getDefault(),"Balance: %.2f", acc.getAcc_balance())
+            );
 
             if (acc instanceof CurrentAccount) {
-                holder.textViewType.setText(R.string.current_account_as_string);
                 // If it has credit limit, show it, else don't.
                 if (((CurrentAccount) acc).getAcc_creditlimit() > 0) {
                     holder.textViewCreditLimit.setVisibility(View.VISIBLE);
@@ -116,18 +116,18 @@ public final class AccountRecyclerAdapter extends RecyclerView.Adapter<AccountRe
                 }
 
             } else if (acc instanceof SavingsAccount) {
-                holder.textViewType.setText(R.string.savings_account_as_string);
                 holder.textViewWithdrawLimit.setVisibility(View.VISIBLE);
                 holder.textViewWithdrawLimit.setText(
                         String.format(Locale.getDefault(), "Withdraws left this year: %d", ((SavingsAccount) acc).getAcc_withdrawlimit())
                 );
             } else if (acc instanceof FixedTermAccount) {
-                holder.textViewType.setText(R.string.fixed_term_account_as_string);
                 holder.textViewDueDate.setVisibility(View.VISIBLE);
                 holder.textViewDueDate.setText(
                         String.format(Locale.getDefault(), "Due date: %s", ((FixedTermAccount) acc).getAcc_due_date())
                 );
             }
+
+            holder.textViewType.setText(acc.toString());
         }
     }
 

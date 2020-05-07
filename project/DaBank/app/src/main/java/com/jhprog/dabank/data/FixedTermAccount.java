@@ -38,9 +38,14 @@ public final class FixedTermAccount extends Account {
 
     @Override
     public boolean withdraw(double amount) {
+        if (!super.withdraw(amount)) {
+            return false;
+        }
+
         TimeManager timeManager = TimeManager.getInstance();
         Date today = timeManager.todayDate();
         Date dueDate = null;
+
         try {
             dueDate = timeManager.stringToDate(acc_due_date);
         } catch (ParseException e) {

@@ -26,6 +26,10 @@ public final class CurrentAccount extends Account {
 
     @Override
     public boolean withdraw(double amount) {
+        if (!super.withdraw(amount)) {
+            return false;
+        }
+
         if ((acc_creditlimit + acc_balance) - amount >= 0) {
             this.acc_balance -= amount;
             return true;

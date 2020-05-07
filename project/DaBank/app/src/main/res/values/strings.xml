@@ -89,4 +89,8 @@
     <string name="fragment_bank_card_payment_simulation_country_limit_header_text">Country (your location)</string>
     <string name="fragment_bank_card_payment_simulation_pay_text">Pay</string>
 
+    <string name="fragment_account_settings_update_account_text">Update Account</string>
+    <string name="fragment_account_settings_frozen_header_text">Account frozen</string>
+    <string name="fragment_account_settings_name_header_text">Account name</string>
+
 </resources>

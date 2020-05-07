@@ -4,11 +4,64 @@
     android:background="@color/colorBackground">
 
     <TextView
-        android:id="@+id/fragment_account_settings_test"
+        android:id="@+id/fragment_account_settings_textview_name_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="hello" />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_account_settings_name_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/fragment_account_settings_edittext_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_account_settings_textview_name_header"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edittext"
+        android:gravity="start"
+        android:inputType="text"
+        android:maxLength="30"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/fragment_account_settings_textview_frozen_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_account_settings_edittext_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fragment_account_settings_frozen_header_text"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/fragment_account_settings_settings_switch_frozen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_account_settings_edittext_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@id/fragment_account_settings_textview_frozen_header" />
+
+    <Button
+        android:id="@+id/fragment_account_settings_button_update_account"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/fragment_account_settings_textview_frozen_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/fragment_account_settings_update_account_text"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSecondaryText" />
 
 </RelativeLayout>

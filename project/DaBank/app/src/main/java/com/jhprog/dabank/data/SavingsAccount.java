@@ -30,14 +30,20 @@ public final class SavingsAccount extends Account {
 
     @Override
     public boolean withdraw(double amount) {
-        if (Calendar.getInstance().get(Calendar.YEAR) > acc_last_withdraw_year) {
-            acc_withdrawlimit = 10;
-            DataManager.getInstance().updateAccount(this);
+        if (!super.withdraw(amount)) {
+            return false;
+        }
+
+        if (acc_last_withdraw_year != NEVER_USED) {
+            if (Calendar.getInstance().get(Calendar.YEAR) > acc_last_withdraw_year) {
+                acc_withdrawlimit = 10;
+            }
         }
 
         if (this.acc_withdrawlimit > 0 && (this.acc_balance - amount) >= 0) {
             this.acc_balance -= amount;
             this.acc_withdrawlimit--;
+            this.acc_last_withdraw_year = Calendar.getInstance().get(Calendar.YEAR);
             return true;
         } else {
             return false;

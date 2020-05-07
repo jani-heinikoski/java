@@ -196,8 +196,9 @@ public class AddAccountFragment extends Fragment {
                                     viewModel.getBank_id(),
                                     chosenCustomerID,
                                     Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
-                                    binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0,
-                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
+                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
+                                    false,
+                                    binding.fragmentAddAccountSwitchIsCredit.isChecked() ? Double.parseDouble(binding.fragmentAddAccountEdittextCreditAmount.getText().toString().trim()) : 0
                             );
                             DataManager.getInstance().insertAccount(account);
                         }
@@ -209,8 +210,10 @@ public class AddAccountFragment extends Fragment {
                                     viewModel.getBank_id(),
                                     chosenCustomerID,
                                     Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
+                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
+                                    false,
                                     10,
-                                    binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim()
+                                    SavingsAccount.NEVER_USED
                             );
                             DataManager.getInstance().insertAccount(account);
                         }
@@ -219,11 +222,11 @@ public class AddAccountFragment extends Fragment {
                     case Account.TYPE_FIXED_TERM:
                         if (chosenCustomerID != 0) {
                             account = new FixedTermAccount(
-                                Account.TYPE_FIXED_TERM,
                                 viewModel.getBank_id(),
                                 chosenCustomerID,
                                 Double.parseDouble(binding.fragmentAddAccountEdittextAmount.getText().toString().trim()),
                                 binding.fragmentAddAccountEdittextAccountNumber.getText().toString().trim(),
+                                false,
                                 getDueDate()
                             );
                             DataManager.getInstance().insertAccount(account);
