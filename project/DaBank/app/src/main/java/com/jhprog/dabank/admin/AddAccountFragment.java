@@ -133,9 +133,11 @@ public class AddAccountFragment extends Fragment {
 
     private void showIsCreditSwitch() {
         binding.fragmentAddAccountSwitchIsCredit.setVisibility(View.VISIBLE);
+        binding.fragmentAddAccountIsCreditHeader.setVisibility(View.VISIBLE);
     }
 
     private void hideIsCreditSwitch() {
+        binding.fragmentAddAccountIsCreditHeader.setVisibility(View.INVISIBLE);
         binding.fragmentAddAccountSwitchIsCredit.setChecked(false);
         binding.fragmentAddAccountSwitchIsCredit.setVisibility(View.INVISIBLE);
     }
