@@ -263,7 +263,7 @@ public class DataManager {
         }
     }
 
-    private void insertAdmins(SQLiteDatabase db) {
+    private void insertAdmins(@NonNull SQLiteDatabase db) {
         if (db.isOpen()) {
             Cursor cursor = db.rawQuery(
                     "SELECT " + DatabaseContract.BankTable._ID + " FROM " +
@@ -298,7 +298,7 @@ public class DataManager {
         }
     }
 
-    private void insertTestUsers(SQLiteDatabase db) {
+    private void insertTestUsers(@NonNull SQLiteDatabase db) {
         if (db.isOpen()) {
             Cursor cursor = db.rawQuery(
                     "SELECT " + DatabaseContract.BankTable._ID + " FROM " +
@@ -335,7 +335,7 @@ public class DataManager {
     }
 
     @SuppressLint("DefaultLocale")
-    private void insertAccountsForTestUsers(SQLiteDatabase db) {
+    private void insertAccountsForTestUsers(@NonNull SQLiteDatabase db) {
         if (db.isOpen()) {
             Cursor cursor = db.rawQuery(
                 "SELECT " + DatabaseContract.CustomerTable._ID + "," +
@@ -415,7 +415,7 @@ public class DataManager {
         database.execSQL(INSERT_TRANSACT);
     }
 
-    public void insertTransaction(Transaction transaction) {
+    public void insertTransaction(@NonNull Transaction transaction) {
 
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
@@ -1011,7 +1011,7 @@ public class DataManager {
         database.execSQL(UPDATE_PENDING);
     }
 
-    public ArrayList<NormalTransaction> getNormalTransactionsByAccNumber(String accountNumber) {
+    public ArrayList<NormalTransaction> getNormalTransactionsByAccNumber(@NonNull String accountNumber) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
@@ -1183,7 +1183,7 @@ public class DataManager {
         return bankCards;
     }
 
-    public BankCard getBankCardByNumber(String cardNumber) {
+    public BankCard getBankCardByNumber(@NonNull String cardNumber) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
         }
@@ -1220,7 +1220,21 @@ public class DataManager {
         return bankCard;
     }
 
-    public boolean bankCardExists(String cardNumber) {
+    public boolean bankCardExists(@NonNull String cardNumber) {
         return getBankCardByNumber(cardNumber) != null;
     }
+
+    public void deletePendingPayments(@NonNull String accountNumber) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String DELETE_PENDING_PAYMENTS =
+                "DELETE FROM " + DatabaseContract.PendingTransactionTable.table_name +
+                        " WHERE " + DatabaseContract.PendingTransactionTable.pending_transaction_from_acc_number +
+                        "='" + accountNumber + "';";
+
+        database.execSQL(DELETE_PENDING_PAYMENTS);
+    }
+
 }

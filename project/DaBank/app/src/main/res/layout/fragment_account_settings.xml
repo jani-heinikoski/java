@@ -64,4 +64,18 @@
         android:textAllCaps="false"
         android:textColor="@color/colorSecondaryText" />
 
+    <Button
+        android:id="@+id/fragment_account_settings_button_delete_pendings"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/fragment_account_settings_button_update_account"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/fragment_account_settings_delete_pendings_text"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSecondaryText" />
+
 </RelativeLayout>

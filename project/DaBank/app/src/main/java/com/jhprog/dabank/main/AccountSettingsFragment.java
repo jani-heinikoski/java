@@ -74,6 +74,18 @@ public final class AccountSettingsFragment extends Fragment {
                 toast.show();
             }
         });
+
+        binding.fragmentAccountSettingsButtonDeletePendings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.fragmentAccountSettingsButtonDeletePendings.startAnimation(AnimationProvider.getOnClickAnimation());
+
+                DataManager.getInstance().deletePendingPayments(clickedAccount.getAcc_number());
+                Toast toast = Toast.makeText(getActivity(),"Pendings deleted!", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
     }
 
     private boolean validateFormData() {
