@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
@@ -107,12 +108,15 @@ public class AddAccountFragment extends Fragment {
                 if (selected != null) {
                     if (selected.equals(accountTypes[0])) {
                         hideCalendar();
+                        showIsCreditSwitch();
                         accountType = Account.TYPE_CURRENT;
                     } else if (selected.equals(accountTypes[1])) {
                         hideCalendar();
+                        hideIsCreditSwitch();
                         accountType = Account.TYPE_SAVING;
                     } else if (selected.equals(accountTypes[2])) {
                         addAccountFragment.showCalendar();
+                        hideIsCreditSwitch();
                         accountType = Account.TYPE_FIXED_TERM;
                     }
                 } else {
@@ -125,6 +129,15 @@ public class AddAccountFragment extends Fragment {
                 accountType = 0;
             }
         });
+    }
+
+    private void showIsCreditSwitch() {
+        binding.fragmentAddAccountSwitchIsCredit.setVisibility(View.VISIBLE);
+    }
+
+    private void hideIsCreditSwitch() {
+        binding.fragmentAddAccountSwitchIsCredit.setChecked(false);
+        binding.fragmentAddAccountSwitchIsCredit.setVisibility(View.INVISIBLE);
     }
 
     private void showCalendar() {

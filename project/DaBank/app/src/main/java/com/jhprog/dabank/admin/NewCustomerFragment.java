@@ -96,19 +96,26 @@ public class NewCustomerFragment extends Fragment {
         boolean specialChar = false;
         // Name
         tempString = binding.fragmentNewCustomerEdittextName.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.matches("['\".]") || tempString.toLowerCase().equals("admin") || tempString.toLowerCase().equals("username")) {
+        if (tempString.isEmpty() || tempString.matches("['\".]")) {
             valid = false;
             binding.fragmentNewCustomerEdittextName.setError("Name invalid!");
         }
         // Username
         tempString = binding.fragmentNewCustomerEdittextUser.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.length() < 4 || tempString.matches("['\".]")) {
+        if (
+                tempString.isEmpty()
+                || tempString.length() < 4
+                || tempString.matches("['\".]")
+                || DataManager.getInstance().customerExists(viewModel.getBank_id(), tempString)
+                || tempString.toLowerCase().equals("admin")
+                || tempString.toLowerCase().equals("username")
+        ) {
             valid = false;
-            binding.fragmentNewCustomerEdittextUser.setError("Must be >=4 characters");
+            binding.fragmentNewCustomerEdittextUser.setError("Invalid");
         }
         // Password check
         tempString = binding.fragmentNewCustomerEdittextPassword.getText().toString().trim();
-        if (tempString.matches("\\s+") || tempString.matches("['\".]")) {
+        if (tempString.matches("\\s+") || tempString.matches("['\".]") || tempString.length() < 12) {
             valid = false;
             binding.fragmentNewCustomerEdittextPassword.setError("Invalid password");
         } else {

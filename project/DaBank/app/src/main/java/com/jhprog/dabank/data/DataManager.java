@@ -1223,6 +1223,32 @@ public class DataManager {
         return getBankCardByNumber(cardNumber) != null;
     }
 
+    public boolean customerExists(int bankID, String userName) {
+        if (!database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+
+        String query = "SELECT * FROM " + DatabaseContract.CustomerTable.table_name + " WHERE " +
+                DatabaseContract.CustomerTable.cust_user + "='" + userName + "' AND " + DatabaseContract.CustomerTable.cust_bank_id +
+                "=" + bankID + ";";
+
+        System.out.println("LOGGER: " + query);
+
+        Cursor cursor = database.rawQuery(query
+                ,
+                null
+        );
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                return true;
+            }
+            cursor.close();
+        }
+
+        return false;
+    }
+
     public void deletePendingPayments(@NonNull String accountNumber) {
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();

@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:text="Current Account"
             android:textColor="@android:color/black"
-            android:textSize="26sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/cardview_account_number"
@@ -100,7 +100,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/ic_settings"
             android:elevation="4dp" />
 
