@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 01.05.2020
+ * Version: release
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.main;
 
 import android.content.Context;
@@ -16,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jhprog.dabank.ICardClickListener;
 import com.jhprog.dabank.IFragmentOwner;
-import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.data.NormalTransaction;

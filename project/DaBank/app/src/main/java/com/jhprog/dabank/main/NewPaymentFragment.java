@@ -1,7 +1,7 @@
 /*
  * Author: Jani Olavi Heinikoski
  * Date: 09.04.2020
- * Version: alpha
+ * Version: release
  * Sources:
  * -
  * */
@@ -34,9 +34,7 @@ import com.jhprog.dabank.utility.AnimationProvider;
 import com.jhprog.dabank.utility.TimeManager;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Objects;
 
 public class NewPaymentFragment extends Fragment {

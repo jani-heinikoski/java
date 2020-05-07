@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 01.05.2020
+ * Version: release
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.main;
 
 import android.view.LayoutInflater;

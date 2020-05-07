@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 16.04.2020
+ * Version: release
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.admin;
 
 import android.annotation.SuppressLint;

@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 06.05.2020
+ * Version: release
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.main;
 
 import android.os.Bundle;
@@ -18,7 +25,6 @@ import com.jhprog.dabank.R;
 import com.jhprog.dabank.data.Account;
 import com.jhprog.dabank.data.BankCard;
 import com.jhprog.dabank.data.DataManager;
-import com.jhprog.dabank.data.NormalTransaction;
 import com.jhprog.dabank.databinding.FragmentBankCardPaymentSimulationBinding;
 import com.jhprog.dabank.utility.AnimationProvider;
 

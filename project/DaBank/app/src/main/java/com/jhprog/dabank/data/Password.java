@@ -1,3 +1,10 @@
+/*
+ * Author: Jani Olavi Heinikoski
+ * Date: 15.04.2020
+ * Version: release
+ * Sources:
+ * -
+ * */
 package com.jhprog.dabank.data;
 
 public final class Password {

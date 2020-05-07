@@ -1,7 +1,7 @@
 /*
 * Author: Jani Olavi Heinikoski
 * Date: 03.04.2020
-* Version: alpha
+* Version: release
 * Sources:
 * https://material.io/
 * https://developer.android.com/topic/libraries/view-binding

@@ -1,7 +1,7 @@
 /*
  * Author: Jani Olavi Heinikoski
  * Date: 15.04.2020
- * Version: alpha
+ * Version: release
  * Sources:
  * https://mvnrepository.com/artifact/commons-codec/commons-codec
  * https://en.wikipedia.org/wiki/Salt_(cryptography)

@@ -1,7 +1,7 @@
 /*
  * Author: Jani Olavi Heinikoski
  * Date: 13.04.2020
- * Version: alpha
+ * Version: release
  * Sources:
  * -
  * */
@@ -15,9 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +31,6 @@ import com.jhprog.dabank.data.DataManager;
 import com.jhprog.dabank.data.FixedTermAccount;
 import com.jhprog.dabank.data.SavingsAccount;
 import com.jhprog.dabank.databinding.FragmentAddAccountBinding;
-import com.jhprog.dabank.utility.AnimationProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;

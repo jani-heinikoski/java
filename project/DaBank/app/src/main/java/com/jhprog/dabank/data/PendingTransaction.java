@@ -1,7 +1,7 @@
 /*
  * Author: Jani Olavi Heinikoski
  * Date: 17.04.2020
- * Version: alpha
+ * Version: release
  * Sources:
  * -
  * */
