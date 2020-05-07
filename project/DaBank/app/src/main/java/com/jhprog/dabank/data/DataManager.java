@@ -15,7 +15,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,7 @@ public class DataManager {
     private SQLiteDBHelper dbHelper;
     private SQLiteDatabase database;
 
-    private final String ADMIN_USERNAME = "1337";
+    private final String ADMIN_USERNAME = "admin";
 
     private DataManager() {
         dbHelper = new SQLiteDBHelper(DaBank.getAppContext());
