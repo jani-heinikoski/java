@@ -89,7 +89,7 @@ public class NewCustomerFragment extends Fragment {
         boolean specialChar = false;
         // Name
         tempString = binding.fragmentNewCustomerEdittextName.getText().toString().trim();
-        if (tempString.isEmpty() || tempString.matches("['\".]")) {
+        if (tempString.isEmpty() || tempString.matches("['\".]") || tempString.toLowerCase().equals("admin") || tempString.toLowerCase().equals("username")) {
             valid = false;
             binding.fragmentNewCustomerEdittextName.setError("Name invalid!");
         }
