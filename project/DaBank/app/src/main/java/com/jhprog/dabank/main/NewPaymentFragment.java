@@ -254,6 +254,11 @@ public class NewPaymentFragment extends Fragment {
         if (payeeAccountNumber.length() != 18 || !payeeAccountNumber.matches("^[A-Z]{2}[0-9]{16}$")) {
             binding.fragmentNewPaymentEdittextPayeeAccount.setError("Non-valid");
             valid = false;
+        } else {
+            if (payeeAccountNumber.equals(payerAccount.getAcc_number())) {
+                binding.fragmentNewPaymentEdittextPayeeAccount.setError("Can't pay to same account");
+                valid = false;
+            }
         }
         // Payee's name check
         payeeName = binding.fragmentNewPaymentEdittextPayeeName.getText().toString().trim();

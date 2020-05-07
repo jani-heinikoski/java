@@ -153,6 +153,11 @@ public final class BankCardPaymentSimulationFragment extends Fragment {
         if (payeeAccountNumber.length() != 18 || !payeeAccountNumber.matches("^[A-Z]{2}[0-9]{16}$")) {
             binding.fragmentBankCardPaymentSimulationEdittextPayeeAccount.setError("Non-valid");
             valid = false;
+        } else {
+            if (payeeAccountNumber.equals(DataManager.getInstance().getAccountByID(selectedBankCard.getOwnerAccountId()).getAcc_number())) {
+                binding.fragmentBankCardPaymentSimulationEdittextPayeeAccount.setError("Can't pay to same account");
+                valid = false;
+            }
         }
         // Payee's name check
         payeeName = binding.fragmentBankCardPaymentSimulationEdittextPayeeName.getText().toString().trim();
