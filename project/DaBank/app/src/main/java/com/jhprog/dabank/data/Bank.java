@@ -109,11 +109,13 @@ public class Bank {
         }
     }
 
-    private boolean withdraw(Account from, double amount) {// TODO implement withdrawing from FixedTermAccount
+    private boolean withdraw(Account from, double amount) {
         if (from instanceof CurrentAccount) {
             return ((CurrentAccount) from).withdraw(amount);
         } else if (from instanceof SavingsAccount) {
             return ((SavingsAccount) from).withdraw(amount);
+        } else if (from instanceof FixedTermAccount) {
+            return ((FixedTermAccount) from).withdraw(amount);
         } else {
             return false;
         }

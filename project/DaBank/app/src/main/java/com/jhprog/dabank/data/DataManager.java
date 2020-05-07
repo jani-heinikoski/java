@@ -255,8 +255,8 @@ public class DataManager {
 
         }
     }
+
     // Closes the database connection
-    // TODO tie this to Activities lifecycles
     public void closeDatabaseConnection() {
         if (database.isOpen()) {
             database.close();

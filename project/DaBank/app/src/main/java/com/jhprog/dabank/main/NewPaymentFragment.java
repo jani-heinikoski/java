@@ -144,7 +144,7 @@ public class NewPaymentFragment extends Fragment {
             }
         });
 
-        dueDate = timeManager.todayString(); // TODO: 29.4.2020 check if this is even needed
+        dueDate = timeManager.todayString();
     }
 
     private void initButtons() {

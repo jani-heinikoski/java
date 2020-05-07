@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment {
                     viewModel.getBank().checkPendingTransactions();
                     Intent intent;
                     // See if user is admin
-                    if (customer.getCust_user().equals("1337")) { // TODO: 24.4.2020 Admin username needs to be changed
+                    if (customer.getCust_user().equals("admin")) {
                         intent = new Intent(getActivity(), AdminActivity.class);
                         intent.putExtra("b_id", bank.getBank_id());
                         intent.putExtra("cust_id", customer.getCust_id());
