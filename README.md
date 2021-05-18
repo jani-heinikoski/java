@@ -1,2 +1,0 @@
-# java
-Olio-ohjelmointikurssin repo
