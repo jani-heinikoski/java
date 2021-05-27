@@ -38,5 +38,5 @@ acc_duedate DATETIME
 bankcard
 bcard_id int primary key autoincrement
 bcard_acc_id int 
-bcard_type int  //C=0 tai D=1
+bcard_type int  //C=0 or D=1
 
